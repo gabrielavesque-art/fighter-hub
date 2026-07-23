@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIGHTER HUB — UFC & MMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#EDE9E1;
+    --canvas-line:#D9D2C4;
+    --ink:#1B1815;
+    --ink-soft:#4A453E;
+    --rope-red:#B32026;
+    --amber:#D98F2B;
+    --steel:#8B857A;
+    --card:#F6F4EF;
+    --win:#1a6b3a;
+    --loss:#8b1a1a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--canvas);color:var(--ink);font-family:'Archivo',sans-serif;min-height:100vh;}
+  ::selection{background:var(--rope-red);color:#fff;}
+  .tape{height:8px;background:repeating-linear-gradient(-45deg,var(--rope-red) 0 14px,var(--canvas) 14px 28px);opacity:.85;}
+
+  header{padding:28px clamp(20px,5vw,64px) 18px;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .wordmark{font-family:'Anton',sans-serif;font-size:clamp(28px,4vw,40px);letter-spacing:.5px;text-transform:uppercase;line-height:1;}
+  .wordmark span{color:var(--rope-red);}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--steel);}
+
+  main{padding:0 clamp(20px,5vw,64px) 80px;max-width:1180px;margin:0 auto;}
+
+  .controls{margin:32px 0 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .searchbar{flex:1;min-width:220px;display:flex;gap:0;background:var(--ink);border-radius:2px;overflow:hidden;}
+  .searchbar input{flex:1;background:transparent;border:none;outline:none;color:var(--canvas);font-family:'JetBrains Mono',monospace;font-size:14px;padding:13px 16px;letter-spacing:.5px;}
+  .searchbar input::placeholder{color:#7d7469;}
+  .searchbar button{background:var(--rope-red);color:#fff;border:none;padding:13px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+  .searchbar button:hover{background:#951a1f;}
+  .filter-select{background:var(--ink);color:var(--canvas);border:none;padding:13px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.5px;border-radius:2px;cursor:pointer;outline:none;}
+  .filter-select option{background:var(--ink);}
+
+  .status-line{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--steel);margin-bottom:20px;min-height:16px;display:flex;align-items:center;gap:8px;}
+  .spinner{width:12px;height:12px;border:2px solid var(--canvas-line);border-top-color:var(--rope-red);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;display:none;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .pagination{display:flex;gap:8px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
+  .page-btn{background:var(--ink);color:var(--canvas);border:none;padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;border-radius:2px;text-transform:uppercase;}
+  .page-btn:hover{background:var(--rope-red);}
+  .page-btn:disabled{opacity:.3;cursor:not-allowed;}
+  .page-btn.active{background:var(--rope-red);}
+  .page-info{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steel);}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+  .card{background:var(--card);border:1px solid var(--canvas-line);border-radius:3px;overflow:hidden;cursor:pointer;transition:transform .15s ease,border-color .15s ease;display:flex;flex-direction:column;}
+  .card:hover{transform:translateY(-3px);border-color:var(--rope-red);}
+  .card-photo{height:160px;background:var(--ink) center/cover no-repeat;position:relative;}
+  .card-photo img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+  .card-photo .fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Anton',sans-serif;font-size:42px;color:#3a3530;}
+  .card-tag{position:absolute;top:8px;left:8px;background:var(--rope-red);color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;padding:3px 7px;border-radius:2px;text-transform:uppercase;}
+  .card-rank{position:absolute;top:8px;right:8px;background:var(--amber);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 7px;border-radius:2px;}
+  .card-body{padding:12px 14px 14px;}
+  .card-name{font-family:'Anton',sans-serif;font-size:18px;letter-spacing:.3px;text-transform:uppercase;line-height:1.05;margin-bottom:4px;}
+  .card-nickname{font-family:'Archivo',sans-serif;font-size:12px;color:var(--rope-red);font-style:italic;margin-bottom:6px;min-height:16px;}
+  .card-meta{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;}
+  .record-win{color:var(--win);font-weight:700;}
+  .record-loss{color:var(--loss);font-weight:700;}
+
+  .overlay{position:fixed;inset:0;background:rgba(27,24,21,.65);display:none;align-items:flex-start;justify-content:center;padding:32px 20px;overflow-y:auto;z-index:50;}
+  .overlay.open{display:flex;}
+  .detail{background:var(--card);max-width:800px;width:100%;border-radius:3px;overflow:hidden;animation:rise .22s ease;}
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+  .detail-top{display:flex;background:var(--ink);color:var(--canvas);position:relative;}
+  .detail-photo{width:200px;flex-shrink:0;height:240px;background:#111 center top/cover no-repeat;}
+  .detail-photo img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
+  .detail-head{padding:24px 20px 20px;display:flex;flex-direction:column;justify-content:center;gap:8px;flex:1;}
+  .detail-close{position:absolute;top:12px;right:16px;background:none;border:none;color:#7d7469;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;padding:4px 8px;}
+  .detail-close:hover{color:var(--canvas);}
+  .detail-name{font-family:'Anton',sans-serif;font-size:clamp(22px,3.5vw,32px);text-transform:uppercase;line-height:1;}
+  .detail-nickname{font-family:'Archivo',sans-serif;font-size:14px;color:var(--rope-red);font-style:italic;}
+  .detail-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:#9a9088;letter-spacing:1px;text-transform:uppercase;line-height:1.8;}
+  .champion-badge{display:inline-block;background:var(--amber);color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:4px 10px;border-radius:2px;text-transform:uppercase;}
+
+  .stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));border-top:1px solid var(--canvas-line);border-bottom:1px solid var(--canvas-line);}
+  .stat{padding:14px 10px;border-right:1px solid var(--canvas-line);text-align:center;}
+  .stat:last-child{border-right:none;}
+  .stat-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:18px;color:var(--rope-red);}
+  .stat-val.green{color:var(--win);}
+  .stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--steel);margin-top:3px;}
+
+  .detail-section{padding:18px 22px;}
+  .detail-section h3{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--steel);margin-bottom:12px;border-bottom:1px solid var(--canvas-line);padding-bottom:8px;}
+  .detail-bio{font-size:13.5px;line-height:1.65;color:var(--ink-soft);}
+  .detail-bio.empty{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--steel);}
+
+  .fight-table{width:100%;border-collapse:collapse;font-size:12px;}
+  .fight-table th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--steel);text-align:left;padding:6px 8px;border-bottom:1px solid var(--canvas-line);}
+  .fight-table td{padding:8px;border-bottom:1px solid #e8e4dc;color:var(--ink-soft);}
+  .fight-table tr:last-child td{border-bottom:none;}
+  .result-w{color:var(--win);font-weight:700;font-family:'JetBrains Mono',monospace;}
+  .result-l{color:var(--loss);font-weight:700;font-family:'JetBrains Mono',monospace;}
+  .result-d{color:var(--amber);font-weight:700;font-family:'JetBrains Mono',monospace;}
+
+  .next-step{padding:14px 22px;border-top:1px dashed var(--canvas-line);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steel);}
+  .empty-state{padding:60px 20px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--steel);}
+
+  footer{padding:20px clamp(20px,5vw,64px) 40px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steel);letter-spacing:1px;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+  @media(max-width:520px){
+    .detail-top{flex-direction:column;}
+    .detail-photo{width:100%;height:200px;}
+    .controls{flex-direction:column;}
+    .searchbar{width:100%;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="eyebrow">UFC · MMA · Fighter Hub</div>
+    <div class="wordmark">FIGHTER<span>HUB</span></div>
+  </div>
+  <div class="eyebrow" id="headerCount">Chargement...</div>
+</header>
+<div class="tape"></div>
+
+<main>
+  <div class="controls">
+    <div class="searchbar">
+      <input id="searchInput" type="text" placeholder="CHERCHER UN COMBATTANT..." />
+      <button id="searchBtn">GO</button>
+    </div>
+    <select class="filter-select" id="divisionFilter">
+      <option value="">Toutes divisions</option>
+      <option value="Strawweight">Strawweight</option>
+      <option value="Flyweight">Flyweight</option>
+      <option value="Bantamweight">Bantamweight</option>
+      <option value="Featherweight">Featherweight</option>
+      <option value="Lightweight">Lightweight</option>
+      <option value="Welterweight">Welterweight</option>
+      <option value="Middleweight">Middleweight</option>
+      <option value="Light Heavyweight">Light Heavyweight</option>
+      <option value="Heavyweight">Heavyweight</option>
+    </select>
+    <select class="filter-select" id="statusFilter">
+      <option value="">Tous statuts</option>
+      <option value="Active">Actifs</option>
+      <option value="Inactive">Inactifs</option>
+    </select>
+  </div>
+
+  <div class="status-line" id="statusLine">
+    <div class="spinner" id="spinner"></div>
+    <span id="statusText">Chargement des combattants...</span>
+  </div>
+
+  <div class="pagination" id="paginationTop"></div>
+  <div class="grid" id="grid"></div>
+  <div class="pagination" id="paginationBottom"></div>
+</main>
+
+<div class="tape"></div>
+<footer>
+  <span>Fighter Hub — Étape 1/3</span>
+  <span>Source : Cito API · UFC Data</span>
+</footer>
+
+<div class="overlay" id="overlay">
+  <div class="detail" id="detailPanel"></div>
+</div>
+
+<script>
+const BASE = '/api/ufc';
+let currentPage = 1;
+let totalPages = 1;
+let currentSearch = '';
+let currentDivision = '';
+let currentStatus = '';
+let debounceTimer;
+
+function initials(name){
+  return (name||'??').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function formatRecord(f){
+  const w = f.record?.wins ?? f.wins ?? '?';
+  const l = f.record?.losses ?? f.losses ?? '?';
+  const d = f.record?.draws ?? f.draws ?? 0;
+  return {w,l,d};
+}
+
+function setStatus(text, loading=false){
+  document.getElementById('spinner').style.display = loading ? 'block' : 'none';
+  document.getElementById('statusText').textContent = text;
+}
+
+async function apiFetch(endpoint, params={}){
+  const qs = Object.entries(params)
+    .filter(([k,v])=>v!==''&&v!==null&&v!==undefined)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&');
+  const url = BASE + endpoint + (qs ? '?'+qs : '');
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`API error ${res.status}`);
+  return res.json();
+}
+
+async function loadFighters(){
+  setStatus('Chargement...', true);
+  document.getElementById('grid').innerHTML = '';
+  document.getElementById('paginationTop').innerHTML = '';
+  document.getElementById('paginationBottom').innerHTML = '';
+  try{
+    const params = {page: currentPage, limit: 20};
+    if(currentSearch) params.search = currentSearch;
+    if(currentDivision) params.weightClass = currentDivision;
+    if(currentStatus) params.status = currentStatus;
+
+    const data = await apiFetch('/fighters', params);
+    const fighters = data.data || data.fighters || data.results || [];
+    const meta = data.meta || {};
+    totalPages = meta.totalPages || 1;
+
+    document.getElementById('headerCount').textContent = meta.total ? `${meta.total.toLocaleString()} combattants` : '';
+
+    if(!fighters.length){
+      document.getElementById('grid').innerHTML = '<div class="empty-state">Aucun combattant trouvé.</div>';
+      setStatus('Aucun résultat.');
+      return;
+    }
+    setStatus(`Page ${currentPage}/${totalPages} — ${fighters.length} combattants affichés`);
+    renderGrid(fighters);
+    renderPagination();
+  }catch(err){
+    setStatus('Erreur API — '+err.message);
+    document.getElementById('grid').innerHTML = `<div class="empty-state">Erreur : ${err.message}</div>`;
+  }
+}
+
+function renderGrid(fighters){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  fighters.forEach(f=>{
+    const rec = formatRecord(f);
+    const division = f.weightClass || f.division || '';
+    const photo = f.image || f.photo || f.imageUrl || f.thumb || '';
+    const ranking = f.ranking || f.rank || null;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <div class="card-photo">
+        ${photo
+          ? `<img src="${photo}" alt="${f.name}" onerror="this.parentElement.innerHTML='<div class=\\'fallback\\'>${initials(f.name)}</div>'">`
+          : `<div class="fallback">${initials(f.name)}</div>`}
+        ${division ? `<span class="card-tag">${division}</span>` : ''}
+        ${ranking ? `<span class="card-rank">#${ranking}</span>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-name">${f.name||'—'}</div>
+        <div class="card-nickname">${f.nickname ? `"${f.nickname}"` : ''}</div>
+        <div class="card-meta">
+          <span>${f.nationality||f.country||'—'}</span>
+          <span><span class="record-win">${rec.w}</span>-<span class="record-loss">${rec.l}</span>-${rec.d}</span>
+        </div>
+      </div>`;
+    card.addEventListener('click', ()=>openDetail(f));
+    card.addEventListener('keydown', e=>{ if(e.key==='Enter') openDetail(f); });
+    grid.appendChild(card);
+  });
+}
+
+async function openDetail(f){
+  const overlay = document.getElementById('overlay');
+  const panel = document.getElementById('detailPanel');
+  const rec = formatRecord(f);
+  const photo = f.image || f.photo || f.imageUrl || f.thumb || '';
+  const isChamp = f.isChampion || f.champion || false;
+
+  panel.innerHTML = `
+    <div class="detail-top">
+      <button class="detail-close" id="closeBtn">FERMER ✕</button>
+      <div class="detail-photo">
+        ${photo ? `<img src="${photo}" alt="${f.name}" onerror="this.style.display='none'">` : ''}
+      </div>
+      <div class="detail-head">
+        ${isChamp ? '<span class="champion-badge">🏆 Champion</span>' : ''}
+        <div class="detail-name">${f.name||'—'}</div>
+        ${f.nickname ? `<div class="detail-nickname">"${f.nickname}"</div>` : ''}
+        <div class="detail-sub">
+          ${f.weightClass||f.division ? (f.weightClass||f.division)+'<br>' : ''}
+          ${f.nationality||f.country ? (f.nationality||f.country)+'<br>' : ''}
+          ${f.status ? 'Statut : '+f.status : ''}
+        </div>
+      </div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><div class="stat-val green">${rec.w}</div><div class="stat-label">Victoires</div></div>
+      <div class="stat"><div class="stat-val">${rec.l}</div><div class="stat-label">Défaites</div></div>
+      <div class="stat"><div class="stat-val">${rec.d}</div><div class="stat-label">Nuls</div></div>
+      <div class="stat"><div class="stat-val">${f.height||'—'}</div><div class="stat-label">Taille</div></div>
+      <div class="stat"><div class="stat-val">${f.reach||'—'}</div><div class="stat-label">Allonge</div></div>
+      <div class="stat"><div class="stat-val">${f.stance||'—'}</div><div class="stat-label">Garde</div></div>
+    </div>
+    <div class="detail-section">
+      <h3>Biographie</h3>
+      <div class="detail-bio ${f.bio||f.description?'':'empty'}">${f.bio||f.description||'Pas de biographie disponible.'}</div>
+    </div>
+    <div class="detail-section" id="fightHistorySection">
+      <h3>Historique des combats</h3>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--steel);">Chargement...</div>
+    </div>
+    <div class="next-step">→ Étape 2 à venir : vidéos highlights YouTube intégrées ici.</div>`;
+
+  overlay.classList.add('open');
+  document.getElementById('closeBtn').addEventListener('click', closeDetail);
+
+  // Charger l'historique
+  const fighterId = f.slug || f.id;
+  if(fighterId){
+    try{
+      const histData = await apiFetch(`/fighters/${fighterId}/fights`);
+      const fights = histData.data || histData.fights || histData.results || [];
+      const section = document.getElementById('fightHistorySection');
+      if(!section) return;
+      if(!fights.length){
+        section.querySelector('div').textContent = 'Aucun combat enregistré.';
+        return;
+      }
+      const rows = fights.slice(0,10).map(fight=>{
+        const result = fight.result || fight.outcome || '';
+        const resultClass = result==='W'||result==='win'||result==='Win' ? 'result-w'
+          : result==='L'||result==='loss'||result==='Loss' ? 'result-l'
+          : result==='D'||result==='draw' ? 'result-d' : '';
+        // Adversaire peut être un objet
+        const opp = typeof fight.opponent === 'object'
+          ? (fight.opponent?.name || fight.opponent?.firstName+' '+fight.opponent?.lastName || '—')
+          : (fight.opponent || fight.opponentName || '—');
+        // Event peut être un objet
+        const evt = typeof fight.event === 'object'
+          ? (fight.event?.name || fight.event?.title || '—')
+          : (fight.event || fight.eventName || '—');
+        const method = fight.method || fight.endMethod || fight.finishMethod || '—';
+        const date = fight.date ? fight.date.split('T')[0] : (fight.eventDate ? fight.eventDate.split('T')[0] : '—');
+        return `<tr>
+          <td><span class="${resultClass}">${result||'—'}</span></td>
+          <td>${opp}</td>
+          <td>${method}</td>
+          <td style="font-size:11px;">${evt}</td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:11px;">${date}</td>
+        </tr>`;
+      }).join('');
+      section.innerHTML = `
+        <h3>Historique des combats</h3>
+        <table class="fight-table">
+          <thead><tr>
+            <th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>Date</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }catch(e){
+      const section = document.getElementById('fightHistorySection');
+      if(section) section.querySelector('div').textContent = 'Historique non disponible.';
+    }
+  }
+}
+
+function closeDetail(){
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('overlay').addEventListener('click', e=>{
+  if(e.target===document.getElementById('overlay')) closeDetail();
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
+
+function renderPagination(){
+  ['paginationTop','paginationBottom'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(totalPages<=1){ el.innerHTML=''; return; }
+    let html = `<button class="page-btn" id="${id}-prev" ${currentPage<=1?'disabled':''}>← Préc.</button>`;
+    const range=[];
+    for(let i=Math.max(1,currentPage-2);i<=Math.min(totalPages,currentPage+2);i++) range.push(i);
+    if(range[0]>1) html+=`<button class="page-btn" onclick="goPage(1)">1</button>${range[0]>2?'<span class="page-info">…</span>':''}`;
+    range.forEach(p=>{ html+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="goPage(${p})">${p}</button>`; });
+    if(range[range.length-1]<totalPages) html+=`${range[range.length-1]<totalPages-1?'<span class="page-info">…</span>':''}<button class="page-btn" onclick="goPage(${totalPages})">${totalPages}</button>`;
+    html+=`<button class="page-btn" id="${id}-next" ${currentPage>=totalPages?'disabled':''}>Suiv. →</button>`;
+    html+=`<span class="page-info">Page ${currentPage}/${totalPages}</span>`;
+    el.innerHTML=html;
+    document.getElementById(`${id}-prev`).addEventListener('click',()=>goPage(currentPage-1));
+    document.getElementById(`${id}-next`).addEventListener('click',()=>goPage(currentPage+1));
+  });
+}
+
+function goPage(p){
+  if(p<1||p>totalPages) return;
+  currentPage=p;
+  window.scrollTo({top:0,behavior:'smooth'});
+  loadFighters();
+}
+
+document.getElementById('searchBtn').addEventListener('click',()=>{
+  currentSearch=document.getElementById('searchInput').value.trim();
+  currentPage=1;
+  loadFighters();
+});
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    currentSearch=e.target.value.trim();
+    currentPage=1;
+    loadFighters();
+  }
+  clearTimeout(debounceTimer);
+  debounceTimer=setTimeout(()=>{
+    const val=e.target.value.trim();
+    if(val!==currentSearch){ currentSearch=val; currentPage=1; loadFighters(); }
+  },500);
+});
+document.getElementById('divisionFilter').addEventListener('change',e=>{
+  currentDivision=e.target.value; currentPage=1; loadFighters();
+});
+document.getElementById('statusFilter').addEventListener('change',e=>{
+  currentStatus=e.target.value; currentPage=1; loadFighters();
+});
+
+loadFighters();
+</script>
+</body>
+</html>
