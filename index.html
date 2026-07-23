@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIGHTER HUB — UFC & MMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0b;
+  --bg2: #111114;
+  --bg3: #18181c;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.15);
+  --text: #f0eee8;
+  --text-muted: #6b6b72;
+  --text-soft: #9d9da8;
+  --red: #e8192c;
+  --red-dark: #a5111f;
+  --gold: #c9922a;
+  --green: #1a9e52;
+  --radius: 6px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--red); color: #fff; }
+img { display: block; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 clamp(16px,4vw,56px);
+  height: 60px;
+  background: rgba(10,10,11,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.logo em { color: var(--red); font-style: normal; }
+.nav-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+/* ── HERO SEARCH ── */
+.hero {
+  padding: 48px clamp(16px,4vw,56px) 32px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #13131a 0%, var(--bg) 100%);
+}
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(36px, 6vw, 72px);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.5px;
+  margin-bottom: 24px;
+}
+.hero-title span { color: var(--red); }
+.hero-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+  font-weight: 300;
+}
+
+.search-wrap {
+  display: flex;
+  gap: 10px;
+  max-width: 600px;
+}
+.search-input-wrap {
+  flex: 1;
+  position: relative;
+}
+.search-input-wrap svg {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
+  padding: 13px 16px 13px 42px;
+  outline: none;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: var(--red); }
+.search-input::placeholder { color: var(--text-muted); }
+.btn-search {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0 24px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.btn-search:hover { background: #c8101e; }
+
+/* ── FILTERS ── */
+.filters {
+  padding: 16px clamp(16px,4vw,56px);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+}
+.filter-select {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-soft);
+  font-family: 'Barlow', sans-serif;
+  font-size: 13px;
+  padding: 8px 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .2s;
+}
+.filter-select:focus { border-color: var(--red); }
+.filter-select option { background: var(--bg3); }
+
+/* ── STATUS / PAGINATION ── */
+.toolbar {
+  padding: 14px clamp(16px,4vw,56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.status-txt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.spinner {
+  width: 10px; height: 10px;
+  border: 2px solid var(--border);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: none;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.pagination {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.page-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.page-btn:hover { border-color: var(--red); color: var(--text); }
+.page-btn.active { background: var(--red); border-color: var(--red); color: #fff; }
+.page-btn:disabled { opacity: .3; cursor: not-allowed; }
+.page-dots { color: var(--text-muted); font-size: 12px; padding: 0 4px; }
+
+/* ── GRID ── */
+.grid-wrap { padding: 0 clamp(16px,4vw,56px) 60px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  padding-top: 20px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.card-img {
+  height: 180px;
+  background: var(--bg3) center top / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  transition: transform .3s ease;
+}
+.card:hover .card-img img { transform: scale(1.04); }
+.card-img .fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 48px;
+  color: var(--bg3);
+  background: linear-gradient(135deg, #1a1a20, #111114);
+}
+.card-division {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 24px 10px 8px;
+  background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.card-rank {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--gold);
+  color: #000;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 12px;
+  padding: 2px 7px; border-radius: 3px;
+}
+.card-body { padding: 12px 14px 14px; }
+.card-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 18px;
+  text-transform: uppercase; line-height: 1;
+  margin-bottom: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card-nickname {
+  font-size: 12px; color: var(--red); font-style: italic;
+  margin-bottom: 10px; min-height: 16px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-country {
+  font-size: 12px; color: var(--text-muted);
+}
+.card-record {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  font-weight: 500;
+}
+.rw { color: var(--green); }
+.rl { color: var(--red); }
+.rd { color: var(--text-muted); }
+
+.empty-state {
+  text-align: center; padding: 80px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; color: var(--text-muted);
+}
+
+/* ── MODAL ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(6px);
+  display: none;
+  overflow-y: auto;
+  padding: 20px;
+}
+.overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+.modal {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%; max-width: 860px;
+  overflow: hidden;
+  animation: modalIn .22s ease;
+  margin: auto;
+}
+@keyframes modalIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+/* modal hero */
+.modal-hero {
+  position: relative;
+  height: 300px;
+  background: var(--bg3) center top / cover no-repeat;
+  overflow: hidden;
+}
+.modal-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+}
+.modal-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  display: flex; align-items: flex-end;
+  padding: 32px;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: rgba(0,0,0,0.6); border: 1px solid var(--border);
+  color: var(--text-soft); width: 36px; height: 36px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px; transition: all .2s;
+  line-height: 1;
+}
+.modal-close:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.modal-hero-info { flex: 1; }
+.modal-champ {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gold); color: #000;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 11px; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px; border-radius: 3px;
+  margin-bottom: 10px;
+}
+.modal-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(28px, 5vw, 48px);
+  text-transform: uppercase; line-height: 0.95;
+  margin-bottom: 6px;
+}
+.modal-nickname {
+  font-size: 15px; color: var(--red); font-style: italic; margin-bottom: 10px;
+}
+.modal-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  letter-spacing: 1px; text-transform: uppercase;
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+
+/* stats bar */
+.modal-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  border-bottom: 1px solid var(--border);
+}
+.stat-cell {
+  padding: 18px 12px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 26px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-val.green { color: var(--green); }
+.stat-val.red { color: var(--red); }
+.stat-val.gold { color: var(--gold); }
+.stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-muted);
+}
+
+/* modal body */
+.modal-body { padding: 24px 28px 32px; }
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 13px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px; height: 14px;
+  background: var(--red);
+  border-radius: 2px;
+}
+.bio-text {
+  font-size: 14px; line-height: 1.7;
+  color: var(--text-soft); margin-bottom: 28px;
+}
+.bio-text.empty {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--text-muted);
+}
+
+/* fight history */
+.fight-table { width: 100%; border-collapse: collapse; }
+.fight-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-muted);
+  text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.fight-table td {
+  padding: 10px 10px;
+  font-size: 13px; color: var(--text-soft);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.fight-table tr:last-child td { border-bottom: none; }
+.fight-table tr:hover td { background: rgba(255,255,255,0.02); }
+.result-badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 13px;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 3px;
+  display: inline-block;
+}
+.result-w { background: rgba(26,158,82,0.15); color: var(--green); }
+.result-l { background: rgba(232,25,44,0.15); color: var(--red); }
+.result-d { background: rgba(201,146,42,0.15); color: var(--gold); }
+.method-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text-muted);
+}
+.next-step-banner {
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: rgba(232,25,44,0.06);
+  border: 1px dashed rgba(232,25,44,0.2);
+  border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .modal-hero { height: 220px; }
+  .modal-hero-overlay { padding: 20px; }
+  .modal-body { padding: 18px 16px 24px; }
+  .search-wrap { flex-direction: column; }
+  .btn-search { padding: 12px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">FIGHTER<em>HUB</em></div>
+  <div class="nav-count" id="navCount"></div>
+</nav>
+
+<div class="hero">
+  <div class="hero-title">The Ultimate<br><span>Fighter</span> Database</div>
+  <div class="hero-sub">3 315 combattants UFC · Stats · Palmarès · Historique complet</div>
+  <div class="search-wrap">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Chercher un combattant..." />
+    </div>
+    <button class="btn-search" id="searchBtn">Rechercher</button>
+  </div>
+</div>
+
+<div class="filters">
+  <select class="filter-select" id="divisionFilter">
+    <option value="">Toutes divisions</option>
+    <option value="Strawweight">Strawweight</option>
+    <option value="Flyweight">Flyweight</option>
+    <option value="Bantamweight">Bantamweight</option>
+    <option value="Featherweight">Featherweight</option>
+    <option value="Lightweight">Lightweight</option>
+    <option value="Welterweight">Welterweight</option>
+    <option value="Middleweight">Middleweight</option>
+    <option value="Light Heavyweight">Light Heavyweight</option>
+    <option value="Heavyweight">Heavyweight</option>
+  </select>
+  <select class="filter-select" id="statusFilter">
+    <option value="">Tous statuts</option>
+    <option value="Active">Actifs</option>
+    <option value="Inactive">Inactifs</option>
+  </select>
+</div>
+
+<div class="toolbar">
+  <div class="status-txt">
+    <div class="spinner" id="spinner"></div>
+    <span id="statusText">Chargement...</span>
+  </div>
+  <div class="pagination" id="paginationTop"></div>
+</div>
+
+<div class="grid-wrap">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="toolbar" style="justify-content:flex-end;padding-top:0;">
+  <div class="pagination" id="paginationBottom"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalPanel"></div>
+</div>
+
+<script>
+const BASE = '/api/ufc';
+let currentPage = 1, totalPages = 1;
+let currentSearch = '', currentDivision = '', currentStatus = '';
+let debounceTimer;
+
+function initials(n){ return (n||'??').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function rec(f){ return { w: f.record?.wins??f.wins??'?', l: f.record?.losses??f.losses??'?', d: f.record?.draws??f.draws??0 }; }
+function setStatus(t, loading=false){
+  document.getElementById('spinner').style.display = loading?'block':'none';
+  document.getElementById('statusText').textContent = t;
+}
+
+async function apiFetch(endpoint, params={}){
+  const qs = Object.entries(params).filter(([k,v])=>v!==''&&v!=null).map(([k,v])=>`${k}=${encodeURIComponent(v)}`).join('&');
+  const r = await fetch(BASE+endpoint+(qs?'?'+qs:''));
+  if(!r.ok) throw new Error(`Erreur ${r.status}`);
+  return r.json();
+}
+
+async function load(){
+  setStatus('Chargement...', true);
+  document.getElementById('grid').innerHTML='';
+  try{
+    if(currentSearch){
+      // Convertir le nom en slug et appeler directement le profil
+      const slug = currentSearch.toLowerCase().trim()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'') // enlever accents
+        .replace(/[^a-z0-9\s-]/g,'')
+        .replace(/\s+/g,'-')
+        .replace(/-+/g,'-');
+      
+      // Essayer d'abord le slug exact, puis chercher dans les pages
+      try {
+        const data = await apiFetch(`/fighters/${slug}`);
+        const fighter = data.data || data.fighter || data;
+        if(data.success && fighter && fighter.name){
+          setStatus(`1 résultat pour "${currentSearch}"`);
+          totalPages = 1;
+          renderGrid([fighter]);
+          renderPagination();
+          return;
+        }
+      } catch(e){}
+
+      // Si slug exact échoue, charger les 10 premières pages et filtrer
+      const term = currentSearch.toLowerCase();
+      let allFighters = [];
+      const batchSize = 5;
+      for(let batch = 0; batch < 2; batch++){
+        const pages = Array.from({length:batchSize}, (_,i) => batch*batchSize+i+1);
+        const results = await Promise.all(pages.map(pg =>
+          apiFetch('/fighters', {page:pg, limit:100, ...(currentDivision?{weightClass:currentDivision}:{}), ...(currentStatus?{status:currentStatus}:{})})
+        ));
+        results.forEach(data => {
+          allFighters = allFighters.concat(data.data||data.fighters||data.results||[]);
+        });
+        const filtered = allFighters.filter(f =>
+          (f.name||'').toLowerCase().includes(term) ||
+          (f.nickname||'').toLowerCase().includes(term) ||
+          (f.lastName||'').toLowerCase().includes(term)
+        );
+        if(filtered.length > 0){
+          const perPage = 20;
+          totalPages = Math.ceil(filtered.length/perPage);
+          const pageData = filtered.slice((currentPage-1)*perPage, currentPage*perPage);
+          setStatus(`${filtered.length} résultat(s) pour "${currentSearch}"`);
+          renderGrid(pageData);
+          renderPagination();
+          return;
+        }
+      }
+      document.getElementById('grid').innerHTML=`<div class="empty-state">Aucun combattant trouvé pour "${currentSearch}".<br><small style="color:var(--text-muted);font-size:11px;">Essaie le nom exact en anglais (ex: "Dustin Poirier")</small></div>`;
+      setStatus('Aucun résultat.');
+    } else {
+      const p={page:currentPage,limit:20};
+      if(currentDivision) p.weightClass=currentDivision;
+      if(currentStatus) p.status=currentStatus;
+      const data = await apiFetch('/fighters', p);
+      const fighters = data.data||data.fighters||data.results||[];
+      const meta = data.meta||{};
+      totalPages = meta.totalPages||1;
+      if(meta.total) document.getElementById('navCount').textContent = meta.total.toLocaleString()+' combattants';
+      if(!fighters.length){
+        document.getElementById('grid').innerHTML='<div class="empty-state">Aucun combattant trouvé.</div>';
+        setStatus('Aucun résultat.'); return;
+      }
+      setStatus(`Page ${currentPage} / ${totalPages}`);
+      renderGrid(fighters);
+      renderPagination();
+    }
+  }catch(e){
+    setStatus('Erreur : '+e.message);
+    document.getElementById('grid').innerHTML=`<div class="empty-state">${e.message}</div>`;
+  }
+}
+
+function renderGrid(fighters){
+  const grid = document.getElementById('grid');
+  grid.innerHTML='';
+  fighters.forEach(f=>{
+    const r=rec(f);
+    const photo=f.image||f.photo||f.imageUrl||'';
+    const div=f.weightClass||f.division||'';
+    const rank=f.ranking||f.rank||null;
+    const card=document.createElement('div');
+    card.className='card'; card.tabIndex=0;
+    card.innerHTML=`
+      <div class="card-img">
+        ${photo?`<img src="${photo}" alt="${f.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'fallback\\'>${initials(f.name)}</div>'">`:`<div class="fallback">${initials(f.name)}</div>`}
+        <div class="card-division">${div}</div>
+        ${rank?`<div class="card-rank">#${rank}</div>`:''}
+      </div>
+      <div class="card-body">
+        <div class="card-name">${f.name||'—'}</div>
+        <div class="card-nickname">${f.nickname?`"${f.nickname}"`:'&nbsp;'}</div>
+        <div class="card-footer">
+          <span class="card-country">${f.nationality||f.country||'—'}</span>
+          <span class="card-record"><span class="rw">${r.w}</span> · <span class="rl">${r.l}</span> · <span class="rd">${r.d}</span></span>
+        </div>
+      </div>`;
+    card.addEventListener('click',()=>openModal(f));
+    card.addEventListener('keydown',e=>{ if(e.key==='Enter') openModal(f); });
+    grid.appendChild(card);
+  });
+}
+
+async function openModal(f){
+  const overlay=document.getElementById('overlay');
+  const panel=document.getElementById('modalPanel');
+  const r=rec(f);
+  const photo=f.image||f.photo||f.imageUrl||'';
+  const div=f.weightClass||f.division||'';
+  const isChamp=f.isChampion||f.champion||false;
+
+  panel.innerHTML=`
+    <div class="modal-hero">
+      ${photo?`<img src="${photo}" alt="${f.name}">`:''}
+      <div class="modal-hero-overlay">
+        <div class="modal-hero-info">
+          ${isChamp?'<div class="modal-champ">🏆 Champion</div>':''}
+          <div class="modal-name">${f.name||'—'}</div>
+          ${f.nickname?`<div class="modal-nickname">"${f.nickname}"</div>`:''}
+          <div class="modal-meta">
+            ${div?`<span>${div}</span>`:''}
+            ${f.nationality||f.country?`<span>${f.nationality||f.country}</span>`:''}
+            ${f.status?`<span>${f.status}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <button class="modal-close" id="closeBtn">✕</button>
+    </div>
+    <div class="modal-stats">
+      <div class="stat-cell"><div class="stat-val green">${r.w}</div><div class="stat-label">Victoires</div></div>
+      <div class="stat-cell"><div class="stat-val red">${r.l}</div><div class="stat-label">Défaites</div></div>
+      <div class="stat-cell"><div class="stat-val gold">${r.d}</div><div class="stat-label">Nuls</div></div>
+      <div class="stat-cell"><div class="stat-val">${f.height||'—'}</div><div class="stat-label">Taille</div></div>
+      <div class="stat-cell"><div class="stat-val">${f.reach||'—'}</div><div class="stat-label">Allonge</div></div>
+      <div class="stat-cell"><div class="stat-val">${f.stance||'—'}</div><div class="stat-label">Garde</div></div>
+    </div>
+    <div class="modal-body">
+      <div class="section-title">Biographie</div>
+      <div class="bio-text ${f.bio||f.description?'':'empty'}">${f.bio||f.description||'Pas de biographie disponible pour ce combattant.'}</div>
+      <div class="section-title">Historique des combats</div>
+      <div id="fightHistory" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);">Chargement...</div>
+      <div class="next-step-banner">→ Étape 2 à venir : vidéos highlights YouTube intégrées directement dans la fiche.</div>
+    </div>`;
+
+  overlay.classList.add('open');
+  document.getElementById('closeBtn').addEventListener('click', closeModal);
+
+  const fighterId=f.slug||f.id;
+  if(fighterId){
+    try{
+      const h=await apiFetch(`/fighters/${fighterId}/fights`);
+      const fights=h.data||h.fights||h.results||[];
+      const el=document.getElementById('fightHistory');
+      if(!el) return;
+      if(!fights.length){ el.textContent='Aucun combat enregistré.'; return; }
+      const rows=fights.slice(0,12).map(fight=>{
+        const res=fight.result||fight.outcome||'';
+        const resUp=res.toUpperCase();
+        const cls=resUp==='WIN'||resUp==='W'?'result-w':resUp==='LOSS'||resUp==='L'?'result-l':'result-d';
+        const opp=typeof fight.opponent==='object'
+          ?(fight.opponent?.name||(fight.opponent?.firstName+' '+fight.opponent?.lastName)||'—')
+          :(fight.opponent||fight.opponentName||'—');
+        const evt=typeof fight.event==='object'
+          ?(fight.event?.name||fight.event?.title||'—')
+          :(fight.event||fight.eventName||'—');
+        const method=fight.method||fight.endMethod||fight.finishMethod||'—';
+        const date=fight.date?fight.date.split('T')[0]:fight.eventDate?fight.eventDate.split('T')[0]:'—';
+        return `<tr>
+          <td><span class="result-badge ${cls}">${res||'—'}</span></td>
+          <td style="color:var(--text);font-weight:500;">${opp}</td>
+          <td><span class="method-tag">${method}</span></td>
+          <td style="font-size:12px;color:var(--text-muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${evt}</td>
+          <td><span class="method-tag">${date}</span></td>
+        </tr>`;
+      }).join('');
+      el.innerHTML=`<table class="fight-table">
+        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>Date</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }catch(e){
+      const el=document.getElementById('fightHistory');
+      if(el) el.textContent='Historique non disponible.';
+    }
+  }
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+}
+document.getElementById('overlay').addEventListener('click',e=>{
+  if(e.target===document.getElementById('overlay')) closeModal();
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+function renderPagination(){
+  ['paginationTop','paginationBottom'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(totalPages<=1){ el.innerHTML=''; return; }
+    let h=`<button class="page-btn" id="${id}-p" ${currentPage<=1?'disabled':''}>← Préc.</button>`;
+    const range=[];
+    for(let i=Math.max(1,currentPage-2);i<=Math.min(totalPages,currentPage+2);i++) range.push(i);
+    if(range[0]>1){ h+=`<button class="page-btn" onclick="go(1)">1</button>`; if(range[0]>2) h+=`<span class="page-dots">…</span>`; }
+    range.forEach(p=>{ h+=`<button class="page-btn ${p===currentPage?'active':''}" onclick="go(${p})">${p}</button>`; });
+    if(range[range.length-1]<totalPages){ if(range[range.length-1]<totalPages-1) h+=`<span class="page-dots">…</span>`; h+=`<button class="page-btn" onclick="go(${totalPages})">${totalPages}</button>`; }
+    h+=`<button class="page-btn" id="${id}-n" ${currentPage>=totalPages?'disabled':''}>Suiv. →</button>`;
+    el.innerHTML=h;
+    document.getElementById(`${id}-p`).addEventListener('click',()=>go(currentPage-1));
+    document.getElementById(`${id}-n`).addEventListener('click',()=>go(currentPage+1));
+  });
+}
+
+function go(p){
+  if(p<1||p>totalPages) return;
+  currentPage=p;
+  window.scrollTo({top:0,behavior:'smooth'});
+  load();
+}
+
+document.getElementById('searchBtn').addEventListener('click',()=>{
+  currentSearch=document.getElementById('searchInput').value.trim();
+  currentPage=1; load();
+});
+document.getElementById('searchInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    clearTimeout(debounceTimer);
+    currentSearch=e.target.value.trim();
+    currentPage=1;
+    load();
+  }
+});
+document.getElementById('searchInput').addEventListener('input',e=>{
+  clearTimeout(debounceTimer);
+  debounceTimer=setTimeout(()=>{
+    const v=e.target.value.trim();
+    if(v!==currentSearch){ currentSearch=v; currentPage=1; load(); }
+  },600);
+});
+document.getElementById('divisionFilter').addEventListener('change',e=>{ currentDivision=e.target.value; currentPage=1; load(); });
+document.getElementById('statusFilter').addEventListener('change',e=>{ currentStatus=e.target.value; currentPage=1; load(); });
+
+load();
+</script>
+</body>
+</html>
