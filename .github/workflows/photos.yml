@@ -1,0 +1,52 @@
+name: Résoudre les photos des combattants
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Mode d'exécution"
+        required: true
+        default: test
+        type: choice
+        options:
+          - test
+          - complet
+          - retry
+
+permissions:
+  contents: write
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Lancer la résolution
+        run: |
+          case "${{ inputs.mode }}" in
+            test)    node resolve-photos.js --test ;;
+            retry)   node resolve-photos.js --retry ;;
+            complet) node resolve-photos.js ;;
+          esac
+
+      - name: Committer photos.json
+        if: inputs.mode != 'test'
+        run: |
+          if [ -n "$(git status --porcelain photos.json)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add photos.json
+            git commit -m "Mise à jour des photos ($(node -e "console.log(Object.values(require('./photos.json')).filter(Boolean).length)") trouvées)"
+            git push
+          else
+            echo "photos.json inchangé, rien à committer."
+          fi
