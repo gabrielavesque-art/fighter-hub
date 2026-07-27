@@ -81,18 +81,29 @@ async function fromUFC(name){
     const re = new RegExp('https?:\\/\\/[^"\'\\s)<>]*\\/styles\\/' + style + '\\/[^"\'\\s)<>]+', 'gi');
     return [...new Set((html.match(re) || []).map(u => u.replace(/&amp;/g, '&')))];
   };
-  // match nom : famille OU prénom présents dans l'URL (certaines découpes n'ont que le prénom, ex. O'Malley)
-  const mine = list => list.find(u => {
-    const du = deaccent(u);
-    return (key.length>2 && du.includes(key)) || (first.length>2 && du.includes(first));
-  }) || null;
+  // extrait la portion "nom de fichier" de l'URL (après le dernier / et avant l'extension)
+  const fileNameOf = u => {
+    const dec = decodeURIComponent(u.split('?')[0]);
+    const base = dec.substring(dec.lastIndexOf('/')+1);
+    return deaccent(base).toLowerCase();
+  };
+  // le fichier doit contenir le nom de famille OU le prénom du combattant demandé.
+  // C'est ce qui empêche de récupérer la photo d'un adversaire (bug Marcus Jones = Mitrione).
+  const nameMatches = u => {
+    const f = fileNameOf(u);
+    return (key.length>2 && f.includes(key)) || (first.length>3 && f.includes(first));
+  };
+  const mine = list => list.find(nameMatches) || null;
 
   const heads = all('event_results_athlete_headshot');
-  // headshot : si un seul sur la page ET qu'on est sur la bonne fiche, on l'accepte
-  const head  = mine(heads) || (heads.length===1 ? heads[0] : null);
+  // headshot : STRICT — on n'accepte le "seul de la page" que s'il matche le nom.
+  // Sinon on préfère ne PAS mettre de photo plutôt qu'une mauvaise.
+  let head = mine(heads);
+  if(!head && heads.length===1 && nameMatches(heads[0])) head = heads[0];
 
   const fulls = all('athlete_bio_full_body');
-  const full  = mine(fulls) || (fulls.length === 1 ? fulls[0] : null);
+  let full = mine(fulls);
+  if(!full && fulls.length===1 && nameMatches(fulls[0])) full = fulls[0];
 
   // ── pays : extrait du bloc "Place of Birth" (format "Ville, Pays") ──
   let country = null;
@@ -111,18 +122,30 @@ async function fromUFC(name){
     if(cand && !/\d/.test(cand) && cand.length>=3 && cand.length<=32) country = cand;
   }
 
-  // ── surnom : plusieurs formats possibles sur UFC.com ──
+  // ── surnom : on collecte TOUS les candidats possibles, puis on filtre durement ──
+  const nickCandidates = [];
+  const pushNick = re => { let m; const rx=new RegExp(re,'ig'); while((m=rx.exec(html))!==null){ if(m[1]) nickCandidates.push(m[1].trim()); } };
+  // le surnom sur UFC.com apparait le plus souvent entre guillemets typographiques dans le titre
+  pushNick('field--name-nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+  pushNick('hero-profile__nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+  pushNick('class=["\'][^"\']*nickname[^"\']*["\'][^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+  pushNick('"nickname"\\s*:\\s*"([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)"');       // JSON embarqué
+  pushNick('nickname[^"\'A-Za-z]{0,12}["\u201c]([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201d"]');
+
+  // liste noire : tout ce qui n'est PAS un vrai surnom
+  const badNick = /division|fighting|active|retired|champion|interim|weight class|debut|not |unknown|n\/a|tba|vacant|title|ranked|contender|roster|athlete/i;
+  const weightWords = /^(straw|fly|bantam|feather|light|welter|middle|heavy|light heavy|catch)\s*weight$/i;
   let nick = null;
-  let nm;
-  // 1) attribut/texte "nickname" suivi d'une valeur entre guillemets
-  nm = html.match(/nickname[^"'A-Za-z]{0,15}["']([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']/i);
-  // 2) class="nickname">valeur<  (avec guillemets optionnels autour de la valeur)
-  if(!nm) nm = html.match(/class=["'][^"']*nickname[^"']*["'][^>]*>\s*["']?([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']?\s*</i);
-  // 3) mot "nickname" puis > valeur <
-  if(!nm) nm = html.match(/nickname[">\s:]{1,10}([A-Z][A-Za-z0-9 .'\/-]{1,28}?)\s*</i);
-  // 4) hero-profile__tag (badge sous le nom sur la fiche UFC)
-  if(!nm) nm = html.match(/hero-profile__tag[^>]*>\s*["']?([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']?\s*</i);
-  if(nm) nick = nm[1].trim();
+  for(const cand of nickCandidates){
+    const c = cand.replace(/\s+/g,' ').trim();
+    if(c.length < 2 || c.length > 26) continue;
+    if(/^\d/.test(c)) continue;
+    if(badNick.test(c)) continue;                              // rejette "X Division", "Not Fighting", etc.
+    if(weightWords.test(c)) continue;                          // rejette "Heavyweight" seul
+    if(deaccent(c).toLowerCase() === key.toLowerCase()) continue;      // pas le nom de famille
+    if(deaccent(c).toLowerCase() === first.toLowerCase()) continue;    // pas le prénom
+    nick = c; break;                                          // premier candidat valide
+  }
   if(nick){
     nick = nick.replace(/\s+/g,' ').trim();
     // garde-fou : pas juste un mot vide ou une répétition du nom de famille
