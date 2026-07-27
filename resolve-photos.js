@@ -111,12 +111,30 @@ async function fromUFC(name){
     if(cand && !/\d/.test(cand) && cand.length>=3 && cand.length<=32) country = cand;
   }
 
-  if(head || full || country) return { src: head || full, head, full, country, source:'ufc' };
+  // ── surnom : plusieurs formats possibles sur UFC.com ──
+  let nick = null;
+  let nm;
+  // 1) attribut/texte "nickname" suivi d'une valeur entre guillemets
+  nm = html.match(/nickname[^"'A-Za-z]{0,15}["']([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']/i);
+  // 2) class="nickname">valeur<  (avec guillemets optionnels autour de la valeur)
+  if(!nm) nm = html.match(/class=["'][^"']*nickname[^"']*["'][^>]*>\s*["']?([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']?\s*</i);
+  // 3) mot "nickname" puis > valeur <
+  if(!nm) nm = html.match(/nickname[">\s:]{1,10}([A-Z][A-Za-z0-9 .'\/-]{1,28}?)\s*</i);
+  // 4) hero-profile__tag (badge sous le nom sur la fiche UFC)
+  if(!nm) nm = html.match(/hero-profile__tag[^>]*>\s*["']?([A-Za-z][A-Za-z0-9 .'\/-]{1,28}?)["']?\s*</i);
+  if(nm) nick = nm[1].trim();
+  if(nick){
+    nick = nick.replace(/\s+/g,' ').trim();
+    // garde-fou : pas juste un mot vide ou une répétition du nom de famille
+    if(nick.length<2 || /^\d/.test(nick) || deaccent(nick).toLowerCase()===key.toLowerCase()) nick = null;
+  }
+
+  if(head || full || country || nick) return { src: head || full, head, full, country, nick, source:'ufc' };
 
   const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
   if(og && deaccent(og[1]).includes(key)) {
     const u = og[1].replace(/&amp;/g,'&');
-    return { src:u, head:null, full:u, country:null, source:'ufc-og' };
+    return { src:u, head:null, full:u, country:null, nick:null, source:'ufc-og' };
   }
   return null;
 }
