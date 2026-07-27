@@ -74,31 +74,49 @@ async function fromUFC(name){
   let html;
   try { html = await get(url); } catch(e){ return null; }
 
-  // Le nom de famille apparait dans le nom de fichier (MAKHACHEV_ISLAM_...).
-  // C'est ce qui permet de ne PAS prendre la photo de l'adversaire.
   const key = deaccent(name.trim().split(/\s+/).pop());
+  const first = deaccent(name.trim().split(/\s+/)[0]);
 
   const all = (style) => {
     const re = new RegExp('https?:\\/\\/[^"\'\\s)<>]*\\/styles\\/' + style + '\\/[^"\'\\s)<>]+', 'gi');
-    return (html.match(re) || []).map(u => u.replace(/&amp;/g, '&'));   // garder ?itok=
+    return [...new Set((html.match(re) || []).map(u => u.replace(/&amp;/g, '&')))];
   };
-  const mine = list => list.find(u => key.length > 2 && deaccent(u).includes(key)) || null;
+  // match nom : famille OU prénom présents dans l'URL (certaines découpes n'ont que le prénom, ex. O'Malley)
+  const mine = list => list.find(u => {
+    const du = deaccent(u);
+    return (key.length>2 && du.includes(key)) || (first.length>2 && du.includes(first));
+  }) || null;
 
-  // Portrait detoure : plusieurs sur la page (adversaires) -> match strict sur le nom
   const heads = all('event_results_athlete_headshot');
-  const head  = mine(heads);
+  // headshot : si un seul sur la page ET qu'on est sur la bonne fiche, on l'accepte
+  const head  = mine(heads) || (heads.length===1 ? heads[0] : null);
 
-  // Corps entier : unique sur la page -> on l'accepte meme sans correspondance de nom
   const fulls = all('athlete_bio_full_body');
   const full  = mine(fulls) || (fulls.length === 1 ? fulls[0] : null);
 
-  if(head || full) return { src: head || full, head, full, source:'ufc' };
+  // ── pays : extrait du bloc "Place of Birth" (format "Ville, Pays") ──
+  let country = null;
+  let birth = null;
+  // on cherche "Place of Birth" puis on capture le texte du prochain élément non vide
+  let m = html.match(/Place of Birth[\s\S]{0,120}?>\s*([A-Za-z][A-Za-z .,'\/-]{2,60}?)\s*</i);
+  if(m) birth = m[1];
+  // repli : champ "hometown" / "birthplace"
+  if(!birth){ m = html.match(/(?:hometown|birthplace)["'>\s:]{1,8}([A-Za-z][A-Za-z .,'\/-]{2,60}?)\s*</i); if(m) birth = m[1]; }
+  if(birth){
+    birth = birth.replace(/\s+/g,' ').trim();
+    // "Ville, Pays" -> on garde le dernier segment (le pays)
+    const parts = birth.split(',').map(x=>x.trim()).filter(Boolean);
+    let cand = parts.length ? parts[parts.length-1] : birth;
+    // garde-fous : pas de chiffre, longueur raisonnable, pas un mot vide
+    if(cand && !/\d/.test(cand) && cand.length>=3 && cand.length<=32) country = cand;
+  }
 
-  // Repli : image sociale de la page (sans jeton, donc tres stable)
+  if(head || full || country) return { src: head || full, head, full, country, source:'ufc' };
+
   const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
   if(og && deaccent(og[1]).includes(key)) {
     const u = og[1].replace(/&amp;/g,'&');
-    return { src:u, head:null, full:u, source:'ufc-og' };
+    return { src:u, head:null, full:u, country:null, source:'ufc-og' };
   }
   return null;
 }
