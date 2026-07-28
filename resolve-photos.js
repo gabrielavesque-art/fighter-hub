@@ -3,8 +3,11 @@
    ───────────────────────────────────────────────────────────────
    Usage :
      node resolve-photos.js --test     → 10 combattants, mode verbeux
-     node resolve-photos.js            → tout le roster, reprend où il s'est arrêté
+     node resolve-photos.js            → complète : traite ceux jamais tentés
      node resolve-photos.js --retry    → réessaie aussi ceux marqués sans photo
+     node resolve-photos.js --force    → RECONSTRUCTION : refait TOUT le roster
+                                         (surnoms, pays, photos) avec la logique
+                                         à jour. À lancer une fois après ce script.
 
    Produit : photos.json  (à committer dans le repo, à côté d'index.html)
 
@@ -20,6 +23,8 @@ const UA = 'FighterHub/1.0 (projet perso non commercial; contact via GitHub)';
 
 const TEST  = process.argv.includes('--test');
 const RETRY = process.argv.includes('--retry');
+const FORCE = process.argv.includes('--force');
+const SCHEMA = 2;          // version de la logique d'extraction ; --force refait tout ce qui n'est pas à jour
 const CONCURRENCY = 3;      // requêtes en parallèle — rester poli
 const PAUSE_MS   = 120;     // pause entre chaque lot
 
@@ -34,6 +39,16 @@ function deaccent(x){
     .replace(/\u00e6/gi,'ae').replace(/\u0153/gi,'oe').replace(/\u00df/g,'ss')
     .replace(/\u0131/gi,'i').replace(/\u00fe/gi,'th')
     .toLowerCase();
+}
+
+function decodeEntities(s){
+  return (s||'')
+    .replace(/&quot;/gi,'"').replace(/&#0?34;/g,'"')
+    .replace(/&#8220;/g,'\u201c').replace(/&#8221;/g,'\u201d')
+    .replace(/&#0?39;/g,"'").replace(/&apos;/gi,"'").replace(/&#8217;/g,'\u2019')
+    .replace(/&amp;/gi,'&').replace(/&nbsp;/gi,' ')
+    .replace(/&lt;/gi,'<').replace(/&gt;/gi,'>')
+    .replace(/\s+/g,' ').trim();
 }
 
 function parseCSV(text){
@@ -64,6 +79,68 @@ async function get(url, asText=true){
   return asText ? r.text() : r;
 }
 
+/* ─────────────── extraction fiable depuis la page UFC ─────────────── */
+
+// récupère le contenu d'une balise <meta> (surnom + nationalité y vivent, format stable)
+function grabMeta(html, key){
+  let m = new RegExp('<meta[^>]*'+key+'[^>]*content="([^"]*)"','i').exec(html);
+  if(m) return m[1];
+  m = new RegExp('<meta[^>]*content="([^"]*)"[^>]*'+key,'i').exec(html);
+  return m ? m[1] : '';
+}
+
+// gentilé -> nom de pays (aligné sur la table COUNTRY_FLAG d'index.html)
+const DEMONYM = {
+  'american':'United States','united states':'United States',
+  'brazilian':'Brazil','brazil':'Brazil',
+  'russian':'Russia','russia':'Russia',
+  'canadian':'Canada','canada':'Canada',
+  'british':'United Kingdom','english':'England','scottish':'Scotland','welsh':'Wales','irish':'Ireland',
+  'australian':'Australia','new zealand':'New Zealand','new zealander':'New Zealand',
+  'mexican':'Mexico','ecuadorian':'Ecuador','peruvian':'Peru','chilean':'Chile','argentine':'Argentina','argentinian':'Argentina',
+  'polish':'Poland','german':'Germany','french':'France','dutch':'Netherlands','swedish':'Sweden','norwegian':'Norway','spanish':'Spain','italian':'Italy',
+  'georgian':'Georgia','armenian':'Armenia','azerbaijani':'Azerbaijan','kazakh':'Kazakhstan','ukrainian':'Ukraine',
+  'chinese':'China','japanese':'Japan','korean':'South Korea','south korean':'South Korea','thai':'Thailand','filipino':'Philippines','singaporean':'Singapore',
+  'nigerian':'Nigeria','cameroonian':'Cameroon','south african':'South Africa','congolese':'Congo','angolan':'Angola',
+  'icelandic':'Iceland','czech':'Czech Republic','slovak':'Slovakia','croatian':'Croatia','serbian':'Serbia',
+  'moldovan':'Moldova','belarusian':'Belarus','cuban':'Cuba','jamaican':'Jamaica','dominican':'Dominican Republic','venezuelan':'Venezuela',
+  'iranian':'Iran','iraqi':'Iraq','turkish':'Turkey','indian':'India','pakistani':'Pakistan','afghan':'Afghanistan','uzbek':'Uzbekistan','kyrgyz':'Kyrgyzstan','tajik':'Tajikistan',
+  'swiss':'Switzerland','austrian':'Austria','belgian':'Belgium','portuguese':'Portugal','greek':'Greece','finnish':'Finland','danish':'Denmark',
+  'bulgarian':'Bulgaria','romanian':'Romania','hungarian':'Hungary','lithuanian':'Lithuania','latvian':'Latvia','estonian':'Estonia'
+};
+
+const badNick = /division|fighting|active|retired|champion|interim|weight class|debut|not |unknown|n\/a|tba|vacant|title|ranked|contender|roster|athlete/i;
+const weightWords = /^(straw|fly|bantam|feather|light|welter|middle|heavy|light heavy|catch)\s*weight$/i;
+
+function validNick(c, first, key){
+  if(!c) return null;
+  c = c.replace(/\s+/g,' ').trim();
+  if(c.length<2 || c.length>26) return null;
+  if(/^\d/.test(c)) return null;
+  if(badNick.test(c)) return null;
+  if(weightWords.test(c)) return null;
+  if(deaccent(c)===key || deaccent(c)===first) return null;
+  return c;
+}
+
+// surnom = premier segment entre guillemets AVANT "is a/an" dans la description
+function nickFromDesc(desc, first, key){
+  if(!desc) return null;
+  const head = desc.split(/\bis\s+an?\b/i)[0];
+  const scope = (head && head.length>4) ? head : desc.slice(0,90);
+  const m = scope.match(/["\u201c\u00ab]\s*([A-Za-z0-9][A-Za-z0-9 .'\/\-]{0,26}?)\s*["\u201d\u00bb]/);
+  return m ? validNick(m[1], first, key) : null;
+}
+
+// pays = nationalité ("... is an American professional mixed martial artist ...")
+function countryFromDesc(desc){
+  if(!desc) return null;
+  const m = desc.match(/\bis\s+an?\s+([A-Za-z][A-Za-z \-]{1,24}?)\s+(?:professional|mixed martial|former|current|retired|amateur|fighter|kickboxer|boxer)\b/i);
+  if(!m) return null;
+  const adj = m[1].toLowerCase().replace(/\s+/g,' ').trim();
+  return DEMONYM[adj] || null;
+}
+
 /* ─────────────── SOURCE 1 : UFC.com (découpes officielles) ─────────────── */
 function ufcSlug(name){
   return deaccent(name).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -81,14 +158,12 @@ async function fromUFC(name){
     const re = new RegExp('https?:\\/\\/[^"\'\\s)<>]*\\/styles\\/' + style + '\\/[^"\'\\s)<>]+', 'gi');
     return [...new Set((html.match(re) || []).map(u => u.replace(/&amp;/g, '&')))];
   };
-  // extrait la portion "nom de fichier" de l'URL (après le dernier / et avant l'extension)
   const fileNameOf = u => {
     const dec = decodeURIComponent(u.split('?')[0]);
     const base = dec.substring(dec.lastIndexOf('/')+1);
     return deaccent(base).toLowerCase();
   };
-  // le fichier doit contenir le nom de famille OU le prénom du combattant demandé.
-  // C'est ce qui empêche de récupérer la photo d'un adversaire (bug Marcus Jones = Mitrione).
+  // le fichier doit contenir le nom de famille OU le prénom : empêche la photo d'un adversaire
   const nameMatches = u => {
     const f = fileNameOf(u);
     return (key.length>2 && f.includes(key)) || (first.length>3 && f.includes(first));
@@ -96,8 +171,6 @@ async function fromUFC(name){
   const mine = list => list.find(nameMatches) || null;
 
   const heads = all('event_results_athlete_headshot');
-  // headshot : STRICT — on n'accepte le "seul de la page" que s'il matche le nom.
-  // Sinon on préfère ne PAS mettre de photo plutôt qu'une mauvaise.
   let head = mine(heads);
   if(!head && heads.length===1 && nameMatches(heads[0])) head = heads[0];
 
@@ -105,54 +178,39 @@ async function fromUFC(name){
   let full = mine(fulls);
   if(!full && fulls.length===1 && nameMatches(fulls[0])) full = fulls[0];
 
-  // ── pays : extrait du bloc "Place of Birth" (format "Ville, Pays") ──
-  let country = null;
-  let birth = null;
-  // on cherche "Place of Birth" puis on capture le texte du prochain élément non vide
-  let m = html.match(/Place of Birth[\s\S]{0,120}?>\s*([A-Za-z][A-Za-z .,'\/-]{2,60}?)\s*</i);
-  if(m) birth = m[1];
-  // repli : champ "hometown" / "birthplace"
-  if(!birth){ m = html.match(/(?:hometown|birthplace)["'>\s:]{1,8}([A-Za-z][A-Za-z .,'\/-]{2,60}?)\s*</i); if(m) birth = m[1]; }
-  if(birth){
-    birth = birth.replace(/\s+/g,' ').trim();
-    // "Ville, Pays" -> on garde le dernier segment (le pays)
-    const parts = birth.split(',').map(x=>x.trim()).filter(Boolean);
-    let cand = parts.length ? parts[parts.length-1] : birth;
-    // garde-fous : pas de chiffre, longueur raisonnable, pas un mot vide
-    if(cand && !/\d/.test(cand) && cand.length>=3 && cand.length<=32) country = cand;
+  // ── description meta : source fiable du surnom ET de la nationalité ──
+  const rawDesc = grabMeta(html,'name="description"')
+               || grabMeta(html,'property="og:description"')
+               || grabMeta(html,'name="twitter:description"');
+  const desc = decodeEntities(rawDesc);
+
+  // ── pays : nationalité depuis la description, sinon repli "Place of Birth" ──
+  let country = countryFromDesc(desc);
+  if(!country){
+    let birth = null;
+    let m = html.match(/Place of Birth[^]{0,240}?>\s*([A-Za-z][A-Za-z .,'\/\-]{2,60}?)\s*</i);
+    if(m) birth = m[1];
+    if(!birth){ m = html.match(/(?:hometown|birthplace)["'>\s:]{1,8}([A-Za-z][A-Za-z .,'\/\-]{2,60}?)\s*</i); if(m) birth = m[1]; }
+    if(birth){
+      birth = birth.replace(/\s+/g,' ').trim();
+      const parts = birth.split(',').map(x=>x.trim()).filter(Boolean);
+      let cand = parts.length ? parts[parts.length-1] : birth;
+      if(cand && !/\d/.test(cand) && cand.length>=3 && cand.length<=32) country = cand;
+    }
   }
 
-  // ── surnom : on collecte TOUS les candidats possibles, puis on filtre durement ──
-  const nickCandidates = [];
-  const pushNick = re => { let m; const rx=new RegExp(re,'ig'); while((m=rx.exec(html))!==null){ if(m[1]) nickCandidates.push(m[1].trim()); } };
-  // le surnom sur UFC.com apparait le plus souvent entre guillemets typographiques dans le titre
-  pushNick('field--name-nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
-  pushNick('hero-profile__nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
-  pushNick('class=["\'][^"\']*nickname[^"\']*["\'][^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
-  pushNick('"nickname"\\s*:\\s*"([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)"');       // JSON embarqué
-  pushNick('nickname[^"\'A-Za-z]{0,12}["\u201c]([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201d"]');
-
-  // liste noire : tout ce qui n'est PAS un vrai surnom
-  const badNick = /division|fighting|active|retired|champion|interim|weight class|debut|not |unknown|n\/a|tba|vacant|title|ranked|contender|roster|athlete/i;
-  const weightWords = /^(straw|fly|bantam|feather|light|welter|middle|heavy|light heavy|catch)\s*weight$/i;
-  let nick = null;
-  for(const cand of nickCandidates){
-    const c = cand.replace(/\s+/g,' ').trim();
-    if(c.length < 2 || c.length > 26) continue;
-    if(/^\d/.test(c)) continue;
-    if(badNick.test(c)) continue;                              // rejette "X Division", "Not Fighting", etc.
-    if(weightWords.test(c)) continue;                          // rejette "Heavyweight" seul
-    if(deaccent(c).toLowerCase() === key.toLowerCase()) continue;      // pas le nom de famille
-    if(deaccent(c).toLowerCase() === first.toLowerCase()) continue;    // pas le prénom
-    nick = c; break;                                          // premier candidat valide
-  }
-  if(nick){
-    nick = nick.replace(/\s+/g,' ').trim();
-    // garde-fou : pas juste un mot vide ou une répétition du nom de famille
-    if(nick.length<2 || /^\d/.test(nick) || deaccent(nick).toLowerCase()===key.toLowerCase()) nick = null;
+  // ── surnom : depuis la description (fiable), sinon anciennes pistes en repli ──
+  let nick = nickFromDesc(desc, first, key);
+  if(!nick){
+    const cands = [];
+    const push = re => { let m; const rx=new RegExp(re,'ig'); while((m=rx.exec(html))!==null){ if(m[1]) cands.push(m[1].trim()); } };
+    push('field--name-nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+    push('hero-profile__nickname[^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+    push('class=["\'][^"\']*nickname[^"\']*["\'][^>]*>\\s*["\u201c\u201d\']?([A-Za-z][A-Za-z0-9 .\'\\/-]{1,26}?)["\u201c\u201d\']?\\s*<');
+    for(const c of cands){ const v = validNick(c, first, key); if(v){ nick = v; break; } }
   }
 
-  if(head || full || country || nick) return { src: head || full, head, full, country, nick, source:'ufc' };
+  if(head || full || country || nick) return { src: head || full || null, head, full, country, nick, source:'ufc' };
 
   const og = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
   if(og && deaccent(og[1]).includes(key)) {
@@ -238,6 +296,7 @@ async function resolve(name){
   console.log('\n╔══════════════════════════════════════════════╗');
   console.log('║  FIGHTER HUB — résolution des photos         ║');
   console.log('╚══════════════════════════════════════════════╝\n');
+  if(FORCE) console.log('⚙  MODE FORCE — reconstruction complète du roster\n');
 
   console.log('→ Téléchargement de la liste des combattants…');
   const rows = parseCSV(await get(TOTT)).filter(r=>r.length>1);
@@ -268,8 +327,9 @@ async function resolve(name){
 
   let todo = names.filter(n=>{
     const e = db[slugKey(n)];
-    if(e === undefined) return true;      // jamais tenté
-    if(RETRY && e === null) return true;  // déjà tenté sans succès, on réessaie
+    if(e === undefined) return true;                        // jamais tenté
+    if(FORCE && (e === null || e.v !== SCHEMA)) return true; // reconstruction : refais tout ce qui n'est pas au nouveau schéma
+    if(RETRY && e === null) return true;                    // réessaie les échecs
     return false;
   });
 
@@ -280,7 +340,7 @@ async function resolve(name){
 
   if(!todo.length){
     console.log('\n✓ Rien à faire, tout est déjà résolu.');
-    console.log('  (relance avec --retry pour réessayer les combattants sans photo)\n');
+    console.log('  (--retry pour réessayer les combattants sans photo, --force pour tout reconstruire)\n');
     return;
   }
 
@@ -295,11 +355,12 @@ async function resolve(name){
     const res = await Promise.all(lot.map(async n => [n, await resolve(n)]));
 
     for(const [n, r] of res){
+      if(r) r.v = SCHEMA;                          // tampon de version pour que --force soit reprenable
       db[slugKey(n)] = r;
       stats[r ? r.source : 'aucune']++;
       done++;
       if(TEST){
-        console.log(`  ${r ? '✓' : '✖'} ${n.padEnd(26)} ${r ? '['+r.source+'] '+r.src.slice(0,78) : '— aucune photo trouvée'}`);
+        console.log(`  ${r ? '✓' : '✖'} ${n.padEnd(26)} ${r ? '['+r.source+'] nick='+(r.nick||'—')+' pays='+(r.country||'—') : '— aucune photo trouvée'}`);
       }
     }
 
@@ -330,7 +391,7 @@ async function resolve(name){
 
   if(TEST){
     console.log('\n→ Test terminé, aucun fichier écrit.');
-    console.log('  Si les résultats te vont : node resolve-photos.js\n');
+    console.log('  Si les résultats te vont : node resolve-photos.js --force\n');
   } else {
     console.log(`\n✓ photos.json écrit (${(fs.statSync(OUT).size/1024).toFixed(0)} Ko)`);
     console.log('  Commit-le dans le repo à côté d\'index.html.\n');
