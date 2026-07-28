@@ -14,6 +14,7 @@ on:
           - photos-test
           - photos-complet
           - photos-retry
+          - photos-rebuild
 
 permissions:
   contents: write
@@ -39,6 +40,7 @@ jobs:
             photos-test)    node resolve-photos.js --test ;;
             photos-complet) node resolve-photos.js ;;
             photos-retry)   node resolve-photos.js --retry ;;
+            photos-rebuild) node resolve-photos.js --force ;;
           esac
 
       - name: Committer le résultat
