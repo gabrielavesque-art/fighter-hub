@@ -115,8 +115,15 @@ async function get(url){
   const iHead    = col(head,'HEAD');
   const iBody    = col(head,'BODY');
   const iLeg     = col(head,'LEG');
+  // position de la frappe : indispensable pour distinguer un frappeur d'un lutteur
+  // (sans ça, les frappes au sol gonflent la note de frappe des lutteurs)
+  const iDist    = col(head,'DISTANCE');
+  const iClinch  = col(head,'CLINCH');
+  const iGround  = col(head,'GROUND');
 
   console.log(`  Colonnes → fighter:${iFighter} round:${iRound} sig:${iSig} td:${iTD} ctrl:${iCtrl} head:${iHead}`);
+  console.log(`  Position → distance:${iDist} clinch:${iClinch} ground:${iGround}`);
+  if(iDist<0) console.warn('  ⚠ colonne DISTANCE absente : la note de frappe retombera sur les frappes sig. globales');
   if(iFighter<0 || iSig<0){ console.error('✖ Colonnes essentielles introuvables. En-têtes :', head); process.exit(1); }
 
   // "Round 1" seulement → on ignore les lignes de round pour éviter le double comptage,
@@ -128,7 +135,8 @@ async function get(url){
       name, rounds:0,
       sigL:0, sigA:0, totL:0, totA:0,
       tdL:0, tdA:0, sub:0, rev:0, kd:0, ctrl:0,
-      head:0, body:0, leg:0
+      head:0, body:0, leg:0,
+      distL:0, distA:0, clinchL:0, groundL:0
     });
     return F.get(k);
   };
@@ -153,6 +161,9 @@ async function get(url){
     if(iHead>-1) a.head += ofPair(r[iHead]).l;
     if(iBody>-1) a.body += ofPair(r[iBody]).l;
     if(iLeg>-1)  a.leg  += ofPair(r[iLeg]).l;
+    if(iDist>-1){ const d=ofPair(r[iDist]); a.distL+=d.l; a.distA+=d.a; }
+    if(iClinch>-1) a.clinchL += ofPair(r[iClinch]).l;
+    if(iGround>-1) a.groundL += ofPair(r[iGround]).l;
     n++;
     if(TEST && n<=6){
       console.log(`  ${name.padEnd(22)} ${rnd.padEnd(9)} sig ${JSON.stringify(sig)} td ${JSON.stringify(ofPair(r[iTD]))} ctrl ${ctrlSec(r[iCtrl])}s`);
@@ -177,6 +188,11 @@ async function get(url){
       sub: a.sub, kd: a.kd,                        // soumissions tentées, knockdowns
       ctrl: a.ctrl,                               // temps de contrôle total (s)
       spr: a.rounds ? +(a.sigL/a.rounds).toFixed(1) : 0,   // frappes sig. / round
+      // frappe DEBOUT isolée : c'est elle qui dit si un combattant est vraiment un frappeur
+      dl: a.distL, da: a.distA,                    // frappes à distance réussies / tentées
+      dacc: a.distA ? Math.round(a.distL/a.distA*100) : null,
+      dpr: a.rounds ? +(a.distL/a.rounds).toFixed(1) : 0,  // touches debout / round
+      gl: a.groundL, cl: a.clinchL,                // frappes au sol / au corps à corps
       tgt: targetTot ? {
         h: Math.round(a.head/targetTot*100),
         b: Math.round(a.body/targetTot*100),
@@ -190,7 +206,8 @@ async function get(url){
     let i=0;
     for(const [k,v] of Object.entries(out)){
       if(i++>=5) break;
-      console.log(`  ${k.padEnd(22)} précision:${v.sacc}%  TD:${v.tdacc}%  ${v.spr} frappes/round  cible:${v.tgt?`T${v.tgt.h}/C${v.tgt.b}/J${v.tgt.l}`:'—'}`);
+      const solPct = v.sl ? Math.round(v.gl/v.sl*100) : 0;
+      console.log(`  ${k.padEnd(22)} précision:${v.sacc}%  TD:${v.tdacc}%  ${v.spr} frappes/round  | debout ${v.dpr}/rd à ${v.dacc}%  sol ${solPct}%`);
     }
     console.log(`\n${F.size} combattants agrégés, ${n} lignes de round traitées.`);
     console.log('\n→ Test terminé, aucun fichier écrit.\n');
