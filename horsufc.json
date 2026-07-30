@@ -1,7 +1,7 @@
 {
   "cedricdoumbe": {
     "name": "Cédric Doumbé",
-    "photo": "https://glory.pinkyellow.network/assets/fighters/cedric-the-best-doumbe/passport_image.jpg",
+    "photo": "https://www.sherdog.com/image_crop/200/300/_images/fighter/20240306102923_2bb2421fa5ae3184f1f310ccce9df0d8.jpg",
     "nick": "The Best",
     "country": "France",
     "org": "PFL",
@@ -22,6 +22,7 @@
   },
   "baysangurchamsoudinov": {
     "name": "Baysangur Chamsoudinov",
+    'photo": "https://boxemag.ouest-france.fr/wp-content/uploads/2023/05/chamsoudinov.jpg"
     "nick": "Baki",
     "country": "France",
     "org": "PFL",
