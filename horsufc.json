@@ -1,0 +1,214 @@
+{
+  "cedricdoumbe": {
+    "name": "Cédric Doumbé",
+    "nick": "The Best",
+    "country": "France",
+    "org": "PFL",
+    "wc": "Welterweight",
+    "w": 6, "l": 1, "d": 0, "nc": 0,
+    "ko": 6, "sub": 0, "dec": 0,
+    "height": "5' 10\"", "reach": "72\"", "stance": "Orthodox", "dob": "Aug 13, 1992",
+    "note": "Ex-champion de kickboxing Glory. Inactif depuis 2024 (blessure), retour visé face à Thad Jean.",
+    "history": [
+      {"out":"W","opp":"Jordan Zébo","method":"KO/TKO","event":"PFL Paris — 30 sept. 2023","rnd":"1","tm":"0:09"},
+      {"out":"L","opp":"Baysangur Chamsoudinov","method":"TKO (arrêt médical)","event":"PFL Europe, Accor Arena — 7 mars 2024","rnd":"3","tm":""},
+      {"out":"W","opp":"Jaleel Willis","method":"","event":"PFL — mai 2024","rnd":"","tm":""}
+    ]
+  },
+  "baysangurchamsoudinov": {
+    "name": "Baysangur Chamsoudinov",
+    "nick": "Baki",
+    "country": "France",
+    "org": "PFL",
+    "wc": "Welterweight",
+    "w": 9, "l": 1, "d": 0, "nc": 0,
+    "height": "5' 9\"", "dob": "Aug 16, 2001",
+    "note": "Né en Tchétchénie, installé à Paris (MMA Factory). Retour annoncé fin 2026 ; revanche face à Zébo prévue le 20 novembre 2026.",
+    "history": [
+      {"out":"W","opp":"Cédric Doumbé","method":"TKO (arrêt médical)","event":"PFL Europe, Accor Arena — 7 mars 2024","rnd":"3","tm":""},
+      {"out":"L","opp":"Jordan Zébo","method":"KO/TKO","event":"ARES 35, Strasbourg — 18 oct. 2025","rnd":"4","tm":"2:08"}
+    ]
+  },
+  "jordanzebo": {
+    "name": "Jordan Zébo",
+    "nick": "Le Fauve",
+    "country": "France",
+    "org": "ARES",
+    "wc": "Welterweight",
+    "w": 11, "l": 1, "d": 0, "nc": 0,
+    "height": "5' 9\"", "dob": "Sep 16, 2000",
+    "note": "Champion ARES des welters. Né à Sainte-Marie (Martinique). Série de 7 victoires.",
+    "history": [
+      {"out":"L","opp":"Cédric Doumbé","method":"KO/TKO","event":"PFL Paris — 30 sept. 2023","rnd":"1","tm":"0:09"},
+      {"out":"W","opp":"Baysangur Chamsoudinov","method":"KO/TKO","event":"ARES 35, Strasbourg — 18 oct. 2025","rnd":"4","tm":"2:08"},
+      {"out":"W","opp":"Ramazan Mustafaev","method":"","event":"ARES 38","rnd":"","tm":""},
+      {"out":"W","opp":"Andre Fialho","method":"Soumission (étranglement arrière)","event":"ARES 42, Lyon — 3 juil. 2026","rnd":"4","tm":"4:50"}
+    ]
+  },
+  "patrickhabirora": {
+    "name": "Patrick Habirora",
+    "nick": "The Belgian Bomber",
+    "country": "Belgium",
+    "org": "PFL",
+    "wc": "Welterweight",
+    "w": 9, "l": 0, "d": 0, "nc": 0,
+    "ko": 8, "sub": 0, "dec": 1,
+    "height": "6' 1\"", "reach": "75\"", "dob": "Mar 26, 2001",
+    "note": "Invaincu, 8 victoires sur 9 avant la limite. Originaire de Namur.",
+    "history": [
+      {"out":"W","opp":"Benson Henderson","method":"KO/TKO","event":"PFL Brussels","rnd":"1","tm":"0:20"}
+    ]
+  },
+  "anatolymalykhin": {
+    "name": "Anatoly Malykhin",
+    "nick": "Sladkiy",
+    "country": "Russia",
+    "org": "ONE",
+    "wc": "Heavyweight",
+    "w": 15, "l": 1, "d": 0, "nc": 0,
+    "height": "5' 11\"", "reach": "78\"", "stance": "Orthodox", "dob": "Jan 11, 1988",
+    "note": "Premier triple champion de l'histoire du ONE (moyens, mi-lourds, lourds), deux fois vainqueur de Reinier de Ridder. Toutes ses victoires avant la limite. Retraité en mai 2026.",
+    "history": [
+      {"out":"L","opp":"Oumar « Reug Reug » Kane","method":"Décision partagée","event":"ONE 169 — nov. 2024","rnd":"","tm":""},
+      {"out":"W","opp":"Oumar « Reug Reug » Kane","method":"KO/TKO","event":"ONE Inner Circle, Lumpinee — mai 2026","rnd":"4","tm":""}
+    ]
+  },
+  "usmannurmagomedov": {
+    "name": "Usman Nurmagomedov",
+    "country": "Russia",
+    "org": "PFL",
+    "wc": "Lightweight",
+    "w": 21, "l": 0, "d": 0, "nc": 1,
+    "height": "5' 11\"", "reach": "72\"", "stance": "Orthodox", "dob": "Apr 17, 1998",
+    "note": "Champion des légers du PFL, invaincu, n°1 pound-for-pound de l'organisation. Cousin de Khabib.",
+    "history": [
+      {"out":"W","opp":"Alfie Davis","method":"Soumission","event":"PFL Road to Dubai — févr. 2026","rnd":"4","tm":""}
+    ]
+  },
+  "ajmckee": {
+    "name": "AJ McKee",
+    "nick": "Mercenary",
+    "country": "United States",
+    "org": "PFL",
+    "wc": "Featherweight",
+    "w": 24, "l": 2, "d": 0, "nc": 0,
+    "ko": 6, "sub": 8, "dec": 10,
+    "height": "5' 10\"", "reach": "73\"", "stance": "Southpaw", "dob": "Apr 7, 1995",
+    "note": "Dernier champion des plumes du Bellator.",
+    "history": [
+      {"out":"W","opp":"Adam Borics","method":"Décision unanime","event":"PFL — 20 mars 2026","rnd":"3","tm":""}
+    ]
+  },
+  "johnnyeblen": {
+    "name": "Johnny Eblen",
+    "nick": "Pressure",
+    "country": "United States",
+    "org": "PFL",
+    "wc": "Middleweight",
+    "w": 18, "l": 1, "d": 0, "nc": 0,
+    "height": "6' 1\"", "reach": "74\"", "stance": "Orthodox", "dob": "Dec 13, 1991",
+    "note": "Dernier champion des moyens du Bellator, l'un des plus longs règnes de la division. American Top Team.",
+    "history": [
+      {"out":"W","opp":"Bryan Battle","method":"Soumission","event":"PFL Pittsburgh — mars 2026","rnd":"1","tm":""}
+    ]
+  },
+  "christianlee": {
+    "name": "Christian Lee",
+    "nick": "The Warrior",
+    "country": "Singapore",
+    "org": "ONE",
+    "wc": "Lightweight",
+    "w": 17, "l": 4, "d": 0, "nc": 0,
+    "height": "5' 10\"", "stance": "Orthodox", "dob": "Jun 21, 1998",
+    "note": "Double champion du ONE (légers et welters). Plus jeune champion du monde de l'organisation en 2019.",
+    "history": [
+      {"out":"W","opp":"Shinya Aoki","method":"KO/TKO","event":"ONE — 2019 (titre des légers)","rnd":"","tm":""},
+      {"out":"W","opp":"Kiamrian Abbasov","method":"KO/TKO","event":"ONE — 2022 (titre des welters)","rnd":"","tm":""},
+      {"out":"W","opp":"Alibeg Rasulov","method":"KO/TKO","event":"ONE 173, Tokyo — 16 nov. 2025","rnd":"2","tm":""}
+    ]
+  },
+  "mikuruasakura": {
+    "name": "Mikuru Asakura",
+    "country": "Japan",
+    "org": "RIZIN",
+    "wc": "Featherweight",
+    "w": 19, "l": 6, "d": 0, "nc": 1,
+    "height": "5' 10\"", "reach": "70\"", "stance": "Southpaw", "dob": "Jul 15, 1992",
+    "note": "Star du RIZIN. Combat prévu face à Shinya Aoki le 10 septembre 2026.",
+    "history": [
+      {"out":"L","opp":"Razhabali Shaydullaev","method":"KO/TKO","event":"RIZIN — 31 déc. 2025","rnd":"","tm":""}
+    ]
+  },
+  "dakotaditcheva": {
+    "name": "Dakota Ditcheva",
+    "nick": "Dangerous",
+    "country": "England",
+    "org": "PFL",
+    "wc": "Women's Flyweight",
+    "w": 15, "l": 0, "d": 0, "nc": 0,
+    "height": "5' 8\"", "reach": "70\"", "dob": "Jul 25, 1998",
+    "note": "Championne des mouches du PFL, invaincue, 12 victoires par KO. Formée en Muay Thai à Manchester.",
+    "history": [
+      {"out":"W","opp":"Taila Santos","method":"KO/TKO (coup au corps)","event":"PFL","rnd":"","tm":""},
+      {"out":"W","opp":"Sumiko Inaba","method":"","event":"PFL — juil. 2025","rnd":"","tm":""}
+    ]
+  },
+  "razhabalishaydullaev": {
+    "name": "Razhabali Shaydullaev",
+    "country": "Kyrgyzstan",
+    "org": "RIZIN",
+    "wc": "Featherweight",
+    "w": 19, "l": 0, "d": 0, "nc": 0,
+    "ko": 7, "sub": 12, "dec": 0,
+    "height": "5' 7\"", "dob": "Oct 11, 2000",
+    "note": "Champion des plumes du RIZIN, invaincu, aucune victoire aux points. Premier Kirghize de l'organisation.",
+    "history": [
+      {"out":"W","opp":"Kleber Koike Erbst","method":"","event":"RIZIN — 4 mai 2025 (titre des plumes)","rnd":"","tm":""},
+      {"out":"W","opp":"Mikuru Asakura","method":"KO/TKO","event":"RIZIN — 31 déc. 2025","rnd":"","tm":""},
+      {"out":"W","opp":"Yuta Kubo","method":"","event":"RIZIN LANDMARK 13, Fukuoka — 12 avr. 2026","rnd":"","tm":""}
+    ]
+  },
+  "phildefries": {
+    "name": "Phil De Fries",
+    "nick": "And Still",
+    "country": "England",
+    "org": "KSW",
+    "wc": "Heavyweight",
+    "w": 29, "l": 6, "d": 0, "nc": 0,
+    "ko": 8, "sub": 16, "dec": 5,
+    "height": "6' 4\"", "reach": "79\"", "stance": "Orthodox", "dob": "Apr 21, 1986",
+    "note": "Champion poids lourds du KSW : record de l'organisation avec 14 défenses de titre. Est passé par l'UFC en début de carrière.",
+    "history": [
+      {"out":"W","opp":"Marcin Wójcik","method":"Soumission (bulldog choke)","event":"KSW — 2026","rnd":"1","tm":""}
+    ]
+  },
+  "abdoulabdouraguimov": {
+    "name": "Abdoul Abdouraguimov",
+    "nick": "The Lazy King",
+    "country": "France",
+    "org": "PFL",
+    "wc": "Welterweight",
+    "w": 20, "l": 1, "d": 0, "nc": 0,
+    "height": "5' 10\"", "reach": "71\"", "dob": "Aug 1, 1995",
+    "note": "Ex-double champion ARES (welters et moyens) et champion Brave CF. Ceinture noire de jiu-jitsu brésilien, 12 victoires par soumission. Compte aussi Karl Amoussou et Jack Grant parmi ses victimes.",
+    "history": [
+      {"out":"L","opp":"Jarrah Al-Silawi","method":"KO/TKO","event":"Brave CF — oct. 2019","rnd":"4","tm":""},
+      {"out":"W","opp":"Kendly St. Louis","method":"Décision majoritaire","event":"PFL Dubai — 7 févr. 2026","rnd":"3","tm":""}
+    ]
+  },
+  "pauldenisnavero": {
+    "name": "Paul Denis Navero",
+    "nick": "Paul Dena",
+    "country": "France",
+    "org": "HEXAGONE",
+    "wc": "Bantamweight",
+    "w": 3, "l": 1, "d": 0, "nc": 0,
+    "ko": 3, "sub": 0, "dec": 0,
+    "height": "5' 8\"",
+    "note": "Champion de France amateur 2023, bronze aux Championnats d'Europe 2024. Né à Rennes en 2002.",
+    "history": [
+      {"out":"W","opp":"Paulo Santos","method":"KO/TKO","event":"Hexagone MMA 37, Paris — 9 janv. 2026","rnd":"2","tm":"1:09"},
+      {"out":"L","opp":"Anzor Baybatyrov","method":"KO/TKO","event":"Hexagone MMA 45, Lyon — 12 juin 2026","rnd":"1","tm":"1:38"}
+    ]
+  }
+}
