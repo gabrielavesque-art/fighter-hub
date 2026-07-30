@@ -10,6 +10,10 @@
     "height": "5' 10\"", "reach": "72\"", "stance": "Orthodox", "dob": "Aug 13, 1992",
     "note": "Ex-champion de kickboxing Glory. Inactif depuis 2024 (blessure), retour visé face à Thad Jean.",
     "history": [
+      {"out":"W","opp":"Arbi Emiev","method":"KO/TKO","event":"Superkombat — 01 Nov 2021","rnd":"1"},
+      {"out":"W","opp":"Phruethikorn Chaichongcharoen","method":"TKO (arrêt médical)","event":"MMA GP — 09 Juil 2022"},
+      {"out":"W","opp":"Florent Burillon","method":"KO/TKO","event":"17 Déc 2022","rnd":"1"},
+      {"out":"W","opp":"Pawel Klimas","method":"KO/TKO","event":"Bellator Paris 4 — 04 Mars 2023","rnd":"2"},
       {"out":"W","opp":"Jordan Zébo","method":"KO/TKO","event":"PFL Paris — 30 sept. 2023","rnd":"1","tm":"0:09"},
       {"out":"L","opp":"Baysangur Chamsoudinov","method":"TKO (arrêt médical)","event":"PFL Europe, Accor Arena — 7 mars 2024","rnd":"3","tm":""},
       {"out":"W","opp":"Jaleel Willis","method":"","event":"PFL — mai 2024","rnd":"","tm":""}
@@ -25,8 +29,14 @@
     "height": "5' 9\"", "dob": "Aug 16, 2001",
     "note": "Né en Tchétchénie, installé à Paris (MMA Factory). Retour annoncé fin 2026 ; revanche face à Zébo prévue le 20 novembre 2026.",
     "history": [
-      {"out":"W","opp":"Cédric Doumbé","method":"TKO (arrêt médical)","event":"PFL Europe, Accor Arena — 7 mars 2024","rnd":"3","tm":""},
-      {"out":"L","opp":"Jordan Zébo","method":"KO/TKO","event":"ARES 35, Strasbourg — 18 oct. 2025","rnd":"4","tm":"2:08"}
+      {"out":"W","opp":"Atilla Kobas","method":"KO/TKO","event":"29 Oct. 2021"}
+      {"out":"W","opp":"Mickael Marie Sardi","method":"Décision","event":"20 Mai. 2022"}
+      {"out":"W","opp":"Bobby Pallett","method":"Décision","event":"02 Sep. 2022"}
+      {"out":"M","opp":"Alexander Mikael Viana","method":"Décision","event":"20 Jan. 2023"}
+      {"out":"W","opp":"Efrain Escudero","method":"KO/TKO","event":"23 Juin. 2023","rnd":"2"}
+      {"out":"W","opp":"Cédric Doumbé","method":"TKO (arrêt médical)","event":"PFL Europe, Accor Arena — 7 Mars 2024","rnd":"3","tm":""},
+      {"out":"W","opp":"Thiago Lima","method":"KO/TKO","event":"ARES — 16 Mai. 2025","rnd":"2"
+      {"out":"W","opp":"Jordan Zébo","method":"KO/TKO","event":"ARES 35, Strasbourg — 18 Oct. 2025","rnd":"4","tm":"2:08"}
     ]
   },
   "jordanzebo": {
