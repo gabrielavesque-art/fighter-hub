@@ -43,6 +43,7 @@
   },
   "jordanzebo": {
     "name": "Jordan Zébo",
+    "photo": "https://www.actumma.com/wp-content/uploads/2023/05/Jordan-Zebo-Ares.jpg",
     "nick": "Le Fauve",
     "country": "France",
     "org": "ARES",
@@ -59,6 +60,7 @@
   },
   "patrickhabirora": {
     "name": "Patrick Habirora",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/PatrickHabiroraNov2022.jpg/512px-PatrickHabiroraNov2022.jpg",
     "nick": "The Belgian Bomber",
     "country": "Belgium",
     "org": "PFL",
@@ -97,8 +99,9 @@
       {"out":"W","opp":"Alfie Davis","method":"Soumission","event":"PFL Road to Dubai — févr. 2026","rnd":"4","tm":""}
     ]
   },
-  "ajmckee": {
+  "ajmckee": {,
     "name": "AJ McKee",
+    "photo": "https://media.gettyimages.com/id/2036564482/fr/photo/riyadh-saudi-arabia-aj-mckee-celebrates-after-defeating-clay-collard-during-the-2024-pfl-vs.jpg?s=612x612&w=0&k=20&c=IqNcoBuS8dIPQ5HvPJC-xAbSQvtEAwrkq0wFUw9QG5A=.jpg",
     "nick": "Mercenary",
     "country": "United States",
     "org": "PFL",
@@ -113,6 +116,7 @@
   },
   "johnnyeblen": {
     "name": "Johnny Eblen",
+    "photo": "https://cdn.vox-cdn.com/thumbor/US17iOE0drRpx4iB9htbXN6tDe8=/0x0:5095x3270/1200x800/filters:focal(1710x308:2524x1122)/cdn.vox-cdn.com/uploads/chorus_image/image/72687862/1684867915.0.jpg",
     "nick": "Pressure",
     "country": "United States",
     "org": "PFL",
@@ -153,6 +157,7 @@
   },
   "dakotaditcheva": {
     "name": "Dakota Ditcheva",
+    "photo": "https://www.lowkickmma.com/wp-content/uploads/2026/07/Dakota-Ditcheva-To-Earn-1-Million-Per-Fight-in-New-Landmark-PFL-Agreement-1024x536.jpg",
     "nick": "Dangerous",
     "country": "England",
     "org": "PFL",
@@ -182,6 +187,7 @@
   },
   "phildefries": {
     "name": "Phil De Fries",
+    "photo": "https://boxemag.ouest-france.fr/wp-content/uploads/2023/07/Phil-De-Fries.jpg",
     "nick": "And Still",
     "country": "England",
     "org": "KSW",
@@ -196,6 +202,7 @@
   },
   "abdoulabdouraguimov": {
     "name": "Abdoul Abdouraguimov",
+    "photo": "https://upload.wikimedia.org/wikipedia/commons/7/78/Lazy_King_double_champ.jpg",
     "nick": "The Lazy King",
     "country": "France",
     "org": "PFL",
@@ -210,6 +217,7 @@
   },
   "pauldenisnavero": {
     "name": "Paul Denis Navero",
+    "photo": "https://hexagonemma.fr/wp-content/uploads/2025/03/Dena-Paul-site.jpg"
     "nick": "Paul Dena",
     "country": "France",
     "org": "HEXAGONE",
