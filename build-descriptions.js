@@ -46,10 +46,17 @@ const ONLY   = (process.argv.find(a => a.startsWith('--only=')) || '').slice(7)
 const DRY    = TEST || ONLY.length > 0;   // les deux modes d'essai n'écrivent rien
 
 const SCHEMA      = 1;    // version de la logique ; --force refait tout ce qui n'est pas à jour
-const CONCURRENCY = 3;    // requêtes en parallèle — rester poli avec Wikipedia
+const CONCURRENCY = 2;    // combattants traités en parallèle
 const PAUSE_MS    = 150;
 const MAX_CHARS   = 300;  // longueur visée de la description finale
 const MIN_SCORE   = 4;    // en dessous, la phrase n'apporte rien d'humain
+
+// Chaque combattant fait plusieurs appels séquentiels (variantes de titre, repli
+// recherche…) ; avec CONCURRENCY combattants en parallèle, sans limite globale,
+// ça part en rafale et Wikipedia répond 429 "too many requests" — vu en pratique :
+// 35 581 occurrences sur un run réel. MIN_GAP_MS espace TOUTES les requêtes HTTP,
+// tous combattants confondus, quel que soit le niveau de parallélisme au-dessus.
+const MIN_GAP_MS  = 300;
 
 /* ─────────────── utilitaires ─────────────── */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -91,11 +98,27 @@ function noteFail(e){
   failStats.set(k, (failStats.get(k) || 0) + 1);
 }
 
-async function get(url){
+// file d'attente globale : espace TOUTES les requêtes HTTP d'au moins MIN_GAP_MS,
+// même émises par des combattants traités en parallèle (voir note sur CONCURRENCY)
+let gate = Promise.resolve();
+function throttle(){
+  const slot = gate.then(() => sleep(MIN_GAP_MS));
+  gate = slot;
+  return slot;
+}
+
+async function get(url, retries = 3){
+  await throttle();
   const r = await fetch(url, {
     headers: { 'User-Agent': UA, 'Accept': 'application/json' },
     signal: AbortSignal.timeout(20000)
   });
+  if(r.status === 429){
+    if(retries <= 0) throw new Error('HTTP 429 (abandon après réessais)');
+    const retryAfter = Number(r.headers.get('retry-after'));
+    await sleep((Number.isFinite(retryAfter) ? retryAfter * 1000 : 2000) + Math.random()*500);
+    return get(url, retries - 1);
+  }
   if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,200));
   return r.text();
 }
