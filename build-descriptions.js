@@ -83,12 +83,20 @@ function parseCSV(text){
   return rows;
 }
 
+// diagnostic : compte les échecs par cause, pour voir CE QUI bloque sans
+// avoir à deviner (403 Wikimedia, timeout, DNS…) — imprimé en fin de run
+const failStats = new Map();
+function noteFail(e){
+  const k = e && e.message ? e.message.slice(0, 60) : String(e);
+  failStats.set(k, (failStats.get(k) || 0) + 1);
+}
+
 async function get(url){
   const r = await fetch(url, {
     headers: { 'User-Agent': UA, 'Accept': 'application/json' },
     signal: AbortSignal.timeout(20000)
   });
-  if(!r.ok) throw new Error('HTTP '+r.status);
+  if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,200));
   return r.text();
 }
 const getJSON = async url => JSON.parse(await get(url));
@@ -147,7 +155,7 @@ async function findTitle(name, lang){
   const last = deaccent(name.trim().split(/\s+/).pop());
   for(const v of variants){
     let p;
-    try { p = await extractOf(v, lang); } catch(e){ continue; }
+    try { p = await extractOf(v, lang); } catch(e){ noteFail(e); continue; }
     if(!p) continue;
     if(!isFighterPage(p.title, p.extract, lang)) continue;
     if(last.length > 2 && !deaccent(p.title).includes(last)) continue;
@@ -163,12 +171,12 @@ async function searchTitle(name, lang){
             + '&list=search&srnamespace=0&srlimit=3'
             + '&srsearch=' + encodeURIComponent(name + hint);
   let hits;
-  try { hits = (await getJSON(url)).query?.search || []; } catch(e){ return null; }
+  try { hits = (await getJSON(url)).query?.search || []; } catch(e){ noteFail(e); return null; }
   const last = deaccent(name.trim().split(/\s+/).pop());
   for(const h of hits){
     if(last.length > 2 && !deaccent(h.title).includes(last)) continue;
     let p;
-    try { p = await extractOf(h.title, lang); } catch(e){ continue; }
+    try { p = await extractOf(h.title, lang); } catch(e){ noteFail(e); continue; }
     if(!p || !isFighterPage(p.title, p.extract, lang)) continue;
     return p.title;
   }
@@ -755,6 +763,12 @@ if(require.main !== module){
   console.log(`  Aucune description             : ${stats.aucune}`);
   console.log('  ─────────────────────────────');
   console.log(`  Taux de couverture             : ${(ok / done * 100).toFixed(1)}%`);
+
+  if(failStats.size){
+    console.log('\n─── Causes d\'échec (diagnostic) ───');
+    [...failStats.entries()].sort((a,b) => b[1]-a[1]).slice(0,10)
+      .forEach(([msg, n]) => console.log(`  ${String(n).padStart(5)}×  ${msg}`));
+  }
 
   if(DRY){
     console.log('\n→ Essai terminé, aucun fichier écrit.');
