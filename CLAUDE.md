@@ -15,6 +15,7 @@ Avant toute modification :
 
 - `index.html` — tout le site (HTML + CSS + JS, un seul fichier)
 - `resolve-photos.js` → `photos.json` | `build-stats.js` → `stats.json` | `build-elo.js` → `elo.json`
+- `build-descriptions.js` → `descriptions.json` (descriptions humaines, Wikipedia FR puis EN)
 - Scripts lancés via **GitHub Actions uniquement** (jamais en local) — Vercel auto-déploie sur push main
 
 ## Pièges
@@ -24,9 +25,11 @@ Avant toute modification :
 - `openModal` apparaît **2 fois** — cibler la définition, pas l'appel.
 - `photos-retry` ne refait que les sans-photo → `photos-rebuild` (`--force`) pour tout reconstruire.
 - Drapeaux = images flagcdn.com — **jamais d'emojis** (invisibles sur Windows).
+- En JS, `\b` est ASCII : `\bémigre` ne matche **jamais**. Pour un motif français
+  commençant par un accent, utiliser `(?<![A-Za-zÀ-ÿ])` (cf. `fixWordBoundaries`).
 
 ## Roadmap
 
 1. Pages de classement P4P + par catégorie
-2. Description courte des combattants (intro Wikipedia)
+2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
 3. (Plus tard) Comparateur, URLs SEO, notes communautaires
