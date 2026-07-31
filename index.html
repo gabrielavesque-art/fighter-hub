@@ -350,6 +350,11 @@ main{padding:0 clamp(14px,3.5vw,44px) 70px;max-width:1400px;margin:0 auto}
   background:var(--bg-3);border:1px solid var(--line-2);color:var(--tx-2);
 }
 .tag.red{background:var(--red-dim);border-color:rgba(224,26,43,.3);color:#FF6B78}
+.m-desc{
+  margin-top:16px;max-width:62ch;
+  font-size:13.5px;line-height:1.62;color:var(--tx-2);
+  border-left:2px solid rgba(233,200,119,.4);padding-left:13px;
+}
 .m-bigrec{display:flex;align-items:baseline;gap:9px}
 .m-bigrec .num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:38px;line-height:1;font-variant-numeric:tabular-nums}
 .m-bigrec .sep{color:var(--tx-3);font-size:26px;font-weight:300}
@@ -701,6 +706,7 @@ function fmtInt(n){ return n.toLocaleString('fr-FR'); }
 
 /* ═══════════ PHOTOS — Wikipedia (batch, gratuit, sans cle) ═══════════ */
 const photoCache = new Map();      // key -> url | null (null = pas de photo trouvee)
+const descCache  = new Map();      // key -> description humaine (descriptions.json)
 const PHOTO_BATCH = 20;            // limite de l'API extracts
 let photoGen = 0;
 
@@ -860,6 +866,20 @@ async function loadStatsDB(){
     return statsDB.size;
   }catch(e){ return 0; }
 }
+
+async function loadDescDB(){
+  try{
+    const r = await fetch('descriptions.json', {cache:'no-cache'});
+    if(!r.ok) return 0;
+    const db = await r.json();
+    let n = 0;
+    for(const [k,v] of Object.entries(db)){ if(v && v.t){ descCache.set(k, v.t); n++; } }
+    return n;
+  }catch(e){ return 0; }
+}
+
+// description humaine pre-calculee par build-descriptions.js (Wikipedia)
+function descOf(key){ return descCache.get(key) || null; }
 
 async function loadPhotoDB(){
   try{
@@ -1629,6 +1649,7 @@ function openModal(f){
           <span class="lbl">V · D · N${f.nc?` (${f.nc} NC)`:''}</span>
         </div>
         ${headPills(f)}
+        ${(()=>{const d=descOf(f.key);return d?`<div class="m-desc">${esc(d)}</div>`:'';})()}
       </div>
     </div>
 
@@ -1805,6 +1826,7 @@ function skeleton(){
     // affiche immédiatement la liste (sans records encore)
     document.getElementById('sFighters').textContent = fmtInt(FIGHTERS.length);
     await loadPhotoDB();          // photos pre-calculees si disponibles
+    await loadDescDB();           // descriptions Wikipedia pre-calculees si disponibles
     await loadStatsDB();          // stats avancees pre-calculees si disponibles
     await loadEloDB();            // classement ELO pre-calcule si disponible
     document.getElementById('resTxt').textContent = 'Calcul des palmarès…';
