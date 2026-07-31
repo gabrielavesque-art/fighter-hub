@@ -46,7 +46,7 @@ const ONLY   = (process.argv.find(a => a.startsWith('--only=')) || '').slice(7)
 const DRY    = TEST || ONLY.length > 0;   // les deux modes d'essai n'écrivent rien
 
 const SCHEMA      = 1;    // version de la logique ; --force refait tout ce qui n'est pas à jour
-const CONCURRENCY = 2;    // combattants traités en parallèle
+const CONCURRENCY = 1;    // combattants traités en parallèle
 const PAUSE_MS    = 150;
 const MAX_CHARS   = 300;  // longueur visée de la description finale
 const MIN_SCORE   = 4;    // en dessous, la phrase n'apporte rien d'humain
@@ -56,7 +56,7 @@ const MIN_SCORE   = 4;    // en dessous, la phrase n'apporte rien d'humain
 // ça part en rafale et Wikipedia répond 429 "too many requests" — vu en pratique :
 // 35 581 occurrences sur un run réel. MIN_GAP_MS espace TOUTES les requêtes HTTP,
 // tous combattants confondus, quel que soit le niveau de parallélisme au-dessus.
-const MIN_GAP_MS  = 300;
+const MIN_GAP_MS  = 400;
 
 /* ─────────────── utilitaires ─────────────── */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -107,16 +107,21 @@ function throttle(){
   return slot;
 }
 
-async function get(url, retries = 3){
+/* Un 429 qui s'entête coûtait jusqu'à 3 réessais × (2-3s d'attente + jusqu'à 20s
+   de timeout réseau) = potentiellement plus d'une minute PAR requête ratée. Sur
+   un run qui en fait des milliers, ça suffit à ne plus rien voir avancer pendant
+   des dizaines de minutes. On abandonne vite (1 seul réessai, court) : mieux vaut
+   rater ce combattant maintenant et le reprendre au prochain --retry, une fois la
+   limite Wikipedia retombée, que de bloquer tout le run dessus. */
+async function get(url, retries = 1){
   await throttle();
   const r = await fetch(url, {
     headers: { 'User-Agent': UA, 'Accept': 'application/json' },
-    signal: AbortSignal.timeout(20000)
+    signal: AbortSignal.timeout(8000)
   });
   if(r.status === 429){
-    if(retries <= 0) throw new Error('HTTP 429 (abandon après réessais)');
-    const retryAfter = Number(r.headers.get('retry-after'));
-    await sleep((Number.isFinite(retryAfter) ? retryAfter * 1000 : 2000) + Math.random()*500);
+    if(retries <= 0) throw new Error('HTTP 429 (abandon après réessai)');
+    await sleep(800 + Math.random()*400);
     return get(url, retries - 1);
   }
   if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,200));
@@ -760,7 +765,7 @@ if(require.main !== module){
       }
     }
 
-    if(!DRY && (done % 30 === 0 || done === todo.length)){
+    if(!DRY && (done % 10 === 0 || done === todo.length)){
       fs.writeFileSync(OUT, JSON.stringify(db));
       const pct = (done / todo.length * 100).toFixed(1);
       const perSec = done / ((Date.now() - t0) / 1000);
