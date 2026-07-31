@@ -99,7 +99,7 @@
       {"out":"W","opp":"Alfie Davis","method":"Soumission","event":"PFL Road to Dubai — févr. 2026","rnd":"4","tm":""}
     ]
   },
-  "ajmckee": {,
+  "ajmckee": {
     "name": "AJ McKee",
     "photo": "https://media.gettyimages.com/id/2036564482/fr/photo/riyadh-saudi-arabia-aj-mckee-celebrates-after-defeating-clay-collard-during-the-2024-pfl-vs.jpg?s=612x612&w=0&k=20&c=IqNcoBuS8dIPQ5HvPJC-xAbSQvtEAwrkq0wFUw9QG5A=.jpg",
     "nick": "Mercenary",
@@ -217,7 +217,7 @@
   },
   "pauldenisnavero": {
     "name": "Paul Denis Navero",
-    "photo": "https://hexagonemma.fr/wp-content/uploads/2025/03/Dena-Paul-site.jpg"
+    "photo": "https://hexagonemma.fr/wp-content/uploads/2025/03/Dena-Paul-site.jpg",
     "nick": "Paul Dena",
     "country": "France",
     "org": "HEXAGONE",
