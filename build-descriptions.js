@@ -156,63 +156,61 @@ function isFighterPage(title, extract, lang){
   return (lang === 'fr' ? MMA_FR : MMA_EN).test(ex);
 }
 
-/* Attention : l'API MediaWiki, quand on demande exsentences/exchars sur PLUSIEURS
-   titres ou résultats de recherche à la fois, force exlimit=1 en coulisses — un
-   seul des titres reçoit un extrait, les autres n'ont simplement pas de champ
-   "extract". Grouper les variantes de nom (ou les résultats de recherche) dans
-   la même requête revenait donc à en perdre presque à chaque fois. On interroge
-   un titre à la fois : plus de requêtes, mais des résultats fiables. */
+/* Attention : l'API MediaWiki, quand on demande exsentences/exchars, force
+   exlimit=1 en coulisses — un seul titre reçoit un extrait par requête, même si
+   plusieurs sont groupés. Interroger un titre à la fois pour contourner ça a
+   fait exploser le nombre de requêtes (jusqu'à ~10 par combattant) et Wikipedia
+   a répondu par des 429 en rafale.
 
-async function extractOf(title, lang){
+   Solution : ne JAMAIS demander exsentences. On récupère le texte COMPLET
+   (explaintext, pas d'exsentences) — cette fois exlimit fonctionne normalement
+   et TOUS les titres groupés dans une requête reçoivent leur extrait. On tronque
+   nous-mêmes côté JS (humanText le fait déjà). Ça ramène une recherche de
+   combattant à 1-2 requêtes au lieu de 5-10, et l'extrait est réutilisé
+   directement — plus besoin d'un second appel fullText(). */
+
+async function extractsBatch(titles, lang){
   const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
-            + '&redirects=1&prop=extracts&exintro=1&explaintext=1&exsentences=4&exlimit=1'
-            + '&titles=' + encodeURIComponent(title);
+            + '&redirects=1&prop=extracts&explaintext=1&exlimit=' + Math.min(titles.length, 20)
+            + '&titles=' + encodeURIComponent(titles.join('|'));
   const pages = (await getJSON(url)).query?.pages || [];
-  const p = pages[0];
-  return (p && p.missing === undefined && p.extract) ? p : null;
+  return pages.filter(p => p.missing === undefined && p.extract);
 }
 
-// une requête par variante, dans l'ordre (le titre nu avant les formes désambiguïsées)
-async function findTitle(name, lang){
+// 1 requête : toutes les variantes de nom groupées, chacune reçoit son extrait complet
+async function findPage(name, lang){
   const variants = titleVariants(name, lang);
   const last = deaccent(name.trim().split(/\s+/).pop());
-  for(const v of variants){
-    let p;
-    try { p = await extractOf(v, lang); } catch(e){ noteFail(e); continue; }
-    if(!p) continue;
-    if(!isFighterPage(p.title, p.extract, lang)) continue;
-    if(last.length > 2 && !deaccent(p.title).includes(last)) continue;
-    return p.title;
-  }
-  return null;
+  let pages;
+  try { pages = await extractsBatch(variants, lang); } catch(e){ noteFail(e); return null; }
+  const ok = pages.filter(p => isFighterPage(p.title, p.extract, lang)
+                            && (last.length <= 2 || deaccent(p.title).includes(last)));
+  if(!ok.length) return null;
+  const rank = t => { const i = variants.findIndex(v => deaccent(v) === deaccent(t)); return i < 0 ? 99 : i; };
+  ok.sort((a,b) => rank(a.title) - rank(b.title));
+  return ok[0];
 }
 
-// repli : recherche plein texte, puis un extrait par résultat (jusqu'à en trouver un bon)
-async function searchTitle(name, lang){
+// repli : recherche plein texte (1 requête), puis extraits groupés des résultats (1 requête)
+async function searchPage(name, lang){
   const hint = lang === 'fr' ? ' arts martiaux mixtes' : ' mixed martial artist';
   const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
             + '&list=search&srnamespace=0&srlimit=3'
             + '&srsearch=' + encodeURIComponent(name + hint);
   let hits;
   try { hits = (await getJSON(url)).query?.search || []; } catch(e){ noteFail(e); return null; }
+  if(!hits.length) return null;
+
   const last = deaccent(name.trim().split(/\s+/).pop());
-  for(const h of hits){
-    if(last.length > 2 && !deaccent(h.title).includes(last)) continue;
-    let p;
-    try { p = await extractOf(h.title, lang); } catch(e){ noteFail(e); continue; }
-    if(!p || !isFighterPage(p.title, p.extract, lang)) continue;
-    return p.title;
+  let pages;
+  try { pages = await extractsBatch(hits.map(h => h.title), lang); } catch(e){ noteFail(e); return null; }
+  const order = hits.map(h => h.title);
+  pages.sort((a,b) => order.indexOf(a.title) - order.indexOf(b.title));
+  for(const p of pages){
+    if(last.length > 2 && !deaccent(p.title).includes(last)) continue;
+    if(isFighterPage(p.title, p.extract, lang)) return p;
   }
   return null;
-}
-
-// texte intégral en clair (1 requête ; exlimit forcé à 1 hors exintro côté API)
-async function fullText(title, lang){
-  const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
-            + '&redirects=1&prop=extracts&explaintext=1&titles=' + encodeURIComponent(title);
-  const pages = (await getJSON(url)).query?.pages || [];
-  const p = pages.find(x => !x.missing && x.extract);
-  return p ? p.extract : null;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -656,23 +654,19 @@ function composeFrench(F){
 async function resolve(name){
   // ── chemin 1 : fr.wikipedia, vraies phrases ──
   try {
-    let t = await findTitle(name, 'fr');
-    if(!t) t = await searchTitle(name, 'fr');
-    if(t){
-      const txt = await fullText(t, 'fr');
-      const d = txt && pickFrenchSentences(txt, name);
-      if(d) return { t: d, src: 'fr', title: t };
+    const p = (await findPage(name, 'fr')) || (await searchPage(name, 'fr'));
+    if(p){
+      const d = pickFrenchSentences(p.extract, name);
+      if(d) return { t: d, src: 'fr', title: p.title };
     }
   } catch(e){}
 
   // ── chemin 2 : en.wikipedia, faits recomposés en français ──
   try {
-    let t = await findTitle(name, 'en');
-    if(!t) t = await searchTitle(name, 'en');
-    if(t){
-      const txt = await fullText(t, 'en');
-      const d = txt && composeFrench(factsFromEnglish(txt));
-      if(d) return { t: d, src: 'en', title: t };
+    const p = (await findPage(name, 'en')) || (await searchPage(name, 'en'));
+    if(p){
+      const d = composeFrench(factsFromEnglish(p.extract));
+      if(d) return { t: d, src: 'en', title: p.title };
     }
   } catch(e){}
 
