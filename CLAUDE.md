@@ -27,9 +27,14 @@ Avant toute modification :
 - Drapeaux = images flagcdn.com — **jamais d'emojis** (invisibles sur Windows).
 - En JS, `\b` est ASCII : `\bémigre` ne matche **jamais**. Pour un motif français
   commençant par un accent, utiliser `(?<![A-Za-zÀ-ÿ])` (cf. `fixWordBoundaries`).
+- Trois couches plein écran empilées : classement (z 150) < fiche (z 200) < page ELO
+  (z 300). Échap ne doit en fermer **qu'une** → le handler du classement écoute sur
+  `window` en **capture**, sinon `closeModal` (sur `document`) a déjà changé l'état lu.
+- `p4pOrder()` ne mémorise rien tant que `eloDB` est vide — sinon un clic sur
+  « Classement » pendant le chargement fige une liste vide pour toute la session.
 
 ## Roadmap
 
-1. Pages de classement P4P + par catégorie
+1. ~~Pages de classement P4P + par catégorie~~ — fait
 2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
 3. (Plus tard) Comparateur, URLs SEO, notes communautaires
