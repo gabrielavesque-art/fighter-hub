@@ -46,16 +46,12 @@ const ONLY   = (process.argv.find(a => a.startsWith('--only=')) || '').slice(7)
 const DRY    = TEST || ONLY.length > 0;   // les deux modes d'essai n'écrivent rien
 
 const SCHEMA      = 1;    // version de la logique ; --force refait tout ce qui n'est pas à jour
-const CONCURRENCY = 1;    // combattants traités en parallèle
-const PAUSE_MS    = 150;
 const MAX_CHARS   = 300;  // longueur visée de la description finale
 const MIN_SCORE   = 4;    // en dessous, la phrase n'apporte rien d'humain
 
-// Chaque combattant fait plusieurs appels séquentiels (variantes de titre, repli
-// recherche…) ; avec CONCURRENCY combattants en parallèle, sans limite globale,
-// ça part en rafale et Wikipedia répond 429 "too many requests" — vu en pratique :
-// 35 581 occurrences sur un run réel. MIN_GAP_MS espace TOUTES les requêtes HTTP,
-// tous combattants confondus, quel que soit le niveau de parallélisme au-dessus.
+// Une seule requête à la fois, espacée : les lots de 20 rendent le parallélisme
+// inutile (~230 requêtes pour tout le roster) et c'est lui qui déclenchait les
+// 429 en rafale — 35 581 sur un run réel.
 const MIN_GAP_MS  = 400;
 
 /* ─────────────── utilitaires ─────────────── */
@@ -161,61 +157,55 @@ function isFighterPage(title, extract, lang){
   return (lang === 'fr' ? MMA_FR : MMA_EN).test(ex);
 }
 
-/* Attention : l'API MediaWiki, quand on demande exsentences/exchars, force
-   exlimit=1 en coulisses — un seul titre reçoit un extrait par requête, même si
-   plusieurs sont groupés. Interroger un titre à la fois pour contourner ça a
-   fait exploser le nombre de requêtes (jusqu'à ~10 par combattant) et Wikipedia
-   a répondu par des 429 en rafale.
+/* Attention : l'API MediaWiki force exlimit=1 dès qu'on demande exsentences /
+   exchars — un seul titre reçoit un extrait par requête. On ne demande donc
+   JAMAIS exsentences : avec explaintext seul, exlimit fonctionne et on peut
+   récupérer 20 pages PAR REQUÊTE. C'est le point qui change tout : à raison
+   d'une poignée de requêtes par combattant, un roster de 4566 demandait ~15 000
+   appels et Wikipedia coupait tout au 429 (run réel : 790 traités en 1h30, 2,5 %
+   de réussite). Par lots de 20, le même roster tient en ~230 requêtes par passe.
 
-   Solution : ne JAMAIS demander exsentences. On récupère le texte COMPLET
-   (explaintext, pas d'exsentences) — cette fois exlimit fonctionne normalement
-   et TOUS les titres groupés dans une requête reçoivent leur extrait. On tronque
-   nous-mêmes côté JS (humanText le fait déjà). Ça ramène une recherche de
-   combattant à 1-2 requêtes au lieu de 5-10, et l'extrait est réutilisé
-   directement — plus besoin d'un second appel fullText(). */
+   Le prix à payer : &redirects=1 renvoie les redirections et normalisations dans
+   des tables à part, et les pages reviennent sous leur titre FINAL. Il faut donc
+   rejouer la chaîne demandé -> normalisé -> redirigé pour retrouver à quel
+   combattant appartient chaque page. */
 
-async function extractsBatch(titles, lang){
+const EXTRACT_BATCH = 20;   // plafond de l'API pour prop=extracts
+
+// Map(titre demandé -> page) ; les titres absents ou sans extrait sont omis
+async function batchExtracts(titles, lang){
   const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
-            + '&redirects=1&prop=extracts&explaintext=1&exlimit=' + Math.min(titles.length, 20)
+            + '&redirects=1&prop=extracts&explaintext=1&exlimit=' + EXTRACT_BATCH
             + '&titles=' + encodeURIComponent(titles.join('|'));
-  const pages = (await getJSON(url)).query?.pages || [];
-  return pages.filter(p => p.missing === undefined && p.extract);
-}
+  const q = (await getJSON(url)).query || {};
 
-// 1 requête : toutes les variantes de nom groupées, chacune reçoit son extrait complet
-async function findPage(name, lang){
-  const variants = titleVariants(name, lang);
-  const last = deaccent(name.trim().split(/\s+/).pop());
-  let pages;
-  try { pages = await extractsBatch(variants, lang); } catch(e){ noteFail(e); return null; }
-  const ok = pages.filter(p => isFighterPage(p.title, p.extract, lang)
-                            && (last.length <= 2 || deaccent(p.title).includes(last)));
-  if(!ok.length) return null;
-  const rank = t => { const i = variants.findIndex(v => deaccent(v) === deaccent(t)); return i < 0 ? 99 : i; };
-  ok.sort((a,b) => rank(a.title) - rank(b.title));
-  return ok[0];
-}
-
-// repli : recherche plein texte (1 requête), puis extraits groupés des résultats (1 requête)
-async function searchPage(name, lang){
-  const hint = lang === 'fr' ? ' arts martiaux mixtes' : ' mixed martial artist';
-  const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
-            + '&list=search&srnamespace=0&srlimit=3'
-            + '&srsearch=' + encodeURIComponent(name + hint);
-  let hits;
-  try { hits = (await getJSON(url)).query?.search || []; } catch(e){ noteFail(e); return null; }
-  if(!hits.length) return null;
-
-  const last = deaccent(name.trim().split(/\s+/).pop());
-  let pages;
-  try { pages = await extractsBatch(hits.map(h => h.title), lang); } catch(e){ noteFail(e); return null; }
-  const order = hits.map(h => h.title);
-  pages.sort((a,b) => order.indexOf(a.title) - order.indexOf(b.title));
-  for(const p of pages){
-    if(last.length > 2 && !deaccent(p.title).includes(last)) continue;
-    if(isFighterPage(p.title, p.extract, lang)) return p;
+  // titre demandé -> titre final, en rejouant normalisations puis redirections
+  const alias = new Map(titles.map(t => [t, t]));
+  for(const table of [q.normalized, q.redirects]){
+    for(const { from, to } of (table || [])){
+      for(const [dem, cur] of alias) if(cur === from) alias.set(dem, to);
+    }
   }
-  return null;
+
+  const parTitre = new Map((q.pages || []).map(p => [p.title, p]));
+  const out = new Map();
+  for(const [dem, fin] of alias){
+    const p = parTitre.get(fin);
+    if(p && p.missing === undefined && p.extract) out.set(dem, p);
+  }
+  return out;
+}
+
+// découpe une liste en tranches de EXTRACT_BATCH et interroge Wikipedia
+async function resolveTitles(titles, lang){
+  const found = new Map();
+  for(let i = 0; i < titles.length; i += EXTRACT_BATCH){
+    const lot = titles.slice(i, i + EXTRACT_BATCH);
+    try {
+      for(const [k, v] of await batchExtracts(lot, lang)) found.set(k, v);
+    } catch(e){ noteFail(e); }
+  }
+  return found;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -653,34 +643,40 @@ function composeFrench(F){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   6. RÉSOLUTION D'UN COMBATTANT
+   6. RÉSOLUTION PAR PASSES (par lots, pas combattant par combattant)
    ═══════════════════════════════════════════════════════════════ */
 
-async function resolve(name){
-  // ── chemin 1 : fr.wikipedia, vraies phrases ──
-  try {
-    const p = (await findPage(name, 'fr')) || (await searchPage(name, 'fr'));
-    if(p){
-      const d = pickFrenchSentences(p.extract, name);
-      if(d) return { t: d, src: 'fr', title: p.title };
-    }
-  } catch(e){}
+/* On ne résout plus un combattant de bout en bout : on fait des PASSES sur tout
+   le roster restant, chacune groupée par lots de 20. Ordre des passes :
+     1. fr.wikipedia, nom nu      -> vraies phrases françaises
+     2. en.wikipedia, nom nu      -> faits recomposés en français
+     3. en.wikipedia, « X (fighter) » / « (mixed martial artist) » pour les
+        homonymes (« Jim Miller » est une page d'homonymie, pas un combattant)
+   Un combattant sort du lot dès qu'une passe lui donne une description. */
 
-  // ── chemin 2 : en.wikipedia, faits recomposés en français ──
-  try {
-    const p = (await findPage(name, 'en')) || (await searchPage(name, 'en'));
-    if(p){
-      const d = composeFrench(factsFromEnglish(p.extract));
-      if(d) return { t: d, src: 'en', title: p.title };
-    }
-  } catch(e){}
+const PASSES = [
+  { lang:'fr', src:'fr', titre: n => n,
+    label:'fr.wikipedia (phrases réelles)' },
+  { lang:'en', src:'en', titre: n => n,
+    label:'en.wikipedia (faits recomposés)' },
+  { lang:'en', src:'en', titre: n => n + ' (fighter)',
+    label:'en.wikipedia, homonymes « (fighter) »' },
+  { lang:'en', src:'en', titre: n => n + ' (mixed martial artist)',
+    label:'en.wikipedia, homonymes « (mixed martial artist) »' }
+];
 
-  return null;
+// transforme une page en description, selon la langue
+function describe(page, name, src){
+  if(!isFighterPage(page.title, page.extract, src === 'fr' ? 'fr' : 'en')) return null;
+  const last = deaccent(name.trim().split(/\s+/).pop());
+  if(last.length > 2 && !deaccent(page.title).includes(last)) return null;   // mauvaise personne
+  return src === 'fr'
+    ? pickFrenchSentences(page.extract, name)
+    : composeFrench(factsFromEnglish(page.extract));
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   7. PROGRAMME PRINCIPAL
-   ═══════════════════════════════════════════════════════════════ */
+   7. PROGRAMME PRINCIPAL   ═══════════════════════════════════════════════════════════════ */
 
 // require() depuis un script de test : on expose l'analyse sans lancer la moulinette
 if(require.main !== module){
@@ -747,37 +743,57 @@ if(require.main !== module){
   console.log(`→ À traiter : ${todo.length}\n`);
 
   const stats = { fr:0, en:0, aucune:0 };
-  let done = 0;
   const t0 = Date.now();
 
-  for(let i = 0; i < todo.length; i += CONCURRENCY){
-    const lot = todo.slice(i, i + CONCURRENCY);
-    const res = await Promise.all(lot.map(async n => [n, await resolve(n)]));
+  let reste = todo.slice();      // combattants encore sans description
+  let pagesVues = 0;             // pages Wikipedia trouvées, description ou non
 
-    for(const [n, r] of res){
-      if(r) r.v = SCHEMA;
-      db[slugKey(n)] = r;
-      stats[r ? r.src : 'aucune']++;
-      done++;
-      if(DRY){
-        if(r) console.log(`  ✓ ${n}\n      [${r.src}] ${r.title}\n      « ${r.t} »\n`);
-        else  console.log(`  ✖ ${n}\n      — rien d'exploitable\n`);
+  for(const passe of PASSES){
+    if(!reste.length) break;
+    const lots = Math.ceil(reste.length / EXTRACT_BATCH);
+    console.log(`\n▸ ${passe.label} — ${reste.length} combattants, ${lots} requête${lots>1?'s':''}`);
+
+    // titre demandé -> nom du combattant (plusieurs noms peuvent viser le même titre)
+    const parTitre = new Map();
+    for(const n of reste){
+      const t = passe.titre(n);
+      if(!parTitre.has(t)) parTitre.set(t, []);
+      parTitre.get(t).push(n);
+    }
+
+    const trouvees = await resolveTitles([...parTitre.keys()], passe.lang);
+    pagesVues += trouvees.size;
+
+    const encore = [];
+    for(const n of reste){
+      const page = trouvees.get(passe.titre(n));
+      const d = page ? describe(page, n, passe.src) : null;
+      if(d){
+        db[slugKey(n)] = { t: d, src: passe.src, title: page.title, v: SCHEMA };
+        stats[passe.src]++;
+        if(DRY) console.log(`  ✓ ${n}\n      [${passe.src}] ${page.title}\n      « ${d} »\n`);
+      } else {
+        encore.push(n);
       }
     }
 
-    if(!DRY && (done % 10 === 0 || done === todo.length)){
-      fs.writeFileSync(OUT, JSON.stringify(db));
-      const pct = (done / todo.length * 100).toFixed(1);
-      const perSec = done / ((Date.now() - t0) / 1000);
-      const reste = Math.round((todo.length - done) / perSec / 60);
-      process.stdout.write(`\r  ${done}/${todo.length} (${pct}%) — trouvées : ${done - stats.aucune} — reste ~${reste} min   `);
-    }
+    const gagne = reste.length - encore.length;
+    console.log(`  → ${gagne} description${gagne>1?'s':''} (${trouvees.size} page${trouvees.size>1?'s':''} trouvée${trouvees.size>1?'s':''})`);
+    reste = encore;
 
-    await sleep(PAUSE_MS);
+    if(!DRY) fs.writeFileSync(OUT, JSON.stringify(db));   // sauvegarde après chaque passe
   }
 
-  if(!DRY){ fs.writeFileSync(OUT, JSON.stringify(db)); console.log('\n'); }
+  // ce qui reste après toutes les passes : aucune description
+  for(const n of reste){
+    db[slugKey(n)] = null;
+    stats.aucune++;
+    if(DRY) console.log(`  ✖ ${n}\n      — rien d'exploitable\n`);
+  }
 
+  if(!DRY){ fs.writeFileSync(OUT, JSON.stringify(db)); }
+
+  const done = todo.length;
   const ok = done - stats.aucune;
   console.log('\n─── Résultat ───');
   console.log(`  Phrases réelles fr.wikipedia   : ${stats.fr}`);
@@ -785,6 +801,7 @@ if(require.main !== module){
   console.log(`  Aucune description             : ${stats.aucune}`);
   console.log('  ─────────────────────────────');
   console.log(`  Taux de couverture             : ${(ok / done * 100).toFixed(1)}%`);
+  console.log(`  Durée                          : ${Math.round((Date.now()-t0)/60000)} min`);
 
   if(failStats.size){
     console.log('\n─── Causes d\'échec (diagnostic) ───');
