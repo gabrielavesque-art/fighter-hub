@@ -456,6 +456,22 @@ main{padding:0 clamp(14px,3.5vw,44px) 70px;max-width:1400px;margin:0 auto}
 .evt{font-size:12px;color:var(--tx-3);max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .loading-inline{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx-3);padding:10px 0}
 
+/* colonne video : etroite et muette quand il n'y a rien, pour ne pas donner
+   l'impression d'un palmares troue — la plupart des combats n'ont pas de video */
+.ftbl td.vcell{width:34px;padding-left:0;padding-right:6px;text-align:right}
+.vplay{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;text-decoration:none;
+  font-size:9px;line-height:1;padding-left:1px;
+  color:var(--tx-3);background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  transition:background .14s,color .14s,border-color .14s,transform .14s;
+}
+.vplay:hover{background:var(--red);color:#fff;border-color:var(--red);transform:scale(1.12)}
+/* le combat complet vaut mieux qu'un resume : on le signale d'entree */
+.vplay.vfull{color:#FF6B78;background:var(--red-dim);border-color:rgba(224,26,43,.3)}
+.vplay.vfull:hover{color:#fff}
+
 .elo-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(211,162,74,.08),rgba(211,162,74,0));border:1px solid rgba(211,162,74,.22);border-radius:var(--r);padding:14px 18px;margin-bottom:22px}
 .elo-main{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
 .elo-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:34px;line-height:1;color:#e9c877}
@@ -1064,6 +1080,44 @@ async function loadDescDB(){
 // description humaine pre-calculee par build-descriptions.js (Wikipedia)
 function descOf(key){ return descCache.get(key) || null; }
 
+/* ═══════════ VIDÉOS — videos.json (build-videos.js) ═══════════ */
+const videoDB = new Map();         // cle de combat -> {i:id YouTube, t:titre, c:chaine, k:'full'|'hl'}
+const CHAN_LBL = { ufc:'UFC', ufceu:'UFC Europe', rmccbt:'RMC Sport', rmc:'RMC Sport' };
+
+async function loadVideoDB(){
+  try{
+    const r = await fetch('videos.json', {cache:'no-cache'});
+    if(!r.ok) return 0;
+    const db = await r.json();
+    for(const [k,v] of Object.entries(db.v||{})) videoDB.set(k, v);
+    return videoDB.size;
+  }catch(e){ return 0; }
+}
+
+/* La cle doit etre fabriquee EXACTEMENT comme dans build-videos.js : les deux
+   slugs tries par ordre alphabetique, plus la date quand les deux hommes se
+   sont affrontes plusieurs fois. On tente la forme datee d'abord (elle ne
+   sort que pour les revanches), puis le couple seul. */
+function videoOf(selfName, oppName, date){
+  if(!videoDB.size) return null;
+  const pk = [slugKey(selfName), slugKey(oppName)].sort().join('--');
+  if(date){
+    const v = videoDB.get(pk + '@' + new Date(date).toISOString().slice(0,10));
+    if(v) return v;
+  }
+  return videoDB.get(pk) || null;
+}
+
+// cellule ▶ du palmares : lien direct vers YouTube, onglet neuf
+function videoCell(f, h){
+  const v = videoOf(f.name, h.opp, h.date);
+  if(!v) return '<td class="vcell"></td>';
+  const lbl = (v.k==='full' ? 'Combat complet' : 'Résumé') + ' · ' + (CHAN_LBL[v.c]||v.c);
+  return `<td class="vcell"><a class="vplay${v.k==='full'?' vfull':''}"
+    href="https://www.youtube.com/watch?v=${esc(v.i)}" target="_blank" rel="noopener"
+    title="${esc(lbl)} — ${esc(v.t)}" aria-label="${esc(lbl)}">▶</a></td>`;
+}
+
 async function loadPhotoDB(){
   try{
     const r = await fetch('photos.json', {cache:'no-cache'});
@@ -1553,7 +1607,8 @@ async function loadFights(){
       else self.nc++;
       if(cls && !self.wc) self.wc = cls;
       if(when > (self.last||0)) self.last = when;   // dernier combat -> filtre « actifs »
-      self.history.push({ out, opp, method, event, rnd, tm, wc: cls });
+      // la date sert aussi a distinguer les revanches quand on cherche la video
+      self.history.push({ out, opp, method, event, rnd, tm, wc: cls, date: when });
     };
     apply(fa, b, oa);
     apply(fb, a, ob);
@@ -1918,7 +1973,7 @@ function openModal(f){
       <div class="sec" style="margin-top:20px">${f.histPartial?'Combats connus':'Palmarès complet'}
         <span>${hist.length} sur ${tot} combat${tot>1?'s':''}</span></div>
       <table class="ftbl">
-        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th></tr></thead>
+        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th></th></tr></thead>
         <tbody>${hist.map(h=>{
           const cls = h.out==='W'?'rb-w':h.out==='L'?'rb-l':'rb-d';
           const lbl = h.out==='W'?'V':h.out==='L'?'D':h.out==='D'?'N':'NC';
@@ -1928,6 +1983,7 @@ function openModal(f){
             <td><span class="meth">${esc(h.method)||'—'}</span></td>
             <td class="evt" title="${esc(h.event)}">${esc(h.event)||'—'}</td>
             <td><span class="meth">${h.rnd?'R'+esc(h.rnd):''}${h.tm?' · '+esc(h.tm):''}</span></td>
+            ${videoCell(f, h)}
           </tr>`;
         }).join('')}</tbody>
       </table>` : `
@@ -1941,7 +1997,7 @@ function openModal(f){
       <div class="sec">Historique UFC <span>${hist.length} combat${hist.length>1?'s':''}</span></div>
       ${hist.length ? `
       <table class="ftbl">
-        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th></tr></thead>
+        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th></th></tr></thead>
         <tbody>${hist.map(h=>{
           const cls = h.out==='W'?'rb-w':h.out==='L'?'rb-l':'rb-d';
           const lbl = h.out==='W'?'V':h.out==='L'?'D':h.out==='D'?'N':'NC';
@@ -1951,12 +2007,13 @@ function openModal(f){
             <td><span class="meth">${esc(h.method)||'—'}</span></td>
             <td class="evt" title="${esc(h.event)}">${esc(h.event)||'—'}</td>
             <td><span class="meth">${h.rnd?'R'+esc(h.rnd):''}${h.tm?' · '+esc(h.tm):''}</span></td>
+            ${videoCell(f, h)}
           </tr>`;
         }).join('')}</tbody>
       </table>` : `<div class="loading-inline">${fightsLoaded?'Aucun combat UFC enregistré.':"Chargement de l'historique…"}</div>`}`}
 
       <div class="banner">
-        → <b>Bientôt</b> : highlights vidéo et pronostics entre combattants.
+        → <b>Bientôt</b> : pronostics entre combattants.
       </div>
     </div>`;
 
@@ -2287,6 +2344,7 @@ function skeleton(){
     await loadDescDB();           // descriptions Wikipedia pre-calculees si disponibles
     await loadStatsDB();          // stats avancees pre-calculees si disponibles
     await loadEloDB();            // classement ELO pre-calcule si disponible
+    await loadVideoDB();          // videos YouTube rattachees aux combats si disponibles
     document.getElementById('resTxt').textContent = 'Calcul des palmarès…';
     setProgress(60);
 

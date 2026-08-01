@@ -18,6 +18,7 @@ Avant toute modification :
   **Ajouter une section = une ligne dans `NAV`, sa page en HTML, son cas dans `applyRoute()`.**
 - `resolve-photos.js` → `photos.json` | `build-stats.js` → `stats.json` | `build-elo.js` → `elo.json`
 - `build-descriptions.js` → `descriptions.json` (descriptions humaines, Wikipedia FR puis EN)
+- `build-videos.js` → `videos.json` (combat ⇄ vidéo YouTube, chaînes UFC + RMC)
 - Scripts lancés via **GitHub Actions uniquement** (jamais en local) — Vercel auto-déploie sur push main
 
 ## Pièges
@@ -38,9 +39,23 @@ Avant toute modification :
   « P4P » pendant le chargement fige une liste vide pour toute la session.
 - Les chips de division utilisent `replaceState` (pas d'entrée d'historique pour
   chacune) ; seule la nav fait `pushState`.
+- `build-videos.js` a **deux** normalisations de nom : `keySlug` est la copie
+  exacte du `slugKey` d'index.html (il fabrique les clés, toute divergence casse
+  les recherches), `lookupSlug` replie les accents et ne sert qu'à lire les
+  titres YouTube. Ne pas les confondre.
+- Un titre YouTube contient souvent **deux** « vs » (l'événement + le combat) :
+  se caler sur le premier rattache la vidéo au combat vedette. `matchPair` teste
+  toutes les occurrences et garde celle collée au mot-clé (« Free Fight »…).
+- Jamais de `search.list` par combat : 100 unités de quota l'appel, contre 1 par
+  tranche de 50 vidéos en balayage de chaîne. Un run complet coûte ~1 500 unités
+  sur les 10 000/jour, un run incrémental quelques dizaines.
+- `videos.json` demande le secret GitHub `YOUTUBE_API_KEY`.
+- `node build-videos.js --selftest` teste le parseur **sans clé ni réseau
+  YouTube** — à lancer avant tout changement des regex de titre.
 
 ## Roadmap
 
 1. ~~Pages de classement P4P + par catégorie~~ — fait
 2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
-3. (Plus tard) Comparateur, URLs SEO, notes communautaires
+3. ~~Vidéos de combat rattachées au palmarès (YouTube UFC + RMC)~~ — fait
+4. (Plus tard) Comparateur, URLs SEO, notes communautaires
