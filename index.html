@@ -518,73 +518,110 @@ footer a:hover{color:var(--tx-2)}
 .rk-divs{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;padding-bottom:2px;scrollbar-width:none}
 .rk-divs::-webkit-scrollbar{display:none}
 .rk-divs .chip.on{background:var(--gold);border-color:var(--gold);color:#191016}
-.rk-modes{display:flex;flex-shrink:0;border:1px solid var(--line-2);border-radius:100px;overflow:hidden}
-.rk-mode{background:transparent;border:none;color:var(--tx-2);font-size:12px;padding:7px 15px;cursor:pointer;white-space:nowrap;transition:all .15s}
-.rk-mode:hover{color:var(--tx)}
-.rk-mode.on{background:var(--gold);color:#191016;font-weight:700}
+.rk-switches{display:flex;gap:8px;flex-shrink:0}
+/* segmenté neutre : une seule couleur d'accent sur la page (l'or de l'onglet
+   division), sinon tout brille et plus rien ne ressort */
+.rk-modes{display:flex;border:1px solid var(--line-2);border-radius:100px;overflow:hidden;padding:2px}
+.rk-mode{background:transparent;border:none;border-radius:100px;color:var(--tx-3);font-size:12px;padding:6px 14px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.rk-mode:hover{color:var(--tx-2)}
+.rk-mode.on{background:rgba(255,255,255,.08);color:var(--tx);font-weight:600}
 .rk-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-bottom:14px}
 .rk-count b{color:var(--tx-2)}
-.rk-list{display:flex;flex-direction:column;gap:6px}
+/* liste = tableau, pas une pile de cartes : un seul cadre, des filets fins entre
+   les lignes. La colonne combattant est la plus large, c'est le sujet. */
+.rk-cols,.rk-row{
+  display:grid;
+  grid-template-columns:46px 60px minmax(0,1fr) 88px 78px 82px;
+  align-items:center;gap:18px;
+}
+.rk-cols{
+  padding:0 20px 9px;
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--tx-3);white-space:nowrap;
+}
+.rk-cols .r{text-align:right}
+.rk-cols .c{text-align:center}
+.rk-list{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg-2)}
 .rk-row{
-  display:grid;grid-template-columns:42px 46px minmax(0,1fr) auto auto auto;
-  align-items:center;gap:14px;
-  background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
-  padding:8px 16px 8px 6px;cursor:pointer;text-align:left;width:100%;
-  transition:background .15s,border-color .15s,transform .15s;
+  position:relative;width:100%;text-align:left;cursor:pointer;
+  padding:8px 20px;background:none;border:none;
+  border-top:1px solid var(--line);
+  transition:background .14s;
 }
-.rk-row:hover,.rk-row:focus-visible{background:var(--bg-3);border-color:var(--line-2);transform:translateX(3px);outline:none}
-.rk-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:21px;line-height:1;text-align:center;color:var(--tx-3);font-variant-numeric:tabular-nums}
-.rk-row.p1{border-color:rgba(211,162,74,.4);background:linear-gradient(100deg,rgba(211,162,74,.09),var(--bg-2) 55%)}
-.rk-row.p1 .rk-pos{color:#e9c877;font-size:25px}
-.rk-row.p2{border-color:rgba(255,255,255,.16)}
-.rk-row.p2 .rk-pos{color:#cfd2d8;font-size:23px}
-.rk-row.p3{border-color:rgba(190,130,80,.3)}
-.rk-row.p3 .rk-pos{color:#c98f5c;font-size:23px}
+.rk-row:first-child{border-top:none}
+.rk-row::before{                          /* liseré d'accent, révélé au survol */
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--red);opacity:0;transition:opacity .14s;
+}
+.rk-row:hover,.rk-row:focus-visible{background:rgba(255,255,255,.028);outline:none}
+.rk-row:hover::before,.rk-row:focus-visible::before{opacity:1}
+.rk-pos{
+  font-family:'JetBrains Mono',monospace;font-weight:500;font-size:15px;
+  text-align:center;color:var(--tx-2);font-variant-numeric:tabular-nums;
+}
+/* podium : la couleur du rang suffit, pas besoin de repeindre la ligne entière */
+.rk-row.p1 .rk-pos,.rk-row.p2 .rk-pos,.rk-row.p3 .rk-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px}
+.rk-row.p1 .rk-pos{color:#e9c877}
+.rk-row.p2 .rk-pos{color:#c8ccd4}
+.rk-row.p3 .rk-pos{color:#c08553}
+.rk-row.p1::before{opacity:1;background:var(--gold)}
 .rk-photo{
-  width:46px;height:46px;border-radius:9px;overflow:hidden;position:relative;flex-shrink:0;
+  width:60px;height:60px;border-radius:10px;overflow:hidden;position:relative;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,#1B1B23,#101015);
+  background:linear-gradient(160deg,#1C1C24,#0F0F14);
 }
-.rk-photo .avatar{font-size:15px}
-/* la vignette est minuscule : on recadre serré sur le visage, y compris pour les
-   decoupes corps entier qui seraient illisibles en 46px */
-.rk-photo .ph{object-fit:cover;object-position:center 14%;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s}
+.rk-photo .avatar{font-size:17px}
+/* vignette serrée sur le visage, y compris pour les découpes corps entier qui
+   seraient illisibles à cette taille */
+.rk-photo .ph{object-fit:cover;object-position:center 14%;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .4s,filter .3s}
 .rk-photo .ph.cut{object-fit:cover;object-position:center 12%;padding:0;filter:none}
-.rk-photo .ph.wiki{filter:grayscale(.3) contrast(1.04)}
-.rk-row:hover .rk-photo .ph{transform:scale(1.08)}
+.rk-photo .ph.wiki{filter:grayscale(.4) contrast(1.05)}
+.rk-row:hover .rk-photo .ph{transform:scale(1.07)}
+.rk-row:hover .rk-photo .ph.wiki{filter:grayscale(0) contrast(1.03)}
 .rk-id{min-width:0}
-.rk-name{font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px;min-width:0}
+.rk-name{font-size:17px;font-weight:600;letter-spacing:-.1px;display:flex;align-items:center;gap:8px;min-width:0}
 .rk-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rk-name .flag{height:12px;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
-.rk-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.rk-sub .nk{color:var(--tx-2);text-transform:none;letter-spacing:.2px;font-style:italic}
-.rk-rec{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.rk-rec .w{color:#3fd183;font-weight:700}
-.rk-rec .l{color:#ff6b78;font-weight:700}
-.rk-rec .s{color:var(--tx-3)}
-.rk-trend{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;min-width:46px;text-align:center}
-.rk-trend.up{color:#3fd183;background:rgba(37,160,92,.14)}
-.rk-trend.down{color:#ff6b78;background:rgba(224,26,43,.14)}
-.rk-trend.flat{color:var(--tx-3);background:var(--bg-3)}
-.rk-elo{text-align:right;min-width:70px}
-.rk-elo b{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#e9c877;line-height:1;font-variant-numeric:tabular-nums}
-.rk-elo span{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-top:4px}
-.rk-empty{background:var(--bg-2);border:1px dashed var(--line-2);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--tx-3);font-size:13.5px;line-height:1.7}
+.rk-name .flag{height:13px;flex-shrink:0;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.45)}
+.rk-sub{display:flex;align-items:center;gap:8px;margin-top:5px;min-width:0}
+.rk-wc{
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1px;flex-shrink:0;
+  color:var(--tx-3);border:1px solid var(--line-2);border-radius:3px;padding:2px 5px;
+}
+.rk-nk{font-size:12.5px;font-style:italic;color:var(--tx-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk-rec{font-family:'JetBrains Mono',monospace;font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center}
+.rk-rec .w{color:var(--tx-2)}
+.rk-rec .l{color:var(--tx-3)}
+.rk-rec .s{color:var(--tx-3);opacity:.5}
+/* texte coloré simple plutôt qu'une pastille : moins de bruit sur 100 lignes */
+.rk-trend{font-family:'JetBrains Mono',monospace;font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
+.rk-trend.up{color:#3fd183}
+.rk-trend.down{color:#ff6b78}
+.rk-trend.flat{color:var(--tx-3)}
+.rk-elo{text-align:right}
+.rk-elo b{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:#e9c877;line-height:1;font-variant-numeric:tabular-nums}
+.rk-elo span{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx-3);margin-top:5px;font-variant-numeric:tabular-nums}
+.rk-empty{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:44px 20px;text-align:center;color:var(--tx-3);font-size:13.5px;line-height:1.7}
 .rk-empty b{display:block;color:var(--tx-2);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px;text-transform:uppercase;margin-bottom:6px}
-.rk-foot{margin-top:22px;font-size:12.5px;color:var(--tx-3);font-style:italic;line-height:1.6}
+.rk-foot{margin-top:20px;font-size:12.5px;color:var(--tx-3);line-height:1.6;max-width:660px}
 
-@media(max-width:820px){
-  .rk-row{grid-template-columns:34px 42px minmax(0,1fr) auto;gap:10px;padding:8px 12px 8px 4px}
-  .rk-rec,.rk-trend{display:none}
-  .rk-photo{width:42px;height:42px}
-  .rk-pos{font-size:18px}
-  .rk-row.p1 .rk-pos,.rk-row.p2 .rk-pos,.rk-row.p3 .rk-pos{font-size:20px}
-  .rk-name{font-size:14px}
-  .rk-elo{min-width:56px}
-  .rk-elo b{font-size:16px}
+@media(max-width:880px){
+  .rk-cols,.rk-row{grid-template-columns:34px 54px minmax(0,1fr) 74px;gap:12px;padding-left:14px;padding-right:14px}
+  .rk-cols{padding-bottom:8px}
+  .rk-rec,.rk-trend,.rk-cols .h-rec,.rk-cols .h-trend{display:none}
+  .rk-photo{width:54px;height:54px}
+  .rk-name{font-size:15.5px}
+  .rk-elo b{font-size:17px}
+  .rk-row.p1 .rk-pos,.rk-row.p2 .rk-pos,.rk-row.p3 .rk-pos{font-size:19px}
   .rk-tools{gap:8px}
-  .rk-modes{width:100%;justify-content:center}
+  .rk-switches{width:100%}
+  .rk-modes{flex:1}
   .rk-mode{flex:1}
+}
+@media(max-width:560px){
+  /* les deux segmentés côte à côte ne tiennent pas : on raccourcit le libellé */
+  .rk-long{display:none}
+  .rk-mode{padding:6px 8px;font-size:11.5px}
+  .rk-switches{gap:6px}
 }
 @media(max-width:560px){
   /* l'en-tete deborderait et pousserait le bouton fermer hors ecran */
@@ -674,15 +711,25 @@ footer a:hover{color:var(--tx-2)}
     <button class="rk-close" id="rkClose" aria-label="Fermer">✕</button>
   </div>
   <div class="rk-body">
-    <p class="rk-lead">Les combattants classés par <b>score ELO</b> — un chiffre unique qui estime le niveau réel, calculé sur la qualité des adversaires battus et la manière de gagner. Seuls les combattants avec au moins <em>5 combats UFC</em> apparaissent ici, retraités compris.</p>
+    <p class="rk-lead">Les combattants classés par <b>score ELO</b> — un chiffre unique qui estime le niveau réel, calculé sur la qualité des adversaires battus et la manière de gagner. Il faut au moins <em>5 combats UFC</em> pour être classé. Par défaut toute l'histoire de l'UFC est là, retraités compris : bascule sur <em>Actifs</em> pour le P4P d'aujourd'hui.</p>
     <div class="rk-tools">
       <div class="rk-divs" id="rkDivs"></div>
-      <div class="rk-modes">
-        <button class="rk-mode on" data-mode="elo">ELO actuel</button>
-        <button class="rk-mode" data-mode="peak">Pic de carrière</button>
+      <div class="rk-switches">
+        <div class="rk-modes" id="rkScope">
+          <button class="rk-mode on" data-scope="all">Tous</button>
+          <button class="rk-mode" data-scope="active">Actifs</button>
+        </div>
+        <div class="rk-modes" id="rkModes">
+          <button class="rk-mode on" data-mode="elo">ELO actuel</button>
+          <button class="rk-mode" data-mode="peak">Pic<span class="rk-long"> de carrière</span></button>
+        </div>
       </div>
     </div>
     <div class="rk-count" id="rkCount"></div>
+    <div class="rk-cols">
+      <div class="c">#</div><div></div><div>Combattant</div>
+      <div class="c h-rec">Bilan UFC</div><div class="r h-trend">6 derniers</div><div class="r">ELO</div>
+    </div>
     <div class="rk-list" id="rkList"></div>
     <p class="rk-foot" id="rkFoot"></p>
   </div>
@@ -760,6 +807,7 @@ footer a:hover{color:var(--tx-2)}
 const RAW = 'https://raw.githubusercontent.com/Greco1899/scrape_ufc_stats/main/';
 const F_TOTT = RAW + 'ufc_fighter_tott.csv';
 const F_RESULTS = RAW + 'ufc_fight_results.csv';
+const F_EVENTS = RAW + 'ufc_event_details.csv';   // dates des événements (~100 Ko)
 const PER_PAGE = 24;
 
 /* ═══════════ STATE ═══════════ */
@@ -1403,12 +1451,42 @@ async function loadFighters(){
       w:0, l:0, d:0, nc:0,
       ko:0, sub:0, dec:0,
       history: [],
-      wc: ''
+      wc: '',
+      last: 0            // date du dernier combat UFC (0 = inconnue)
     };
     FIGHTERS.push(f);
     BY_NAME.set(key, f);
   }
   setProgress(52);
+}
+
+/* ═══════════ DATES DES ÉVÉNEMENTS ═══════════ */
+// elo.json ne stocke pas de date : on date les combats côté client à partir du
+// même CSV que build-elo.js. Ça évite un rebuild des données pour le filtre
+// « actifs », et ça ne coûte qu'un fichier de ~100 Ko.
+const eventDate = new Map();    // nom de l'événement -> timestamp
+let lastEventTs = 0;            // combat le plus récent du jeu de données
+async function loadEventDates(){
+  try{
+    const res = await fetch(F_EVENTS);
+    if(!res.ok) throw new Error('events '+res.status);
+    const rows = parseCSV(await res.text()).filter(r=>r.length>1);
+    const head = rows.shift();
+    const iN = col(head,'EVENT','NAME'), iD = col(head,'DATE');
+    const now = Date.now();
+    for(const r of rows){
+      const name = clean(r[iN]);
+      const t = Date.parse(clean(r[iD]));
+      if(!name || isNaN(t)) continue;
+      eventDate.set(name, t);
+      // les cartes déjà programmées mais pas encore disputées décaleraient la
+      // fenêtre d'activité vers le futur : on ne compte que le passé
+      if(t > lastEventTs && t <= now) lastEventTs = t;
+    }
+  }catch(e){
+    // sans dates on n'a pas de filtre « actifs », mais le reste du site marche
+    console.warn('[dates] indisponibles :', e.message);
+  }
 }
 
 /* ═══════════ LOAD FIGHTS (background) ═══════════ */
@@ -1450,6 +1528,7 @@ async function loadFights(){
 
     const [oa, ob] = outcome.split('/').map(s=>(s||'').trim());
     const cls = normWC(wcRaw);
+    const when = eventDate.get(event) || 0;
 
     const apply = (self, opp, out) => {
       if(!self) return;
@@ -1458,6 +1537,7 @@ async function loadFights(){
       else if(out==='D') self.d++;
       else self.nc++;
       if(cls && !self.wc) self.wc = cls;
+      if(when > (self.last||0)) self.last = when;   // dernier combat -> filtre « actifs »
       self.history.push({ out, opp, method, event, rnd, tm, wc: cls });
     };
     apply(fa, b, oa);
@@ -1907,9 +1987,23 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape' && eloPage.classLis
 
 /* ═══════════ PAGE CLASSEMENT (P4P + divisions) ═══════════ */
 const RANK_LIMIT = 100;         // nombre de lignes affichées par onglet
-let rkDiv  = '';                // '' = toutes divisions (P4P)
-let rkMode = 'elo';             // 'elo' = niveau actuel | 'peak' = pic de carrière
+const ACTIVE_MONTHS = 24;       // « actif » = a combattu dans les 2 dernières années
+let rkDiv   = '';               // '' = toutes divisions (P4P)
+let rkMode  = 'elo';            // 'elo' = niveau actuel | 'peak' = pic de carrière
+let rkScope = 'all';            // 'all' = tout le monde | 'active' = actifs seulement
 const rankPage = document.getElementById('rankPage');
+
+// La référence est le dernier combat DU JEU DE DONNÉES, pas l'horloge : si les
+// CSV prennent du retard, personne ne doit basculer « inactif » pour autant.
+function activeCutoff(){
+  return lastEventTs ? lastEventTs - ACTIVE_MONTHS*30.44*864e5 : 0;
+}
+function isActiveFighter(f){
+  return !!lastEventTs && !!f.last && f.last >= activeCutoff();
+}
+function lastFightRef(){
+  return lastEventTs ? new Date(lastEventTs).toLocaleDateString('fr-FR',{month:'long', year:'numeric'}) : '—';
+}
 
 // combattants classables pour l'onglet courant, dans l'ordre d'affichage
 function rankRows(){
@@ -1918,6 +2012,7 @@ function rankRows(){
     const f = BY_NAME.get(key);
     if(!f) continue;                       // présent dans elo.json sans fiche
     if(rkDiv && f.wc !== rkDiv) continue;
+    if(rkScope==='active' && !isActiveFighter(f)) continue;
     rows.push({ f, e });
   }
   // en mode « elo » l'ordre de p4pOrder() est déjà le bon : on ne retrie pas.
@@ -1930,22 +2025,22 @@ function rankRows(){
 
 function rankRowHTML({f, e}, pos){
   const val = rkMode==='peak' ? e.peak : e.elo;
-  const alt = rkMode==='peak' ? `Actuel ${e.elo}` : `Pic ${e.peak}`;
+  const alt = rkMode==='peak' ? `actuel ${e.elo}` : `pic ${e.peak}`;
   const trend = e.trend || [];
   const sum = trend.reduce((s,d)=>s+d, 0);          // solde des 6 derniers combats
   const tcls = sum>0 ? 'up' : sum<0 ? 'down' : 'flat';
-  const fl = flagFor(f.key);
   const nk = nickOf(f.key);
-  const sub = [ f.wc ? wcShort(f.wc) : '', nk ? `<span class="nk">« ${esc(nk)} »</span>` : '' ]
-    .filter(Boolean).join(' · ');
   return `<button class="rk-row${pos<=3?' p'+pos:''}" data-k="${f.key}">
     <div class="rk-pos">${pos}</div>
     <div class="rk-photo" data-photo="${f.key}"><div class="avatar">${initials(f.name)}</div></div>
     <div class="rk-id">
-      <div class="rk-name">${fl}<span>${esc(f.name)}</span></div>
-      ${sub?`<div class="rk-sub">${sub}</div>`:''}
+      <div class="rk-name">${flagFor(f.key)}<span>${esc(f.name)}</span></div>
+      <div class="rk-sub">
+        ${f.wc?`<span class="rk-wc">${wcShort(f.wc)}</span>`:''}
+        ${nk?`<span class="rk-nk">« ${esc(nk)} »</span>`:''}
+      </div>
     </div>
-    <div class="rk-rec"><span class="w">${f.w}</span><span class="s">-</span><span class="l">${f.l}</span>${f.d?`<span class="s">-${f.d}</span>`:''}</div>
+    <div class="rk-rec"><span class="w">${f.w}</span><span class="s">–</span><span class="l">${f.l}</span>${f.d?`<span class="s">–${f.d}</span>`:''}</div>
     <div class="rk-trend ${tcls}" title="Solde ELO sur les ${trend.length} derniers combats">${sum>0?'+':''}${sum}</div>
     <div class="rk-elo"><b>${val}</b><span>${alt}</span></div>
   </button>`;
@@ -1957,25 +2052,34 @@ function renderRank(){
   const list  = document.getElementById('rkList');
 
   document.getElementById('rkHeadDiv').textContent = rkDiv ? rkDiv.replace("Women's","Femmes ") : 'pound-for-pound';
+  const cols = document.querySelector('.rk-cols');
 
   if(!shown.length){
     document.getElementById('rkCount').textContent = '';
     document.getElementById('rkFoot').textContent = '';
-    list.innerHTML = eloDB.size
-      ? `<div class="rk-empty"><b>Personne dans ce classement</b>
-         Aucun combattant de cette division n'atteint ${RANK_MIN_FIGHTS} combats UFC.</div>`
-      : `<div class="rk-empty"><b>Chargement…</b>
-         Le classement s'affiche dès que les données ELO sont prêtes.</div>`;
+    cols.style.display = 'none';
+    list.innerHTML = !eloDB.size
+      ? `<div class="rk-empty"><b>Chargement…</b>
+         Le classement s'affiche dès que les données ELO sont prêtes.</div>`
+      : rkScope==='active'
+      ? `<div class="rk-empty"><b>Aucun combattant actif</b>
+         Personne ici n'a combattu depuis ${ACTIVE_MONTHS} mois. Repasse sur « Tous ».</div>`
+      : `<div class="rk-empty"><b>Personne dans ce classement</b>
+         Aucun combattant de cette division n'atteint ${RANK_MIN_FIGHTS} combats UFC.</div>`;
     return;
   }
+  cols.style.display = '';
 
   document.getElementById('rkCount').innerHTML =
-    `${rkMode==='peak'?'Pic de carrière':'ELO actuel'} · <b>${fmtInt(rows.length)}</b> combattant${rows.length>1?'s':''} classé${rows.length>1?'s':''}`
-    + (rows.length>RANK_LIMIT ? ` · top ${RANK_LIMIT} affiché` : '');
+    `${rkMode==='peak'?'Pic de carrière':'ELO actuel'} · <b>${fmtInt(rows.length)}</b> ${rkScope==='active'?'actif':'combattant'}${rows.length>1?'s':''}${rkScope==='active'?'':' classé'+(rows.length>1?'s':'')}`
+    + (rows.length>RANK_LIMIT ? ` · top ${RANK_LIMIT}` : '');
 
-  document.getElementById('rkFoot').textContent = rkMode==='peak'
-    ? 'Le pic est le plus haut ELO jamais atteint : c\'est le classement all-time, où les légendes retraitées gardent leur place.'
-    : 'L\'ELO actuel monte et descend à chaque combat — une défaite récente fait reculer, même une légende.';
+  const notes = [];
+  notes.push(rkMode==='peak'
+    ? 'Le pic est le plus haut ELO jamais atteint : c\'est le classement all-time, où les légendes gardent leur place.'
+    : 'L\'ELO actuel monte et descend à chaque combat — une défaite récente fait reculer, même une légende.');
+  if(rkScope==='active') notes.push(`« Actifs » = au moins un combat UFC depuis ${ACTIVE_MONTHS} mois (référence : ${lastFightRef()}).`);
+  document.getElementById('rkFoot').textContent = notes.join(' ');
 
   list.innerHTML = shown.map((r,i)=>rankRowHTML(r, i+1)).join('');
   list.querySelectorAll('.rk-row').forEach(el=>{
@@ -2039,14 +2143,20 @@ document.getElementById('rkClose').addEventListener('click', ()=>closeRank());
 document.getElementById('rkHelp').addEventListener('click', ()=>{
   eloPage.classList.add('on'); document.body.style.overflow='hidden'; eloPage.scrollTop = 0;
 });
-document.querySelectorAll('.rk-mode').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.rk-mode').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    rkMode = b.dataset.mode;
-    renderRank();
+// deux segmentés indépendants : portée (tous / actifs) et critère (ELO / pic)
+function wireSwitch(id, apply){
+  const box = document.getElementById(id);
+  box.querySelectorAll('.rk-mode').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      box.querySelectorAll('.rk-mode').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      apply(b);
+      renderRank();
+    });
   });
-});
+}
+wireSwitch('rkScope', b=>{ rkScope = b.dataset.scope; });
+wireSwitch('rkModes', b=>{ rkMode  = b.dataset.mode;  });
 // Échap ne ferme QU'UNE couche : fiche > page ELO > classement.
 // Écoute sur window en phase capture, donc avant les handlers Échap de la fiche
 // et de la page ELO (qui sont sur document) : sinon on lirait un état déjà
@@ -2128,6 +2238,9 @@ function skeleton(){
     await loadEloDB();            // classement ELO pre-calcule si disponible
     document.getElementById('resTxt').textContent = 'Calcul des palmarès…';
     setProgress(60);
+
+    // dates AVANT les combats : loadFights s'en sert pour dater chaque palmarès
+    await loadEventDates();
 
     // puis enrichit avec les combats
     await loadFights();
