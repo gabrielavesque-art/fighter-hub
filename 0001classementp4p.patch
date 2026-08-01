@@ -1,0 +1,451 @@
+From e5c7c0288d97dcc6de8d7007c79170385ced1ea9 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 1 Aug 2026 02:03:05 +0000
+Subject: [PATCH] Ajoute la page de classement P4P et par division
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Nouvelle page plein écran (bouton « ★ Classement » dans la topbar) listant les
+combattants par score ELO, avec onglets P4P + les 12 divisions, bascule
+« ELO actuel / Pic de carrière » et URL partageable (#p4p, #p4p-heavyweight).
+
+Éligibilité : au moins 5 combats UFC, soit exactement la règle déjà utilisée par
+la pastille « #N P4P » des fiches. Pour que les deux numéros ne divergent jamais,
+eloRank() et le classement lisent maintenant un unique tri partagé, p4pOrder().
+
+Détails d'implémentation :
+- z-index 150 : la fiche (200) s'ouvre par-dessus le classement sans le fermer.
+- le handler Échap du classement écoute sur window en capture, sinon closeModal
+  (sur document) s'exécute d'abord et Échap ferme deux couches d'un seul coup.
+- closeModal / la page ELO ne rendent le scroll au body que si plus aucune page
+  plein écran n'est ouverte dessous.
+- p4pOrder() ne mémorise rien tant que elo.json n'est pas chargé : sans ça, un
+  clic sur « Classement » pendant le boot figeait une liste vide pour de bon.
+- les vignettes n'utilisent que le cache photos.json (aucune requête réseau) ;
+  hydratePhotos() reste réservé à la grille, qu'il aurait annulée.
+
+Testé sous Chromium : ordre du top 100, cohérence avec la pastille des fiches,
+les 12 divisions, mode pic, liens partagés, empilement des couches et Échap,
+ouverture pendant le chargement, plus non-régression de la grille (recherche,
+filtres, tri, fiche, page ELO). Rendu vérifié en 1280px et 390px.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01Wz2yVkFposyPZk3gTCX6kG
+---
+ CLAUDE.md  |   7 +-
+ index.html | 321 +++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 317 insertions(+), 11 deletions(-)
+
+diff --git a/CLAUDE.md b/CLAUDE.md
+index 3dc4175..e9e109d 100644
+--- a/CLAUDE.md
++++ b/CLAUDE.md
+@@ -27,9 +27,14 @@ Avant toute modification :
+ - Drapeaux = images flagcdn.com — **jamais d'emojis** (invisibles sur Windows).
+ - En JS, `\b` est ASCII : `\bémigre` ne matche **jamais**. Pour un motif français
+   commençant par un accent, utiliser `(?<![A-Za-zÀ-ÿ])` (cf. `fixWordBoundaries`).
++- Trois couches plein écran empilées : classement (z 150) < fiche (z 200) < page ELO
++  (z 300). Échap ne doit en fermer **qu'une** → le handler du classement écoute sur
++  `window` en **capture**, sinon `closeModal` (sur `document`) a déjà changé l'état lu.
++- `p4pOrder()` ne mémorise rien tant que `eloDB` est vide — sinon un clic sur
++  « Classement » pendant le chargement fige une liste vide pour toute la session.
+ 
+ ## Roadmap
+ 
+-1. Pages de classement P4P + par catégorie
++1. ~~Pages de classement P4P + par catégorie~~ — fait
+ 2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
+ 3. (Plus tard) Comparateur, URLs SEO, notes communautaires
+diff --git a/index.html b/index.html
+index 150d0d3..3a55a44 100644
+--- a/index.html
++++ b/index.html
+@@ -50,6 +50,9 @@ button,input,select{font:inherit;color:inherit}
+ .brand i{color:var(--red);font-style:normal}
+ .tb-help{margin-left:20px;background:var(--bg-3);border:1px solid var(--line-2);color:var(--tx-2);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.5px;text-transform:uppercase;padding:6px 13px;border-radius:6px;cursor:pointer;transition:all .15s;white-space:nowrap}
+ .tb-help:hover{border-color:var(--gold);color:#e9c877}
++.tb-help+.tb-help{margin-left:8px}
++#btnRank{color:#e9c877;border-color:rgba(211,162,74,.3)}
++#btnRank:hover{background:rgba(211,162,74,.12);border-color:var(--gold)}
+ /* page ELO expliqué */
+ .elo-page{position:fixed;inset:0;z-index:300;background:var(--bg);overflow-y:auto;display:none}
+ .elo-page.on{display:block}
+@@ -495,6 +498,101 @@ footer{
+ footer a{color:var(--tx-3);text-decoration:none;border-bottom:1px solid var(--line-2)}
+ footer a:hover{color:var(--tx-2)}
+ 
++/* ══ PAGE CLASSEMENT (P4P + divisions) ══ */
++/* z-index 150 : au-dessus de la topbar (90), sous la modale (200) — cliquer une
++   ligne ouvre donc la fiche PAR-DESSUS le classement, sans le fermer. */
++.rank-page{position:fixed;inset:0;z-index:150;background:var(--bg);overflow-y:auto;display:none}
++.rank-page.on{display:block}
++.rk-head{position:sticky;top:0;z-index:6;background:rgba(11,11,13,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 clamp(16px,4vw,44px);height:58px}
++.rk-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
++.rk-title i{color:var(--gold);font-style:normal}
++.rk-head-elo{margin-left:auto;background:none;border:none;color:var(--tx-3);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:6px 4px;transition:color .15s;white-space:nowrap}
++.rk-head-elo:hover{color:#e9c877}
++.rk-close{background:var(--bg-3);border:1px solid var(--line-2);color:var(--tx-2);width:36px;height:36px;flex-shrink:0;border-radius:50%;cursor:pointer;font-size:17px;line-height:1;transition:all .18s}
++.rk-close:hover{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(90deg)}
++.rk-body{max-width:980px;margin:0 auto;padding:34px clamp(16px,4vw,44px) 90px}
++.rk-lead{font-size:14.5px;line-height:1.65;color:var(--tx-2);font-weight:300;max-width:660px;margin-bottom:24px}
++.rk-lead b{color:var(--tx);font-weight:600}
++.rk-lead em{color:#e9c877;font-style:normal;font-weight:600}
++.rk-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
++.rk-divs{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;padding-bottom:2px;scrollbar-width:none}
++.rk-divs::-webkit-scrollbar{display:none}
++.rk-divs .chip.on{background:var(--gold);border-color:var(--gold);color:#191016}
++.rk-modes{display:flex;flex-shrink:0;border:1px solid var(--line-2);border-radius:100px;overflow:hidden}
++.rk-mode{background:transparent;border:none;color:var(--tx-2);font-size:12px;padding:7px 15px;cursor:pointer;white-space:nowrap;transition:all .15s}
++.rk-mode:hover{color:var(--tx)}
++.rk-mode.on{background:var(--gold);color:#191016;font-weight:700}
++.rk-count{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-bottom:14px}
++.rk-count b{color:var(--tx-2)}
++.rk-list{display:flex;flex-direction:column;gap:6px}
++.rk-row{
++  display:grid;grid-template-columns:42px 46px minmax(0,1fr) auto auto auto;
++  align-items:center;gap:14px;
++  background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
++  padding:8px 16px 8px 6px;cursor:pointer;text-align:left;width:100%;
++  transition:background .15s,border-color .15s,transform .15s;
++}
++.rk-row:hover,.rk-row:focus-visible{background:var(--bg-3);border-color:var(--line-2);transform:translateX(3px);outline:none}
++.rk-pos{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:21px;line-height:1;text-align:center;color:var(--tx-3);font-variant-numeric:tabular-nums}
++.rk-row.p1{border-color:rgba(211,162,74,.4);background:linear-gradient(100deg,rgba(211,162,74,.09),var(--bg-2) 55%)}
++.rk-row.p1 .rk-pos{color:#e9c877;font-size:25px}
++.rk-row.p2{border-color:rgba(255,255,255,.16)}
++.rk-row.p2 .rk-pos{color:#cfd2d8;font-size:23px}
++.rk-row.p3{border-color:rgba(190,130,80,.3)}
++.rk-row.p3 .rk-pos{color:#c98f5c;font-size:23px}
++.rk-photo{
++  width:46px;height:46px;border-radius:9px;overflow:hidden;position:relative;flex-shrink:0;
++  display:flex;align-items:center;justify-content:center;
++  background:linear-gradient(160deg,#1B1B23,#101015);
++}
++.rk-photo .avatar{font-size:15px}
++/* la vignette est minuscule : on recadre serré sur le visage, y compris pour les
++   decoupes corps entier qui seraient illisibles en 46px */
++.rk-photo .ph{object-fit:cover;object-position:center 14%;transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s}
++.rk-photo .ph.cut{object-fit:cover;object-position:center 12%;padding:0;filter:none}
++.rk-photo .ph.wiki{filter:grayscale(.3) contrast(1.04)}
++.rk-row:hover .rk-photo .ph{transform:scale(1.08)}
++.rk-id{min-width:0}
++.rk-name{font-size:15px;font-weight:600;display:flex;align-items:center;gap:7px;min-width:0}
++.rk-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
++.rk-name .flag{height:12px;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
++.rk-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
++.rk-sub .nk{color:var(--tx-2);text-transform:none;letter-spacing:.2px;font-style:italic}
++.rk-rec{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
++.rk-rec .w{color:#3fd183;font-weight:700}
++.rk-rec .l{color:#ff6b78;font-weight:700}
++.rk-rec .s{color:var(--tx-3)}
++.rk-trend{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 7px;border-radius:4px;min-width:46px;text-align:center}
++.rk-trend.up{color:#3fd183;background:rgba(37,160,92,.14)}
++.rk-trend.down{color:#ff6b78;background:rgba(224,26,43,.14)}
++.rk-trend.flat{color:var(--tx-3);background:var(--bg-3)}
++.rk-elo{text-align:right;min-width:70px}
++.rk-elo b{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#e9c877;line-height:1;font-variant-numeric:tabular-nums}
++.rk-elo span{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);margin-top:4px}
++.rk-empty{background:var(--bg-2);border:1px dashed var(--line-2);border-radius:var(--r);padding:34px 20px;text-align:center;color:var(--tx-3);font-size:13.5px;line-height:1.7}
++.rk-empty b{display:block;color:var(--tx-2);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:19px;text-transform:uppercase;margin-bottom:6px}
++.rk-foot{margin-top:22px;font-size:12.5px;color:var(--tx-3);font-style:italic;line-height:1.6}
++
++@media(max-width:820px){
++  .rk-row{grid-template-columns:34px 42px minmax(0,1fr) auto;gap:10px;padding:8px 12px 8px 4px}
++  .rk-rec,.rk-trend{display:none}
++  .rk-photo{width:42px;height:42px}
++  .rk-pos{font-size:18px}
++  .rk-row.p1 .rk-pos,.rk-row.p2 .rk-pos,.rk-row.p3 .rk-pos{font-size:20px}
++  .rk-name{font-size:14px}
++  .rk-elo{min-width:56px}
++  .rk-elo b{font-size:16px}
++  .rk-tools{gap:8px}
++  .rk-modes{width:100%;justify-content:center}
++  .rk-mode{flex:1}
++}
++@media(max-width:560px){
++  /* l'en-tete deborderait et pousserait le bouton fermer hors ecran */
++  .rk-head{gap:10px;padding-right:12px}
++  .rk-elo-long{display:none}
++  .rk-title{font-size:17px}
++}
++
+ @media(max-width:640px){
+   .m-head{flex-direction:column}
+   .m-photo{width:calc(100% - 32px);height:220px;margin:16px 16px 0}
+@@ -512,6 +610,7 @@ footer a:hover{color:var(--tx-2)}
+ 
+ <div class="topbar">
+   <div class="brand">FIGHTER<i>HUB</i></div>
++  <button class="tb-help" id="btnRank" title="Classement pound-for-pound et par division">★ Classement</button>
+   <button class="tb-help" id="btnHelp" title="Comment fonctionne le classement ELO ?">? ELO expliqué</button>
+   <div class="topbar-meta" id="tbMeta"><span class="dot loading"></span>Chargement…</div>
+ </div>
+@@ -568,6 +667,27 @@ footer a:hover{color:var(--tx-2)}
+ 
+ <div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+ 
++<div class="rank-page" id="rankPage">
++  <div class="rk-head">
++    <div class="rk-title">Classement <i id="rkHeadDiv">pound-for-pound</i></div>
++    <button class="rk-head-elo" id="rkHelp">?&nbsp;<span class="rk-elo-long">Comment marche l'</span>ELO</button>
++    <button class="rk-close" id="rkClose" aria-label="Fermer">✕</button>
++  </div>
++  <div class="rk-body">
++    <p class="rk-lead">Les combattants classés par <b>score ELO</b> — un chiffre unique qui estime le niveau réel, calculé sur la qualité des adversaires battus et la manière de gagner. Seuls les combattants avec au moins <em>5 combats UFC</em> apparaissent ici, retraités compris.</p>
++    <div class="rk-tools">
++      <div class="rk-divs" id="rkDivs"></div>
++      <div class="rk-modes">
++        <button class="rk-mode on" data-mode="elo">ELO actuel</button>
++        <button class="rk-mode" data-mode="peak">Pic de carrière</button>
++      </div>
++    </div>
++    <div class="rk-count" id="rkCount"></div>
++    <div class="rk-list" id="rkList"></div>
++    <p class="rk-foot" id="rkFoot"></p>
++  </div>
++</div>
++
+ <div class="elo-page" id="eloPage">
+   <div class="ep-head">
+     <div class="ep-title">Le classement <i>ELO</i> — comment ça marche</div>
+@@ -1489,14 +1609,24 @@ function eloBlock(f){
+       ${spark?`<div class="elo-trend"><span class="elo-trend-lbl">6 derniers combats</span><div class="elo-spark">${spark}</div></div>`:''}
+     </div>`;
+ }
+-// rang pound-for-pound (calculé une fois, mémorisé)
+-let _rankCache = null;
+-function eloRank(key){
+-  if(!_rankCache){
+-    const arr = [...eloDB.entries()].filter(([k,v])=>v.n>=5).sort((a,b)=>b[1].elo-a[1].elo);
+-    _rankCache = new Map(arr.map(([k],i)=>[k,i+1]));
++// ── classement pound-for-pound (calculé une fois, mémorisé) ──
++// UNE seule source d'ordre : la pastille « #N P4P » des fiches et la page de
++// classement lisent la même liste. Deux tris séparés finiraient par diverger.
++const RANK_MIN_FIGHTS = 5;      // combats UFC minimum pour être classé
++let _p4pOrder = null, _rankCache = null;
++function p4pOrder(){
++  // tant que elo.json n'est pas charge on ne memorise RIEN : sinon un clic sur
++  // « Classement » pendant le chargement figerait une liste vide pour de bon.
++  if(!_p4pOrder && eloDB.size){
++    _p4pOrder = [...eloDB.entries()]
++      .filter(([k,v])=>v.n>=RANK_MIN_FIGHTS)
++      .sort((a,b)=>b[1].elo-a[1].elo);
+   }
+-  return _rankCache.get(key) || null;
++  return _p4pOrder || [];
++}
++function eloRank(key){
++  if(!_rankCache && eloDB.size) _rankCache = new Map(p4pOrder().map(([k],i)=>[k,i+1]));
++  return _rankCache ? (_rankCache.get(key) || null) : null;
+ }
+ 
+ // radar (toile d'araignée) — SVG maison, sans dépendance. vals = [{label,v,c}]
+@@ -1756,7 +1886,9 @@ function barRow(label, val, total, color){
+ 
+ function closeModal(){
+   document.getElementById('ov').classList.remove('on');
+-  document.body.style.overflow='';
++  // la fiche peut s'ouvrir PAR-DESSUS la page classement : en la fermant on ne
++  // rend le scroll au body que si plus aucune page plein écran n'est ouverte.
++  document.body.style.overflow = document.querySelector('.rank-page.on, .elo-page.on') ? 'hidden' : '';
+ }
+ document.getElementById('ov').addEventListener('click',e=>{ if(e.target.id==='ov') closeModal(); });
+ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+@@ -1764,8 +1896,172 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+ // page ELO expliqué
+ const eloPage=document.getElementById('eloPage');
+ document.getElementById('btnHelp').addEventListener('click',()=>{ eloPage.classList.add('on'); document.body.style.overflow='hidden'; window.scrollTo(0,0); });
+-document.getElementById('epClose').addEventListener('click',()=>{ eloPage.classList.remove('on'); document.body.style.overflow=''; });
+-document.addEventListener('keydown',e=>{ if(e.key==='Escape' && eloPage.classList.contains('on')){ eloPage.classList.remove('on'); document.body.style.overflow=''; } });
++// la page ELO peut s'ouvrir depuis le classement : on ne rend le scroll au body
++// que si aucune autre page plein écran n'est restée ouverte dessous.
++function closeEloPage(){
++  eloPage.classList.remove('on');
++  document.body.style.overflow = document.querySelector('.rank-page.on') ? 'hidden' : '';
++}
++document.getElementById('epClose').addEventListener('click', closeEloPage);
++document.addEventListener('keydown',e=>{ if(e.key==='Escape' && eloPage.classList.contains('on')) closeEloPage(); });
++
++/* ═══════════ PAGE CLASSEMENT (P4P + divisions) ═══════════ */
++const RANK_LIMIT = 100;         // nombre de lignes affichées par onglet
++let rkDiv  = '';                // '' = toutes divisions (P4P)
++let rkMode = 'elo';             // 'elo' = niveau actuel | 'peak' = pic de carrière
++const rankPage = document.getElementById('rankPage');
++
++// combattants classables pour l'onglet courant, dans l'ordre d'affichage
++function rankRows(){
++  const rows = [];
++  for(const [key, e] of p4pOrder()){
++    const f = BY_NAME.get(key);
++    if(!f) continue;                       // présent dans elo.json sans fiche
++    if(rkDiv && f.wc !== rkDiv) continue;
++    rows.push({ f, e });
++  }
++  // en mode « elo » l'ordre de p4pOrder() est déjà le bon : on ne retrie pas.
++  // C'est ce qui garantit que la Ne ligne du P4P == le « #N P4P » de la fiche.
++  if(rkMode === 'peak'){
++    rows.sort((a,b)=> b.e.peak-a.e.peak || b.e.elo-a.e.elo || a.f.name.localeCompare(b.f.name));
++  }
++  return rows;
++}
++
++function rankRowHTML({f, e}, pos){
++  const val = rkMode==='peak' ? e.peak : e.elo;
++  const alt = rkMode==='peak' ? `Actuel ${e.elo}` : `Pic ${e.peak}`;
++  const trend = e.trend || [];
++  const sum = trend.reduce((s,d)=>s+d, 0);          // solde des 6 derniers combats
++  const tcls = sum>0 ? 'up' : sum<0 ? 'down' : 'flat';
++  const fl = flagFor(f.key);
++  const nk = nickOf(f.key);
++  const sub = [ f.wc ? wcShort(f.wc) : '', nk ? `<span class="nk">« ${esc(nk)} »</span>` : '' ]
++    .filter(Boolean).join(' · ');
++  return `<button class="rk-row${pos<=3?' p'+pos:''}" data-k="${f.key}">
++    <div class="rk-pos">${pos}</div>
++    <div class="rk-photo" data-photo="${f.key}"><div class="avatar">${initials(f.name)}</div></div>
++    <div class="rk-id">
++      <div class="rk-name">${fl}<span>${esc(f.name)}</span></div>
++      ${sub?`<div class="rk-sub">${sub}</div>`:''}
++    </div>
++    <div class="rk-rec"><span class="w">${f.w}</span><span class="s">-</span><span class="l">${f.l}</span>${f.d?`<span class="s">-${f.d}</span>`:''}</div>
++    <div class="rk-trend ${tcls}" title="Solde ELO sur les ${trend.length} derniers combats">${sum>0?'+':''}${sum}</div>
++    <div class="rk-elo"><b>${val}</b><span>${alt}</span></div>
++  </button>`;
++}
++
++function renderRank(){
++  const rows  = rankRows();
++  const shown = rows.slice(0, RANK_LIMIT);
++  const list  = document.getElementById('rkList');
++
++  document.getElementById('rkHeadDiv').textContent = rkDiv ? rkDiv.replace("Women's","Femmes ") : 'pound-for-pound';
++
++  if(!shown.length){
++    document.getElementById('rkCount').textContent = '';
++    document.getElementById('rkFoot').textContent = '';
++    list.innerHTML = eloDB.size
++      ? `<div class="rk-empty"><b>Personne dans ce classement</b>
++         Aucun combattant de cette division n'atteint ${RANK_MIN_FIGHTS} combats UFC.</div>`
++      : `<div class="rk-empty"><b>Chargement…</b>
++         Le classement s'affiche dès que les données ELO sont prêtes.</div>`;
++    return;
++  }
++
++  document.getElementById('rkCount').innerHTML =
++    `${rkMode==='peak'?'Pic de carrière':'ELO actuel'} · <b>${fmtInt(rows.length)}</b> combattant${rows.length>1?'s':''} classé${rows.length>1?'s':''}`
++    + (rows.length>RANK_LIMIT ? ` · top ${RANK_LIMIT} affiché` : '');
++
++  document.getElementById('rkFoot').textContent = rkMode==='peak'
++    ? 'Le pic est le plus haut ELO jamais atteint : c\'est le classement all-time, où les légendes retraitées gardent leur place.'
++    : 'L\'ELO actuel monte et descend à chaque combat — une défaite récente fait reculer, même une légende.';
++
++  list.innerHTML = shown.map((r,i)=>rankRowHTML(r, i+1)).join('');
++  list.querySelectorAll('.rk-row').forEach(el=>{
++    el.addEventListener('click', ()=>openModal(BY_NAME.get(el.dataset.k)));
++  });
++  // photos : uniquement ce qui est déjà en cache (photos.json), aucune requête
++  // réseau ici — hydratePhotos() est réservé à la grille et annulerait son tour.
++  shown.forEach(r=>paintPhoto(r.f));
++}
++
++function buildRankDivs(){
++  const el = document.getElementById('rkDivs');
++  el.innerHTML = `<button class="chip on" data-wc="">P4P · toutes divisions</button>` +
++    WCS.map(c=>`<button class="chip" data-wc="${c}">${c.replace("Women's","F.")}</button>`).join('');
++  el.querySelectorAll('.chip').forEach(b=>{
++    b.addEventListener('click', ()=>{
++      el.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
++      b.classList.add('on');
++      rkDiv = b.dataset.wc;
++      renderRank();
++      syncRankHash();
++      document.querySelector('.rank-page').scrollTo({top:0, behavior:'smooth'});
++    });
++  });
++}
++
++// URL partageable : #p4p, ou #p4p-heavyweight pour une division
++function rkSlug(wc){ return (wc||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
++function divFromHash(h){
++  const s = h.replace(/^#p4p-?/,'');
++  if(!s) return '';
++  return WCS.find(c=>rkSlug(c)===s) || '';
++}
++function syncRankHash(){
++  history.replaceState(null, '', rkDiv ? '#p4p-'+rkSlug(rkDiv) : '#p4p');
++}
++
++function openRank(div){
++  rkDiv = div || '';
++  document.getElementById('rkDivs').querySelectorAll('.chip')
++    .forEach(x=>x.classList.toggle('on', x.dataset.wc === rkDiv));
++  renderRank();
++  rankPage.classList.add('on');
++  document.body.style.overflow = 'hidden';
++  rankPage.scrollTop = 0;
++  // la barre d'onglets defile horizontalement : sur un lien #p4p-heavyweight
++  // partage, l'onglet actif resterait hors champ et on croirait etre sur le P4P
++  // general. A faire APRES l'affichage : scrollIntoView ne fait rien sur du
++  // display:none.
++  document.querySelector('#rkDivs .chip.on')?.scrollIntoView({inline:'center', block:'nearest'});
++  syncRankHash();
++}
++function closeRank(keepHash){
++  rankPage.classList.remove('on');
++  if(!document.getElementById('ov').classList.contains('on')) document.body.style.overflow = '';
++  if(!keepHash) history.replaceState(null, '', location.pathname + location.search);
++}
++
++document.getElementById('btnRank').addEventListener('click', ()=>openRank(rkDiv));
++document.getElementById('rkClose').addEventListener('click', ()=>closeRank());
++document.getElementById('rkHelp').addEventListener('click', ()=>{
++  eloPage.classList.add('on'); document.body.style.overflow='hidden'; eloPage.scrollTop = 0;
++});
++document.querySelectorAll('.rk-mode').forEach(b=>{
++  b.addEventListener('click', ()=>{
++    document.querySelectorAll('.rk-mode').forEach(x=>x.classList.remove('on'));
++    b.classList.add('on');
++    rkMode = b.dataset.mode;
++    renderRank();
++  });
++});
++// Échap ne ferme QU'UNE couche : fiche > page ELO > classement.
++// Écoute sur window en phase capture, donc avant les handlers Échap de la fiche
++// et de la page ELO (qui sont sur document) : sinon on lirait un état déjà
++// modifié par eux et Échap fermerait deux couches d'un seul coup.
++window.addEventListener('keydown', e=>{
++  if(e.key!=='Escape' || !rankPage.classList.contains('on')) return;
++  if(document.getElementById('ov').classList.contains('on')) return;   // la fiche part en premier
++  if(eloPage.classList.contains('on')) return;                          // puis la page ELO
++  closeRank();
++}, true);
++// bouton retour du navigateur (replaceState ne déclenche pas hashchange)
++window.addEventListener('hashchange', ()=>{
++  if(location.hash.startsWith('#p4p')) openRank(divFromHash(location.hash));
++  else if(rankPage.classList.contains('on')) closeRank(true);
++});
+ 
+ /* ═══════════ CHIPS ═══════════ */
+ function buildChips(){
+@@ -1817,6 +2113,7 @@ function skeleton(){
+ /* ═══════════ BOOT ═══════════ */
+ (async function boot(){
+   buildChips();
++  buildRankDivs();
+   skeleton();
+   document.getElementById('resTxt').textContent = 'Chargement de la base…';
+ 
+@@ -1846,6 +2143,10 @@ function skeleton(){
+ 
+     setProgress(100);
+     applyFilters();
++
++    // lien partagé #p4p / #p4p-heavyweight, ou page ouverte pendant le chargement
++    if(location.hash.startsWith('#p4p')) openRank(divFromHash(location.hash));
++    else if(rankPage.classList.contains('on')) renderRank();
+   }catch(err){
+     console.error(err);
+     setProgress(100);
+-- 
+2.43.0
+
