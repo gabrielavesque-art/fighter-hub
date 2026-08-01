@@ -19,6 +19,9 @@
   --tx-2:#A5A3AE;
   --tx-3:#63616D;
   --red:#E01A2B;
+  /* même teinte que le logo, éclaircie : #E01A2B ne contraste qu'à 4:1 sur le
+     fond, suffisant pour un titre mais pas pour du petit texte */
+  --red-lt:#FF3B4D;
   --red-dim:rgba(224,26,43,.14);
   --gold:#D3A24A;
   --green:#25A05C;
@@ -65,6 +68,17 @@ button,input,select{font:inherit;color:inherit}
   content:'';position:absolute;left:14px;right:14px;bottom:0;height:2px;
   background:var(--red);border-radius:2px 2px 0 0;
 }
+/* l'ELO n'est pas une section de contenu mais une aide : bouton à part, à droite,
+   pour que la nav ne garde que les vraies sections */
+.tb-help{
+  flex-shrink:0;margin-left:16px;background:var(--bg-2);
+  border:1px solid var(--line-2);border-radius:100px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--tx-3);text-decoration:none;
+  padding:7px 13px;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.tb-help:hover{border-color:var(--red);color:var(--red-lt)}
+.tb-help.on{background:var(--red);border-color:var(--red);color:#fff}
 /* ══ SECTIONS PLEIN ÉCRAN ══ */
 /* elles commencent SOUS le header (58 px) : la navigation reste visible et
    cliquable, donc plus besoin d'une barre de titre + croix dans chaque page */
@@ -75,17 +89,17 @@ button,input,select{font:inherit;color:inherit}
   font-size:clamp(30px,4.4vw,44px);line-height:1;text-transform:uppercase;
   letter-spacing:-.5px;margin-bottom:18px;
 }
-.pg-title i{color:var(--gold);font-style:normal}
+.pg-title i{color:var(--red);font-style:normal}
 .ep-body{max-width:760px;margin:0 auto;padding:40px clamp(16px,4vw,44px) 80px}
 .ep-lead{font-size:17px;line-height:1.6;color:var(--tx);font-weight:300;margin-bottom:40px}
-.ep-lead b{font-weight:600;color:#e9c877}
+.ep-lead b{font-weight:600;color:var(--red-lt)}
 .ep-sec{margin-bottom:38px}
 .ep-h{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.ep-h::before{content:'';width:4px;height:20px;background:var(--gold);border-radius:2px}
+.ep-h::before{content:'';width:4px;height:20px;background:var(--red);border-radius:2px}
 .ep-p{font-size:14.5px;line-height:1.7;color:var(--tx-2);margin-bottom:14px}
 .ep-p b{color:var(--tx);font-weight:600}
 .ep-example{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:18px 0;font-size:14px;line-height:1.7;color:var(--tx-2)}
-.ep-example .ex-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.ep-example .ex-t{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--red-lt);margin-bottom:10px}
 .ep-calc{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px;margin-top:8px}
 .ep-pill{background:var(--bg-3);border:1px solid var(--line-2);padding:4px 10px;border-radius:5px;color:var(--tx)}
 .ep-pill.g{color:#3fd183;border-color:rgba(37,160,92,.3)}
@@ -93,7 +107,7 @@ button,input,select{font:inherit;color:inherit}
 .ep-table{display:grid;grid-template-columns:1fr auto;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin:16px 0}
 .ep-table>div{background:var(--bg-2);padding:11px 15px;font-size:13.5px}
 .ep-table .h{background:var(--bg-3);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3)}
-.ep-table .val{font-family:'JetBrains Mono',monospace;text-align:right;color:#e9c877;font-weight:700}
+.ep-table .val{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--red-lt);font-weight:700}
 .ep-note{font-size:12.5px;color:var(--tx-3);font-style:italic;line-height:1.6;margin-top:8px}
 .topbar-meta{margin-left:auto;padding-left:20px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:1px;color:var(--tx-3);text-transform:uppercase;white-space:nowrap}
 /* le compteur est un bonus : il saute avant que la navigation ne déborde */
@@ -102,6 +116,7 @@ button,input,select{font:inherit;color:inherit}
   .nav{margin-left:14px}
   .nav-lnk{padding:0 11px;font-size:14px}
   .nav-lnk.on::after{left:11px;right:11px}
+  .tb-help{margin-left:auto}   /* le compteur disparu, c'est lui qui tient la droite */
 }
 .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:6px;vertical-align:middle}
 .dot.loading{background:var(--gold);animation:pulse 1s ease-in-out infinite}
@@ -528,11 +543,10 @@ footer a:hover{color:var(--tx-2)}
 .rk-body{max-width:980px;margin:0 auto;padding:36px clamp(16px,4vw,44px) 90px}
 .rk-lead{font-size:14.5px;line-height:1.65;color:var(--tx-2);font-weight:300;max-width:660px;margin-bottom:24px}
 .rk-lead b{color:var(--tx);font-weight:600}
-.rk-lead em{color:#e9c877;font-style:normal;font-weight:600}
+.rk-lead em{color:var(--red-lt);font-style:normal;font-weight:600}
 .rk-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .rk-divs{display:flex;gap:6px;overflow-x:auto;flex:1;min-width:0;padding-bottom:2px;scrollbar-width:none}
 .rk-divs::-webkit-scrollbar{display:none}
-.rk-divs .chip.on{background:var(--gold);border-color:var(--gold);color:#191016}
 .rk-switches{display:flex;gap:8px;flex-shrink:0}
 /* segmenté neutre : une seule couleur d'accent sur la page (l'or de l'onglet
    division), sinon tout brille et plus rien ne ressort */
@@ -579,7 +593,7 @@ footer a:hover{color:var(--tx-2)}
 .rk-row.p1 .rk-pos{color:#e9c877}
 .rk-row.p2 .rk-pos{color:#c8ccd4}
 .rk-row.p3 .rk-pos{color:#c08553}
-.rk-row.p1::before{opacity:1;background:var(--gold)}
+.rk-row.p1::before{opacity:1;background:var(--red)}
 .rk-photo{
   width:60px;height:60px;border-radius:10px;overflow:hidden;position:relative;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
@@ -657,6 +671,7 @@ footer a:hover{color:var(--tx-2)}
   <a class="brand" href="#" id="brand">FIGHTER<i>HUB</i></a>
   <nav class="nav" id="nav"></nav>
   <div class="topbar-meta" id="tbMeta"><span class="dot loading"></span>Chargement…</div>
+  <a class="tb-help" id="navHelp" href="#elo" title="Comment fonctionne le classement ELO">? ELO</a>
 </div>
 
 <div class="hero">
@@ -1988,10 +2003,11 @@ function closeEloPage(){
 /* ═══════════ NAVIGATION ═══════════ */
 // Une entrée = un onglet du header + une route #hash. Pour ajouter une section
 // plus tard : une ligne ici, sa page en HTML, et son cas dans applyRoute().
+// L'explication de l'ELO n'est pas une section de contenu : elle a sa route
+// (#elo, partageable) mais vit dans le bouton d'aide à droite, pas dans NAV.
 const NAV = [
   { id:'home', label:'Combattants', hash:'',     title:"Tous les combattants de l'UFC" },
   { id:'p4p',  label:'P4P',         hash:'#p4p', title:'Classement pound-for-pound et par division' },
-  { id:'elo',  label:'ELO',         hash:'#elo', title:'Comment fonctionne le classement ELO' },
 ];
 function buildNav(){
   document.getElementById('nav').innerHTML = NAV.map(n=>
@@ -2004,6 +2020,7 @@ function buildNav(){
     });
   });
   document.getElementById('brand').addEventListener('click', e=>{ e.preventDefault(); navigate(''); });
+  document.getElementById('navHelp').addEventListener('click', e=>{ e.preventDefault(); navigate('#elo'); });
 }
 // pushState plutôt que replaceState : le bouton retour revient à la section
 // précédente au lieu de quitter le site.
@@ -2020,7 +2037,8 @@ function applyRoute(){
   if(isP4P) openRank(divFromHash(h));
   if(isElo) openEloPage();
   document.querySelectorAll('.nav-lnk').forEach(a=>
-    a.classList.toggle('on', a.dataset.nav === (isP4P ? 'p4p' : isElo ? 'elo' : 'home')));
+    a.classList.toggle('on', !isElo && a.dataset.nav === (isP4P ? 'p4p' : 'home')));
+  document.getElementById('navHelp').classList.toggle('on', isElo);
 }
 window.addEventListener('hashchange', applyRoute);   // URL éditée à la main
 window.addEventListener('popstate',  applyRoute);    // bouton retour / suivant
