@@ -483,19 +483,28 @@ async function main(){
     catch(e){ console.error('  ✗ balayage interrompu :', e.message); keep(); continue; }
     if(res.truncated) console.warn(`  ! plafond de ${MAX_PAGES} pages atteint — chaîne non balayée en entier`);
 
-    /* Les uploads plafonnent à ~20 000 : on complète par les playlists de la
-       chaîne, seul moyen d'atteindre les Free Fights plus anciens. En
-       incrémental on s'en passe : elles ne bougent pas d'un événement à l'autre
-       et ça éviterait de payer le balayage complet à chaque run. */
-    if(!since){
+    /* Les uploads plafonnent à ~20 000 : au rythme de l'UFC ça ne remonte que
+       trois ou quatre ans, et tous les Free Fights plus anciens restent
+       invisibles. Les playlists de la chaîne échappent à ce plafond.
+       On les balaie UNE FOIS par chaîne, puis on retient la date : c'est du
+       fonds de catalogue, il ne bouge pas d'un événement à l'autre. Le
+       déclencheur est ce repère, pas le mode incrémental — sinon un run
+       « videos » ordinaire sauterait la plus grosse source de couverture. */
+    let plSwept = prevCh.plSwept || null;
+    if(FORCE || !plSwept){
       const seen = new Set(res.videos.map(v=>v.id));
       try{
         const pl = await sweepPlaylists(ch.id, seen);
         if(pl.videos.length){
           res.videos = res.videos.concat(pl.videos);
-          console.log(`  + ${pl.videos.length} vidéos inédites via ${pl.lists} playlists (sur ${pl.found} retenues)`);
+          console.log(`  + ${pl.videos.length} vidéos inédites via ${pl.lists} playlists (sur ${pl.found} candidates)`);
+        } else {
+          console.log(`  + aucune vidéo inédite dans les ${pl.lists} playlists balayées`);
         }
+        plSwept = new Date().toISOString();
       }catch(e){ console.warn('  ! playlists ignorées :', e.message); }
+    } else {
+      console.log(`  playlists déjà balayées le ${plSwept.slice(0,10)} — relancer « videos-rebuild » pour les reprendre`);
     }
 
     let chMatched = 0;
@@ -520,7 +529,9 @@ async function main(){
       if(seenTitles.length < 12) seenTitles.push(`${kind==='full'?'complet ':'résumé '} ${v.title}`);
     }
 
-    meta.channels[cfg.key] = { id:ch.id, title:ch.title, newest, scanned:res.videos.length, matched:chMatched };
+    // plSwept est le repère qui évite de repayer le fonds de catalogue à chaque
+    // run : sans lui dans le fichier écrit, le balayage recommencerait sans fin.
+    meta.channels[cfg.key] = { id:ch.id, title:ch.title, newest, plSwept, scanned:res.videos.length, matched:chMatched };
     console.log(`  ${res.videos.length} vidéos lues (${res.pages} pages) · ${chMatched} rattachées à un combat`);
   }
 
