@@ -22,6 +22,7 @@
   /* même teinte que le logo, éclaircie : #E01A2B ne contraste qu'à 4:1 sur le
      fond, suffisant pour un titre mais pas pour du petit texte */
   --red-lt:#FF3B4D;
+  --orange:#FF8A3D;      /* résumé vidéo — entre le rouge du combat complet et le gris */
   --red-dim:rgba(224,26,43,.14);
   --gold:#D3A24A;
   --green:#25A05C;
@@ -468,15 +469,35 @@ main{padding:0 clamp(14px,3.5vw,44px) 70px;max-width:1400px;margin:0 auto}
   transition:background .14s,color .14s,border-color .14s,transform .14s;
 }
 .vplay:hover{background:var(--red);color:#fff;border-color:var(--red);transform:scale(1.12)}
-/* le combat complet vaut mieux qu'un resume : on le signale d'entree */
-.vplay.vfull{color:#FF6B78;background:var(--red-dim);border-color:rgba(224,26,43,.3)}
-.vplay.vfull:hover{color:#fff}
+/* Trois niveaux de chaleur, du plus fort au plus faible : rouge = le combat en
+   entier, orange = le resume. Le gris se confondait avec le texte mort de la
+   ligne et personne ne voyait qu'il y avait une video. */
+.vplay{color:var(--orange);background:rgba(255,138,61,.12);border-color:rgba(255,138,61,.28)}
+.vplay:hover{background:var(--orange);color:#191016;border-color:var(--orange)}
+.vplay.vfull{color:#FF6B78;background:var(--red-dim);border-color:rgba(224,26,43,.35)}
+.vplay.vfull:hover{background:var(--red);color:#fff;border-color:var(--red)}
 /* repli recherche : present sur TOUS les autres combats, mais volontairement
    efface — c'est une piste, pas une video verifiee, et il ne doit pas voler
    l'attention aux deux ci-dessus */
-.vplay.vsearch{color:var(--tx-3);background:none;border-color:transparent;opacity:.42}
-.vplay.vsearch:hover{opacity:1;background:rgba(255,255,255,.07);border-color:var(--line-2);color:var(--tx-2);transform:none}
-tr:hover .vplay.vsearch{opacity:.75}
+.vplay.vsearch{color:var(--tx-3);background:none;border-color:transparent;opacity:.5}
+.vplay.vsearch:hover{opacity:1;background:rgba(255,255,255,.07);border-color:var(--line-2);color:var(--tx-2);transform:scale(1.12)}
+tr:hover .vplay.vsearch{opacity:.85}
+
+/* en-tete de colonne + legende : sans eux, le ▶ ne se decouvre qu'au survol */
+.ftbl th.vth{text-align:right;padding-right:6px;white-space:nowrap}
+.vlgd{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.6px;
+  text-transform:uppercase;color:var(--tx-3);
+}
+.vlgd i{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:17px;height:17px;border-radius:50%;font-size:7px;font-style:normal;
+  margin-right:6px;padding-left:1px;vertical-align:-4px;
+}
+.vlgd .l-full{color:#FF6B78;background:var(--red-dim);border:1px solid rgba(224,26,43,.35)}
+.vlgd .l-hl{color:var(--orange);background:rgba(255,138,61,.12);border:1px solid rgba(255,138,61,.28)}
+.vlgd .l-se{color:var(--tx-3);border:1px solid var(--line-2);opacity:.6}
 
 .elo-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(211,162,74,.08),rgba(211,162,74,0));border:1px solid rgba(211,162,74,.22);border-radius:var(--r);padding:14px 18px;margin-bottom:22px}
 .elo-main{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
@@ -1122,6 +1143,25 @@ function videoSearchURL(selfName, oppName, event){
   const evt = /^UFC\s+\d+/i.test(event||'') ? event.match(/^UFC\s+\d+/i)[0] : 'UFC';
   return 'https://www.youtube.com/results?search_query='
     + encodeURIComponent(`${selfName} vs ${oppName} ${evt}`);
+}
+
+/* Legende sous le palmares : le ▶ seul ne dit pas ce qu'il ouvre, et personne
+   ne survole une icone dont il ignore l'existence. On ne liste que les niveaux
+   reellement presents — annoncer « combat complet » quand il n'y en a aucun
+   n'ajoute que du bruit — et on compte, ce qui donne envie de chercher. */
+function vidLegend(f, hist){
+  if(!hist || !hist.length) return '';
+  let full = 0, hl = 0, se = 0;
+  for(const h of hist){
+    const v = videoOf(f.name, h.opp, h.date);
+    if(v) (v.k === 'full' ? full++ : hl++);
+    else if(h.opp) se++;
+  }
+  const parts = [];
+  if(full) parts.push(`<span><i class="l-full">▶</i>${full} combat${full>1?'s':''} complet${full>1?'s':''}</span>`);
+  if(hl)   parts.push(`<span><i class="l-hl">▶</i>${hl} résumé${hl>1?'s':''}</span>`);
+  if(se)   parts.push(`<span><i class="l-se">▶</i>chercher sur YouTube</span>`);
+  return parts.length ? `<div class="vlgd">${parts.join('')}</div>` : '';
 }
 
 // cellule ▶ du palmares : lien direct vers YouTube, onglet neuf
@@ -1995,7 +2035,7 @@ function openModal(f){
       <div class="sec" style="margin-top:20px">${f.histPartial?'Combats connus':'Palmarès complet'}
         <span>${hist.length} sur ${tot} combat${tot>1?'s':''}</span></div>
       <table class="ftbl">
-        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th></th></tr></thead>
+        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th class="vth">Vidéo</th></tr></thead>
         <tbody>${hist.map(h=>{
           const cls = h.out==='W'?'rb-w':h.out==='L'?'rb-l':'rb-d';
           const lbl = h.out==='W'?'V':h.out==='L'?'D':h.out==='D'?'N':'NC';
@@ -2008,7 +2048,8 @@ function openModal(f){
             ${videoCell(f, h)}
           </tr>`;
         }).join('')}</tbody>
-      </table>` : `
+      </table>
+      ${vidLegend(f, hist)}` : `
       <div class="no-data" style="margin-top:14px">
         <b>${esc(f.name)} n'a jamais combattu à l'UFC.</b><br>
         Pas de classement ELO, de profil ni de statistiques de frappe pour lui :
@@ -2019,7 +2060,7 @@ function openModal(f){
       <div class="sec">Historique UFC <span>${hist.length} combat${hist.length>1?'s':''}</span></div>
       ${hist.length ? `
       <table class="ftbl">
-        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th></th></tr></thead>
+        <thead><tr><th>Rés.</th><th>Adversaire</th><th>Méthode</th><th>Événement</th><th>R/T</th><th class="vth">Vidéo</th></tr></thead>
         <tbody>${hist.map(h=>{
           const cls = h.out==='W'?'rb-w':h.out==='L'?'rb-l':'rb-d';
           const lbl = h.out==='W'?'V':h.out==='L'?'D':h.out==='D'?'N':'NC';
@@ -2032,7 +2073,8 @@ function openModal(f){
             ${videoCell(f, h)}
           </tr>`;
         }).join('')}</tbody>
-      </table>` : `<div class="loading-inline">${fightsLoaded?'Aucun combat UFC enregistré.':"Chargement de l'historique…"}</div>`}`}
+      </table>
+      ${vidLegend(f, hist)}` : `<div class="loading-inline">${fightsLoaded?'Aucun combat UFC enregistré.':"Chargement de l'historique…"}</div>`}`}
 
       <div class="banner">
         → <b>Bientôt</b> : pronostics entre combattants.
