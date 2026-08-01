@@ -157,36 +157,54 @@ function isFighterPage(title, extract, lang){
   return (lang === 'fr' ? MMA_FR : MMA_EN).test(ex);
 }
 
-/* Attention : l'API MediaWiki force exlimit=1 dès qu'on demande exsentences /
-   exchars — un seul titre reçoit un extrait par requête. On ne demande donc
-   JAMAIS exsentences : avec explaintext seul, exlimit fonctionne et on peut
-   récupérer 20 pages PAR REQUÊTE. C'est le point qui change tout : à raison
-   d'une poignée de requêtes par combattant, un roster de 4566 demandait ~15 000
-   appels et Wikipedia coupait tout au 429 (run réel : 790 traités en 1h30, 2,5 %
-   de réussite). Par lots de 20, le même roster tient en ~230 requêtes par passe.
+/* LA règle de l'API, celle qui a coûté trois refontes :
 
-   Le prix à payer : &redirects=1 renvoie les redirections et normalisations dans
-   des tables à part, et les pages reviennent sous leur titre FINAL. Il faut donc
-   rejouer la chaîne demandé -> normalisé -> redirigé pour retrouver à quel
-   combattant appartient chaque page. */
+     exlimit — "How many extracts to return.
+                Note: If exintro is not set, only 1 extract is allowed."
 
-const EXTRACT_BATCH = 20;   // plafond de l'API pour prop=extracts
+   La contrainte porte sur exintro, PAS sur exsentences. Demander le texte
+   intégral (sans exintro) plafonne donc exlimit à 1 : un lot de 20 titres ne
+   renvoie qu'UNE page et les 19 autres disparaissent sans erreur. C'est ce qui
+   maintenait la couverture à 0,1 % run après run.
 
-// Map(titre demandé -> page) ; les titres absents ou sans extrait sont omis
-async function batchExtracts(titles, lang){
-  const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
-            + '&redirects=1&prop=extracts&explaintext=1&exlimit=' + EXTRACT_BATCH
-            + '&titles=' + encodeURIComponent(titles.join('|'));
-  const q = (await getJSON(url)).query || {};
+   D'où deux phases :
+     1. DÉCOUVERTE — exintro=1 + exlimit=20 : autorisé, donc 20 pages par
+        requête. L'intro suffit à trancher « cette page parle-t-elle bien de CE
+        combattant ? » (elle dit toujours "est un pratiquant d'arts martiaux
+        mixtes brésilien"). Tout le roster tient en ~230 requêtes.
+     2. TEXTE INTÉGRAL — une requête par page, mais uniquement pour les pages
+        validées en phase 1. C'est là que vivent les sections « Jeunesse » /
+        « Early life », le seul endroit où se trouve le parcours humain.
 
-  // titre demandé -> titre final, en rejouant normalisations puis redirections
+   Le gros du roster n'ayant pas de page Wikipedia, la phase 2 ne concerne
+   qu'une fraction des combattants — de l'ordre du millier de requêtes, pas des
+   quinze mille de la version qui se faisait couper au 429.
+
+   Autre piège : avec &redirects=1 les pages reviennent sous leur titre FINAL,
+   et normalisations / redirections arrivent dans des tables séparées. Il faut
+   rejouer la chaîne demandé -> normalisé -> redirigé pour rattacher chaque page
+   au combattant qui l'a demandée. */
+
+const INTRO_BATCH = 20;   // plafond de exlimit quand exintro est posé
+
+// rejoue normalisations et redirections : titre demandé -> titre final
+function aliasMap(titles, q){
   const alias = new Map(titles.map(t => [t, t]));
   for(const table of [q.normalized, q.redirects]){
     for(const { from, to } of (table || [])){
       for(const [dem, cur] of alias) if(cur === from) alias.set(dem, to);
     }
   }
+  return alias;
+}
 
+// PHASE 1 — intros groupées : Map(titre demandé -> page{title, extract})
+async function batchIntros(titles, lang){
+  const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
+            + '&redirects=1&prop=extracts&exintro=1&explaintext=1&exlimit=' + INTRO_BATCH
+            + '&titles=' + encodeURIComponent(titles.join('|'));
+  const q = (await getJSON(url)).query || {};
+  const alias = aliasMap(titles, q);
   const parTitre = new Map((q.pages || []).map(p => [p.title, p]));
   const out = new Map();
   for(const [dem, fin] of alias){
@@ -196,13 +214,22 @@ async function batchExtracts(titles, lang){
   return out;
 }
 
-// découpe une liste en tranches de EXTRACT_BATCH et interroge Wikipedia
-async function resolveTitles(titles, lang){
+// PHASE 2 — texte intégral d'UNE page (exlimit est forcé à 1 sans exintro)
+async function fullText(title, lang){
+  const url = `https://${lang}.wikipedia.org/w/api.php?action=query&format=json&formatversion=2`
+            + '&redirects=1&prop=extracts&explaintext=1'
+            + '&titles=' + encodeURIComponent(title);
+  const pages = (await getJSON(url)).query?.pages || [];
+  const p = pages.find(x => x.missing === undefined && x.extract);
+  return p ? p.extract : null;
+}
+
+// découpe une liste de titres en lots de INTRO_BATCH
+async function discoverTitles(titles, lang){
   const found = new Map();
-  for(let i = 0; i < titles.length; i += EXTRACT_BATCH){
-    const lot = titles.slice(i, i + EXTRACT_BATCH);
+  for(let i = 0; i < titles.length; i += INTRO_BATCH){
     try {
-      for(const [k, v] of await batchExtracts(lot, lang)) found.set(k, v);
+      for(const [k, v] of await batchIntros(titles.slice(i, i + INTRO_BATCH), lang)) found.set(k, v);
     } catch(e){ noteFail(e); }
   }
   return found;
@@ -646,33 +673,38 @@ function composeFrench(F){
    6. RÉSOLUTION PAR PASSES (par lots, pas combattant par combattant)
    ═══════════════════════════════════════════════════════════════ */
 
-/* On ne résout plus un combattant de bout en bout : on fait des PASSES sur tout
-   le roster restant, chacune groupée par lots de 20. Ordre des passes :
-     1. fr.wikipedia, nom nu      -> vraies phrases françaises
-     2. en.wikipedia, nom nu      -> faits recomposés en français
-     3. en.wikipedia, « X (fighter) » / « (mixed martial artist) » pour les
-        homonymes (« Jim Miller » est une page d'homonymie, pas un combattant)
+/* Chaque passe fait DEUX phases : découverte groupée des intros (20 titres par
+   requête), puis texte intégral uniquement pour les pages qui ont passé le
+   filtre. Ordre des passes :
+     1. fr.wikipedia, nom nu   -> vraies phrases françaises
+     2. en.wikipedia, nom nu   -> faits recomposés en français
+     3-4. formes désambiguïsées « (fighter) » / « (mixed martial artist) » :
+          « Jim Miller » tout court est une page d'homonymie, pas un combattant
    Un combattant sort du lot dès qu'une passe lui donne une description. */
 
 const PASSES = [
-  { lang:'fr', src:'fr', titre: n => n,
+  { lang:'fr', titre: n => n,
     label:'fr.wikipedia (phrases réelles)' },
-  { lang:'en', src:'en', titre: n => n,
+  { lang:'en', titre: n => n,
     label:'en.wikipedia (faits recomposés)' },
-  { lang:'en', src:'en', titre: n => n + ' (fighter)',
+  { lang:'en', titre: n => n + ' (fighter)',
     label:'en.wikipedia, homonymes « (fighter) »' },
-  { lang:'en', src:'en', titre: n => n + ' (mixed martial artist)',
+  { lang:'en', titre: n => n + ' (mixed martial artist)',
     label:'en.wikipedia, homonymes « (mixed martial artist) »' }
 ];
 
-// transforme une page en description, selon la langue
-function describe(page, name, src){
-  if(!isFighterPage(page.title, page.extract, src === 'fr' ? 'fr' : 'en')) return null;
+// l'intro suffit-elle à dire que cette page parle bien de CE combattant ?
+function pageMatches(page, name, lang){
+  if(!isFighterPage(page.title, page.extract, lang)) return false;
   const last = deaccent(name.trim().split(/\s+/).pop());
-  if(last.length > 2 && !deaccent(page.title).includes(last)) return null;   // mauvaise personne
-  return src === 'fr'
-    ? pickFrenchSentences(page.extract, name)
-    : composeFrench(factsFromEnglish(page.extract));
+  return last.length <= 2 || deaccent(page.title).includes(last);
+}
+
+// le texte intégral donne la description ; l'intro seule n'a pas la matière
+function describe(texte, name, lang){
+  return lang === 'fr'
+    ? pickFrenchSentences(texte, name)
+    : composeFrench(factsFromEnglish(texte));
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -746,39 +778,52 @@ if(require.main !== module){
   const t0 = Date.now();
 
   let reste = todo.slice();      // combattants encore sans description
-  let pagesVues = 0;             // pages Wikipedia trouvées, description ou non
+  let pagesVues = 0;             // pages Wikipedia validées, description ou non
 
   for(const passe of PASSES){
     if(!reste.length) break;
-    const lots = Math.ceil(reste.length / EXTRACT_BATCH);
-    console.log(`\n▸ ${passe.label} — ${reste.length} combattants, ${lots} requête${lots>1?'s':''}`);
+    const lots = Math.ceil(reste.length / INTRO_BATCH);
+    console.log(`\n▸ ${passe.label}`);
+    console.log(`  découverte : ${reste.length} combattants en ${lots} requête${lots>1?'s':''} groupée${lots>1?'s':''}`);
 
-    // titre demandé -> nom du combattant (plusieurs noms peuvent viser le même titre)
-    const parTitre = new Map();
-    for(const n of reste){
-      const t = passe.titre(n);
-      if(!parTitre.has(t)) parTitre.set(t, []);
-      parTitre.get(t).push(n);
+    // ── phase 1 : intros groupées, pour savoir qui a une page valable ──
+    const titres = reste.map(passe.titre);
+    const intros = await discoverTitles(titres, passe.lang);
+
+    const candidats = reste.filter(n => {
+      const p = intros.get(passe.titre(n));
+      return p && pageMatches(p, n, passe.lang);
+    });
+    pagesVues += candidats.length;
+    console.log(`  ${candidats.length} page${candidats.length>1?'s':''} de combattant validée${candidats.length>1?'s':''} → texte intégral`);
+
+    // ── phase 2 : texte intégral, une requête par page validée ──
+    const decrits = new Map();
+    let n2 = 0;
+    for(const n of candidats){
+      const page = intros.get(passe.titre(n));
+      let texte = null;
+      try { texte = await fullText(page.title, passe.lang); } catch(e){ noteFail(e); }
+      const d = texte ? describe(texte, n, passe.lang) : null;
+      if(d) decrits.set(n, { t: d, src: passe.lang, title: page.title, v: SCHEMA });
+      if(++n2 % 50 === 0 || n2 === candidats.length){
+        process.stdout.write(`\r  texte intégral : ${n2}/${candidats.length} — ${decrits.size} exploitable${decrits.size>1?'s':''}   `);
+      }
     }
-
-    const trouvees = await resolveTitles([...parTitre.keys()], passe.lang);
-    pagesVues += trouvees.size;
+    if(candidats.length) console.log('');
 
     const encore = [];
     for(const n of reste){
-      const page = trouvees.get(passe.titre(n));
-      const d = page ? describe(page, n, passe.src) : null;
-      if(d){
-        db[slugKey(n)] = { t: d, src: passe.src, title: page.title, v: SCHEMA };
-        stats[passe.src]++;
-        if(DRY) console.log(`  ✓ ${n}\n      [${passe.src}] ${page.title}\n      « ${d} »\n`);
-      } else {
-        encore.push(n);
-      }
+      const r = decrits.get(n);
+      if(r){
+        db[slugKey(n)] = r;
+        stats[r.src]++;
+        if(DRY) console.log(`  ✓ ${n}\n      [${r.src}] ${r.title}\n      « ${r.t} »\n`);
+      } else encore.push(n);
     }
 
     const gagne = reste.length - encore.length;
-    console.log(`  → ${gagne} description${gagne>1?'s':''} (${trouvees.size} page${trouvees.size>1?'s':''} trouvée${trouvees.size>1?'s':''})`);
+    console.log(`  → ${gagne} description${gagne>1?'s':''} retenue${gagne>1?'s':''}`);
     reste = encore;
 
     if(!DRY) fs.writeFileSync(OUT, JSON.stringify(db));   // sauvegarde après chaque passe
@@ -802,6 +847,11 @@ if(require.main !== module){
   console.log('  ─────────────────────────────');
   console.log(`  Taux de couverture             : ${(ok / done * 100).toFixed(1)}%`);
   console.log(`  Durée                          : ${Math.round((Date.now()-t0)/60000)} min`);
+  // distingue « pas de page Wikipedia » de « page trouvée mais sous le seuil » :
+  // si ce second chiffre est gros, c'est MIN_SCORE / le seuil de richesse qu'il
+  // faut relâcher, pas le réseau qu'il faut corriger
+  console.log(`\n  Pages de combattant trouvées   : ${pagesVues}`);
+  console.log(`  …dont rien d'exploitable       : ${Math.max(0, pagesVues - ok)}`);
 
   if(failStats.size){
     console.log('\n─── Causes d\'échec (diagnostic) ───');
