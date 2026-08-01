@@ -471,6 +471,12 @@ main{padding:0 clamp(14px,3.5vw,44px) 70px;max-width:1400px;margin:0 auto}
 /* le combat complet vaut mieux qu'un resume : on le signale d'entree */
 .vplay.vfull{color:#FF6B78;background:var(--red-dim);border-color:rgba(224,26,43,.3)}
 .vplay.vfull:hover{color:#fff}
+/* repli recherche : present sur TOUS les autres combats, mais volontairement
+   efface — c'est une piste, pas une video verifiee, et il ne doit pas voler
+   l'attention aux deux ci-dessus */
+.vplay.vsearch{color:var(--tx-3);background:none;border-color:transparent;opacity:.42}
+.vplay.vsearch:hover{opacity:1;background:rgba(255,255,255,.07);border-color:var(--line-2);color:var(--tx-2);transform:none}
+tr:hover .vplay.vsearch{opacity:.75}
 
 .elo-box{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:linear-gradient(120deg,rgba(211,162,74,.08),rgba(211,162,74,0));border:1px solid rgba(211,162,74,.22);border-radius:var(--r);padding:14px 18px;margin-bottom:22px}
 .elo-main{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
@@ -1108,14 +1114,30 @@ function videoOf(selfName, oppName, date){
   return videoDB.get(pk) || null;
 }
 
+/* Recherche YouTube pre-remplie. Les chaines officielles ne publient qu'une
+   fraction des 8 800 combats : sans ce repli, 97 % des lignes resteraient
+   vides. On ne peut pas garantir la video, mais on garantit la piste. */
+function videoSearchURL(selfName, oppName, event){
+  // le nom de l'evenement porte deja « A vs B » : le repeter noie la requete
+  const evt = /^UFC\s+\d+/i.test(event||'') ? event.match(/^UFC\s+\d+/i)[0] : 'UFC';
+  return 'https://www.youtube.com/results?search_query='
+    + encodeURIComponent(`${selfName} vs ${oppName} ${evt}`);
+}
+
 // cellule ▶ du palmares : lien direct vers YouTube, onglet neuf
 function videoCell(f, h){
   const v = videoOf(f.name, h.opp, h.date);
-  if(!v) return '<td class="vcell"></td>';
-  const lbl = (v.k==='full' ? 'Combat complet' : 'Résumé') + ' · ' + (CHAN_LBL[v.c]||v.c);
-  return `<td class="vcell"><a class="vplay${v.k==='full'?' vfull':''}"
-    href="https://www.youtube.com/watch?v=${esc(v.i)}" target="_blank" rel="noopener"
-    title="${esc(lbl)} — ${esc(v.t)}" aria-label="${esc(lbl)}">▶</a></td>`;
+  if(v){
+    const lbl = (v.k==='full' ? 'Combat complet' : 'Résumé') + ' · ' + (CHAN_LBL[v.c]||v.c);
+    return `<td class="vcell"><a class="vplay${v.k==='full'?' vfull':''}"
+      href="https://www.youtube.com/watch?v=${esc(v.i)}" target="_blank" rel="noopener"
+      title="${esc(lbl)} — ${esc(v.t)}" aria-label="${esc(lbl)}">▶</a></td>`;
+  }
+  if(!h.opp) return '<td class="vcell"></td>';
+  const lbl = `Chercher « ${f.name} vs ${h.opp} » sur YouTube`;
+  return `<td class="vcell"><a class="vplay vsearch"
+    href="${esc(videoSearchURL(f.name, h.opp, h.event))}" target="_blank" rel="noopener"
+    title="${esc(lbl)}" aria-label="${esc(lbl)}">▶</a></td>`;
 }
 
 async function loadPhotoDB(){

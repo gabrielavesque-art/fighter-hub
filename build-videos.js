@@ -52,6 +52,10 @@ const OVERLAP_D = 7;     // en incrémental, on repasse 7 jours en arrière (upl
 const CHANNELS = [
   { key:'ufc',    label:'UFC',        handles:['@UFC'],                          q:'UFC' },
   { key:'ufceu',  label:'UFC Europe', handles:['@UFCEurope','@ufceurope'],       q:'UFC Europe' },
+  // chaînes régionales : elles rediffusent des combats que la chaîne principale
+  // n'a pas, souvent des cartes plus anciennes (titres en ES/PT, cf. FULL/HL)
+  { key:'ufcbr',  label:'UFC Brasil', handles:['@UFCBrasil'],                    q:'UFC Brasil' },
+  { key:'ufces',  label:'UFC Español',handles:['@UFCEspanol','@UFCEspañol'],     q:'UFC Espanol' },
   { key:'rmccbt', label:'RMC Sport',  handles:['@RMCSportCombat','@RMCSportMMA'], q:'RMC Sport Combat MMA' },
   { key:'rmc',    label:'RMC Sport',  handles:['@RMCSport'],                     q:'RMC Sport' },
 ];
@@ -180,8 +184,8 @@ async function buildFightIndex(){
    serait pris pour un combat complet. */
 const REJECT = /press ?conf|conf[ée]rence de presse|embedded|countdown|weigh-?in|pes[ée]e|interview|open workout|face-?off|faceoff|pr[ée]diction|preview|analys|r[ée]action|reacts|breakdown|behind the scenes|trash ?talk|best of|top \d|road to|\bep\.? ?\d|\b[ée]pisode|bande-?annonce|trailer|promo|avant-match|d[ée]brief|talk|podcast|\bavis\b|on refait/i;
 
-const FULL = /free fight|full fight|fight in full|le combat complet|combat complet|combat en entier|int[ée]gralit[ée]|en entier/i;
-const HL   = /highlight|r[ée]sum[ée]|recap|finish|knock ?out|\bko\b|\btko\b|submission|soumission|best moments|moments forts|temps forts|le combat|meilleurs moments/i;
+const FULL = /free fight|full fight|fight in full|le combat complet|combat complet|combat en entier|int[ée]gralit[ée]|en entier|luta (?:completa|na [íi]ntegra)|pelea completa|combate completo/i;
+const HL   = /highlight|r[ée]sum[ée]|recap|finish|knock ?out|\bko\b|\btko\b|submission|soumission|best moments|moments forts|temps forts|le combat|meilleurs moments|melhores momentos|lo mejor|nocaute|finaliza[çc][ãa]o|sumis[íi]on/i;
 
 function classify(title){
   if(REJECT.test(title)) return null;
@@ -379,6 +383,48 @@ async function sweep(uploads, since){
   return { videos: out, pages, truncated: !!pageToken && pages >= MAX_PAGES };
 }
 
+/* YouTube plafonne la playlist « uploads » à ~20 000 vidéos : au rythme de l'UFC
+   ça ne remonte que 3 ou 4 ans, et tous les Free Fights plus anciens restent
+   invisibles (c'est exactement ce qu'on a constaté, scanned:20000 pile).
+   Les playlists de la chaîne, elles, ne subissent pas ce plafond — et l'UFC y
+   range justement ses Free Fights et ses Highlights. On les balaie donc en plus,
+   pour 1 unité par tranche de 50, et on dédoublonne par identifiant vidéo. */
+const PL_KEEP = /free fight|full fight|highlight|fight night|classic|combat|r[ée]sum|luta|pelea/i;
+const PL_MAX  = 60;     // garde-fou quota : 60 playlists × ~20 pages = 1 200 unités max
+
+async function sweepPlaylists(channelId, seen){
+  const lists = [];
+  let pageToken = null, pages = 0;
+  do {
+    const j = await api('/playlists', { part:'snippet,contentDetails', channelId, maxResults:50, pageToken }, 1);
+    for(const it of (j.items||[])){
+      const title = (it.snippet||{}).title || '';
+      const n = ((it.contentDetails||{}).itemCount) || 0;
+      if(n && PL_KEEP.test(title)) lists.push({ id:it.id, title, n });
+    }
+    pageToken = j.nextPageToken;
+    pages++;
+  } while(pageToken && pages < 20);
+
+  // les plus fournies d'abord : à quota égal elles rapportent le plus
+  lists.sort((a,b)=>b.n-a.n);
+  const use = lists.slice(0, PL_MAX);
+  const out = [];
+  for(const pl of use){
+    try{
+      const res = await sweep(pl.id, null);
+      for(const v of res.videos){
+        if(seen.has(v.id)) continue;      // déjà vu dans les uploads
+        seen.add(v.id);
+        out.push(v);
+      }
+    }catch(e){
+      console.warn(`    ! playlist « ${pl.title} » ignorée : ${e.message}`);
+    }
+  }
+  return { videos: out, lists: use.length, found: lists.length };
+}
+
 /* ═══════════════════════════════════════════════════════════════
    4. RUN
    ═══════════════════════════════════════════════════════════════ */
@@ -436,6 +482,21 @@ async function main(){
     try{ res = await sweep(ch.uploads, since); }
     catch(e){ console.error('  ✗ balayage interrompu :', e.message); keep(); continue; }
     if(res.truncated) console.warn(`  ! plafond de ${MAX_PAGES} pages atteint — chaîne non balayée en entier`);
+
+    /* Les uploads plafonnent à ~20 000 : on complète par les playlists de la
+       chaîne, seul moyen d'atteindre les Free Fights plus anciens. En
+       incrémental on s'en passe : elles ne bougent pas d'un événement à l'autre
+       et ça éviterait de payer le balayage complet à chaque run. */
+    if(!since){
+      const seen = new Set(res.videos.map(v=>v.id));
+      try{
+        const pl = await sweepPlaylists(ch.id, seen);
+        if(pl.videos.length){
+          res.videos = res.videos.concat(pl.videos);
+          console.log(`  + ${pl.videos.length} vidéos inédites via ${pl.lists} playlists (sur ${pl.found} retenues)`);
+        }
+      }catch(e){ console.warn('  ! playlists ignorées :', e.message); }
+    }
 
     let chMatched = 0;
     let newest = prevCh.newest || '';
@@ -503,6 +564,10 @@ const FIXTURES = [
   // qui compte, pas le combat vedette de l'affiche
   ['UFC 61: Ortiz vs Shamrock 2 | Free Fight: Joe Stevenson vs Yves Edwards','full','joestevenson'],
   ['UFC 205: Alvarez vs McGregor | Free Fight: Yoel Romero vs Chris Weidman','full','yoelromero'],
+  // chaînes régionales : les mots-clés changent de langue, pas les noms
+  ['Luta Completa: Charles Oliveira vs Michael Chandler | UFC 262',    'full', 'charlesoliveira'],
+  ['UFC 283: Glover Teixeira vs Jamahal Hill - Melhores Momentos',     'hl',   'gloverteixeira'],
+  ['Pelea Completa: Alexander Volkanovski vs Brian Ortega',            'full', 'alexandervolkanovski'],
   ['UFC 300 Countdown: Pereira vs Hill',                               null,   null],
   ['Alex Pereira vs Jamahal Hill Press Conference Highlights',         null,   null],
   ['UFC 281 Embedded: Vlog Series - Episode 1',                        null,   null],
