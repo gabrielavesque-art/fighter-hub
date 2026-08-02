@@ -372,6 +372,20 @@ for(let i = 0; i < NOISE_LEX.length; i++) NOISE_LEX[i] = fixWordBoundaries([NOIS
 const CITATION_RE  = /\b(?:d[ée]clar\w*|annonc\w*|confi\w*|expliqu\w*|affirm\w*|racont\w*|indiqu\w*|pr[ée]cis\w*|ajout\w*|lanc\w*)\s*:/i;
 const INTERVIEW_RE = /\b(?:dans une interview|en conf[ée]rence de presse|au micro de|interrog[ée]\w*|selon (?:lui|elle)|d[ée]clare[- ]t[- ]il|dit[- ]il)\b/i;
 
+/* Phrases centrées sur un proche. Toutes ne sont pas à jeter : « Sa mère,
+   Maryse, était coupeuse en confection à l'usine » situe le milieu d'origine
+   et fait partie du portrait. Ce qui gêne, c'est quand on prête au combattant
+   ce qui appartient à quelqu'un d'autre :
+     - la CARRIÈRE SPORTIVE d'un proche (la fiche de Khabib racontait le
+       parcours de lutteur de son père, on croyait lire le sien) ;
+     - des faits SENSIBLES (drogue, alcool, prison) concernant des tiers, comme
+       la consommation des parents de Holloway — hors sujet, et déplacé pour
+       des gens qui n'ont rien demandé.
+   Un métier ordinaire, lui, reste. */
+const PROCHE_RE = "(?:son|sa|ses|le|la|les)\\s+(?:p[èe]re|m[èe]re|parents|fr[èe]res?|s(?:œ|oe)urs?|oncle|tante|cousins?|grands?[- ]parents?|grand[- ]p[èe]re|grand[- ]m[èe]re)";
+const SUJET_TIERS = "(?:lutt|combatt|box(?:e|eur)|judo|sambo|karat|jiu-?jitsu|arts martiaux|champion|olympi|drogue|m[ée]thamph|coca[ïi]ne|h[ée]ro[ïi]ne|alcooli|prison|d[ée]linqu|toxicoman)";
+const TIERS_RE = new RegExp(PROCHE_RE + "\\b[^.]{0,80}?\\b" + SUJET_TIERS, 'i');
+
 // une citation coupée laisse des guillemets qui ne se referment pas
 function guillemetsBoiteux(s){
   const ouvrants = (s.match(/«/g) || []).length;
@@ -406,6 +420,7 @@ function pickFrenchSentences(text, name){
     .filter(s => s.length >= 40 && s.length <= 260)
     .filter(s => !/^(?:Il|Elle) (?:est|a) class[ée]/i.test(s))
     .filter(s => !CITATION_RE.test(s) && !INTERVIEW_RE.test(s))
+    .filter(s => !TIERS_RE.test(s))
     .filter(s => !guillemetsBoiteux(s))
     .filter(s => /[.!?…»]$/.test(s))            // pas de phrase tronquée en fin de sélection
     .map((s, i) => ({ s, i, sc: score(s, HUMAN_LEX) - score(s, NOISE_LEX) }))
@@ -543,12 +558,20 @@ const LIEUX = MOT_LIEU + "(?:[ -](?:" + PARTICULE + "|" + MOT_LIEU + "))*"
             + "(?:,\\s*" + MOT_LIEU + "(?:[ -](?:" + PARTICULE + "|" + MOT_LIEU + "))*){0,3}";
 
 // « Makhachkala, Dagestan, Russian SFSR » -> { ville, pays FR }
+/* « born … competing in UFC's bantamweight division » : le motif de lieu
+   attrapait « UFC », d'où « Né à UFC » sur la fiche de Merab Dvalishvili. Les
+   sigles d'organisations ne sont pas des villes — et plus généralement, un
+   nom de ville ne s'écrit pas tout en majuscules. */
+const PAS_UN_LIEU = /^(?:UFC|MMA|PFL|ONE|KSW|LFA|WEC|WSOF|RIZIN|Bellator|Pride|Strikeforce|Invicta|Cage Warriors|NCAA|NFL|NBA|MLB|USA|TUF)$/i;
+
 function placeFR(raw){
   if(!raw) return null;
   const parts = raw.split(',').map(x => x.replace(/\s+/g,' ').trim()).filter(Boolean);
   if(!parts.length) return null;
   const city = parts[0].replace(/^(?:the|a)\s+/i, '');
   if(!/^[A-ZÀ-Þ]/.test(city) || city.length < 3 || city.length > 34) return null;
+  if(PAS_UN_LIEU.test(city)) return null;
+  if(city === city.toUpperCase() && city.length <= 5) return null;   // sigle
   let country = null;
   for(let i = parts.length - 1; i >= 1 && !country; i--){
     const k = parts[i].toLowerCase().replace(/\b(sfsr|ssr|soviet socialist republic|state|province)\b/g,'').replace(/\s+/g,' ').trim();
@@ -666,6 +689,35 @@ function factsFromEnglish(text){
   if(/\b(olympic|olympics|national team|world champion(?:ship)? in (?:wrestling|judo|sambo))\b/i.test(all))
     F.haut = 'passé{e} par le haut niveau amateur';
 
+  /* Les fiches issues de l'anglais faisaient 57 caractères de moyenne — « Né à
+     Rochester. Il vient de la lutte. » — parce que je n'extrayais presque rien
+     du parcours amateur, alors que c'est souvent tout le sujet de la section
+     « Early life ». Quatre faits de plus, tous très courants. */
+
+  // titre amateur : lycée, université, championnat national
+  m = all.match(/\b(?:(?:two|three|four|multiple|\d)[- ]time )?(?:state|national|NCAA|junior college|collegiate|high school|European|Pan American|world) (?:wrestling |judo |sambo |grappling )?champion\b/i);
+  if(m && !F.haut) F.haut = '{il} se fait un nom chez les amateurs';
+
+  // études : la fac, souvent interrompue pour se consacrer au combat
+  if(/\b(?:dropped out of (?:college|university)|left (?:college|university)|quit (?:college|school))\b/i.test(all))
+    F.etudes = '{il} lâche la fac pour le combat';
+  else if(/\b(?:earned|received|graduated with|holds) (?:a |an |his |her )?(?:degree|bachelor|diploma)\b/i.test(all)
+       || /\b(?:graduated from|attended) [A-Z][A-Za-z .'-]{3,30}(?:University|College)\b/.test(all))
+    F.etudes = '{il} passe par la fac avant de devenir professionnel';
+
+  // fratrie qui compte : frère combattant, ou famille de sportifs
+  if(/\b(?:his|her) (?:older |younger |twin )?brothers?\b[^.]{0,60}?\b(?:fighter|wrestler|NFL|boxer|mixed martial artist|also compet)/i.test(all)
+     || /\b(?:brother of|sibling of) [A-Z]/.test(all))
+    F.fratrie = '{il} grandit dans une fratrie de sportifs';
+
+  // sport de haut niveau AVANT le MMA : reconversion, souvent le vrai récit
+  m = all.match(/\b(?:played|competed in|was a) (?:professional |semi-professional |college |collegiate )?(american football|football|soccer|rugby|basketball|baseball|hockey|track)\b/i);
+  if(m){
+    const sports = { 'american football':'football américain', football:'football', soccer:'football',
+                     rugby:'rugby', basketball:'basket', baseball:'baseball', hockey:'hockey', track:'athlétisme' };
+    F.avant = '{il} vient d\'abord ' + (sports[m[1].toLowerCase()] === 'athlétisme' ? 'de l\'athlétisme' : 'du ' + sports[m[1].toLowerCase()]);
+  }
+
   return F;
 }
 
@@ -706,7 +758,7 @@ function composeFrench(F){
 
   // ordre : le plus marquant d'abord, on n'en garde que deux pour rester court
   const dur = [F.war, F.exil, F.deuil, F.harcele, F.addiction, F.maladie, F.poverty,
-               F.homeless, F.mereSeule, F.hood, F.metier, F.ecole].filter(Boolean).slice(0, 2);
+               F.homeless, F.mereSeule, F.hood, F.metier, F.ecole, F.fratrie].filter(Boolean).slice(0, 2);
 
   // Phrase 2 : comment il arrive au combat
   const p2 = [];
@@ -719,6 +771,9 @@ function composeFrench(F){
   };
   const second = F.arts && F.arts.find(a => !memeFamille(a.le, F.debut ? F.debut.art : null));
 
+  // le sport d'origine passe AVANT : « il vient d'abord du football, commence la
+  // boxe à 22 ans » et non l'inverse, qui inversait la chronologie
+  if(F.avant) p2.push(F.avant);
   if(F.debut){
     p2.push('{il} commence ' + (F.debut.art || 'les arts martiaux')
             + (F.debut.age ? ' à ' + F.debut.age + ' ans' : '')
@@ -727,7 +782,8 @@ function composeFrench(F){
     p2.push('{il} vient ' + F.arts.map(a => a.de).join(' et '));
   }
   if(F.armee) p2.push(F.armee);
-  else if(F.haut && !F.debut) p2.push(F.haut);
+  else if(F.haut) p2.push(F.haut);
+  if(F.etudes) p2.push(F.etudes);
   if(F.pro) p2.push('{il} ' + F.pro);        // clôt la phrase au lieu de la laisser en suspens
 
   /* Seuil de confiance. Une épreuve traversée vaut 2, une discipline d'origine
@@ -735,7 +791,8 @@ function composeFrench(F){
      États-Unis. Il vient de la lutte. » n'émeut personne, mais renseigne, et le
      plancher de longueur plus bas écarte de toute façon les bribes creuses.
      À 2, on ne gardait que 5 % des pages trouvées. */
-  const richesse = dur.length * 2 + (F.debut ? 1 : 0) + (F.arts ? 1 : 0);
+  const richesse = dur.length * 2 + (F.debut ? 1 : 0) + (F.arts ? 1 : 0)
+                 + (F.avant ? 1 : 0) + (F.haut ? 1 : 0) + (F.etudes ? 1 : 0) + (F.pro ? 1 : 0);
   if(richesse < 1) return null;
 
   const s1 = phrase(tete, dur, F.g);
