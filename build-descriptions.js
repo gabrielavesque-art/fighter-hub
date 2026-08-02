@@ -657,14 +657,19 @@ function factsFromEnglish(text){
   // ── vocation ──
   m = all.match(new RegExp('\\b(?:began|started|took up|has been)\\s+(?:training in |practi[cs]ing |competing in )?([a-z\\- ]{3,26}?)\\s*(?:at|from|since)\\s+(?:the\\s+age\\s+of\\s+|age\\s+)(' + NUM_RE + ')', 'i'))
    || all.match(new RegExp('\\b(?:began|started|took up)\\s+(?:training in |practi[cs]ing )?([a-z\\- ]{3,26}?)\\b[^.]{0,20}?\\bwhen (?:he|she) was (' + NUM_RE + ')', 'i'));
+  /* « began training in mixed martial arts » ne dit rien : un combattant MMA
+     commence forcément le MMA. Ce n'est une discipline D'ORIGINE que si ce
+     n'est PAS mixed martial arts — sinon on laisse la vraie discipline
+     apparaître ailleurs dans le texte via F.arts. */
+  const disciplineValide = a => a && ARTS[a.toLowerCase()].le !== 'les arts martiaux mixtes';
   if(m){
     const a = (m[1].match(ARTS_RE) || [])[1];
-    F.debut = { art: a ? ARTS[a.toLowerCase()].le : null, age: toAge(m[2]) };
+    F.debut = { art: disciplineValide(a) ? ARTS[a.toLowerCase()].le : null, age: toAge(m[2]) };
   }
-  if(!F.debut){
+  if(!F.debut || !F.debut.art){
     m = all.match(/\b(?:began|started|took up)\s+(?:training in |practi[cs]ing )?([a-z\- ]{3,26})/i);
     const a = m && (m[1].match(ARTS_RE) || [])[1];
-    if(a) F.debut = { art: ARTS[a.toLowerCase()].le, age: null };
+    if(disciplineValide(a)) F.debut = { art: ARTS[a.toLowerCase()].le, age: F.debut ? F.debut.age : null };
   }
 
   // disciplines d'origine, hors « arts martiaux mixtes » qui n'apprend rien
@@ -694,21 +699,33 @@ function factsFromEnglish(text){
      du parcours amateur, alors que c'est souvent tout le sujet de la section
      « Early life ». Quatre faits de plus, tous très courants. */
 
-  // titre amateur : lycée, université, championnat national
-  m = all.match(/\b(?:(?:two|three|four|multiple|\d)[- ]time )?(?:state|national|NCAA|junior college|collegiate|high school|European|Pan American|world) (?:wrestling |judo |sambo |grappling )?champion\b/i);
+  /* Ces motifs ont été écrits et testés sur des textes que j'avais moi-même
+     rédigés — ils collaient à mes propres tournures, pas à la vraie prose de
+     Wikipedia. Sur les vrais articles (Jon Jones, Belal Muhammad, Ryan Bader…)
+     ils ne matchaient quasiment jamais. Élargis pour couvrir les formulations
+     réelles : « won a National Junior College Athletic Association
+     championship », « his brothers … both played in the National Football
+     League » (loin du mot « brothers »), « did not return to college »… */
+
+  // titre amateur : « champion(ship) » mais aussi « All-American », très
+  // fréquent en sport universitaire américain et tout aussi parlant
+  m = all.match(/\b(?:(?:two|three|four|multiple|\d)[- ]time )?(?:[A-Z][A-Za-z]*\s+){0,4}(?:state|national|NCAA|NJCAA|junior college|collegiate|high school|European|Pan[- ]American|world|regional)\b[^.]{0,40}?\bchampion(?:ship)?\b/i)
+   || all.match(/\b(?:(?:two|three|four|multiple|\d)[- ]time )?(?:NCAA |Division [I]{1,3} )?All[- ]Americ\w*\b/i);
   if(m && !F.haut) F.haut = '{il} se fait un nom chez les amateurs';
 
   // études : la fac, souvent interrompue pour se consacrer au combat
-  if(/\b(?:dropped out of (?:college|university)|left (?:college|university)|quit (?:college|school))\b/i.test(all))
+  if(/\b(?:dropped out of|left|did not (?:return|go back) to|never (?:finished|completed)|quit)\b[^.]{0,20}?\b(?:college|university)\b/i.test(all))
     F.etudes = '{il} lâche la fac pour le combat';
   else if(/\b(?:earned|received|graduated with|holds) (?:a |an |his |her )?(?:degree|bachelor|diploma)\b/i.test(all)
        || /\b(?:graduated from|attended) [A-Z][A-Za-z .'-]{3,30}(?:University|College)\b/.test(all))
     F.etudes = '{il} passe par la fac avant de devenir professionnel';
 
-  // fratrie qui compte : frère combattant, ou famille de sportifs
-  if(/\b(?:his|her) (?:older |younger |twin )?brothers?\b[^.]{0,60}?\b(?:fighter|wrestler|NFL|boxer|mixed martial artist|also compet)/i.test(all)
-     || /\b(?:brother of|sibling of) [A-Z]/.test(all))
-    F.fratrie = '{il} grandit dans une fratrie de sportifs';
+  // fratrie qui compte : la fenêtre de proximité était trop courte pour des
+  // phrases du type « His brothers Arthur and Chandler Jones both played in
+  // the National Football League » — le fait sportif arrive loin du mot clé
+  if(/\b(?:his|her) (?:older |younger |twin |two |three )?brothers?\b[^.]{0,120}?\b(?:play(?:ed|s)?|compet\w+|wrestl\w+|fought|boxed?)\b[^.]{0,40}?\b(?:NFL|NBA|National Football League|National Basketball League|professionally|college|fighter|wrestler|boxer|mixed martial artist)/i.test(all)
+     || /\b(?:brother|sibling) of [A-Z]/.test(all))
+    F.fratrie = '{il} est issu{e} d\'une fratrie de sportifs';
 
   // sport de haut niveau AVANT le MMA : reconversion, souvent le vrai récit
   m = all.match(/\b(?:played|competed in|was a) (?:professional |semi-professional |college |collegiate )?(american football|football|soccer|rugby|basketball|baseball|hockey|track)\b/i);
