@@ -36,7 +36,9 @@ const path = require('path');
 
 const OUT  = path.join(__dirname, 'descriptions.json');
 const TOTT = 'https://raw.githubusercontent.com/Greco1899/scrape_ufc_stats/main/ufc_fighter_tott.csv';
-const UA   = 'FighterHub/1.0 (projet perso non commercial; contact via GitHub)';
+// Wikimedia demande un User-Agent identifiable avec un moyen de contact, et
+// bride plus durement les UA génériques. Voir meta.wikimedia.org/wiki/User-Agent_policy
+const UA   = 'FighterHub/1.0 (https://github.com/gabrielavesque-art/fighter-hub; projet de fan non commercial) node-fetch';
 
 const TEST   = process.argv.includes('--test');
 const RETRY  = process.argv.includes('--retry');
@@ -47,12 +49,12 @@ const DRY    = TEST || ONLY.length > 0;   // les deux modes d'essai n'écrivent 
 
 const SCHEMA      = 1;    // version de la logique ; --force refait tout ce qui n'est pas à jour
 const MAX_CHARS   = 300;  // longueur visée de la description finale
-const MIN_SCORE   = 4;    // en dessous, la phrase n'apporte rien d'humain
+const MIN_SCORE   = 3;    // en dessous, la phrase n'apporte rien d'humain
 
-// Une seule requête à la fois, espacée : les lots de 20 rendent le parallélisme
-// inutile (~230 requêtes pour tout le roster) et c'est lui qui déclenchait les
-// 429 en rafale — 35 581 sur un run réel.
-const MIN_GAP_MS  = 400;
+// Une seule requête à la fois, espacée. À 400 ms on prenait encore 1198 x 429
+// sur un run réel : l'IP des runners GitHub est partagée et Wikimedia y est
+// sévère. 700 ms coûte quelques minutes de plus mais fait passer les requêtes.
+const MIN_GAP_MS  = 700;
 
 /* ─────────────── utilitaires ─────────────── */
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -103,22 +105,24 @@ function throttle(){
   return slot;
 }
 
-/* Un 429 qui s'entête coûtait jusqu'à 3 réessais × (2-3s d'attente + jusqu'à 20s
-   de timeout réseau) = potentiellement plus d'une minute PAR requête ratée. Sur
-   un run qui en fait des milliers, ça suffit à ne plus rien voir avancer pendant
-   des dizaines de minutes. On abandonne vite (1 seul réessai, court) : mieux vaut
-   rater ce combattant maintenant et le reprendre au prochain --retry, une fois la
-   limite Wikipedia retombée, que de bloquer tout le run dessus. */
-async function get(url, retries = 1){
+/* Abandonner au premier réessai coûtait cher : un lot de découverte perdu, ce
+   sont 20 combattants qui ne seront jamais examinés. Maintenant qu'on ne fait
+   plus que ~1 200 requêtes au lieu de 15 000, on peut se permettre d'insister —
+   backoff exponentiel, en respectant Retry-After quand Wikipedia l'envoie. */
+async function get(url, essai = 0){
   await throttle();
   const r = await fetch(url, {
     headers: { 'User-Agent': UA, 'Accept': 'application/json' },
-    signal: AbortSignal.timeout(8000)
+    signal: AbortSignal.timeout(15000)
   });
-  if(r.status === 429){
-    if(retries <= 0) throw new Error('HTTP 429 (abandon après réessai)');
-    await sleep(800 + Math.random()*400);
-    return get(url, retries - 1);
+  if(r.status === 429 || r.status === 503){
+    if(essai >= 3) throw new Error('HTTP ' + r.status + ' (abandon après 3 réessais)');
+    const retryAfter = Number(r.headers.get('retry-after'));
+    const attente = Number.isFinite(retryAfter) && retryAfter > 0
+      ? retryAfter * 1000
+      : 1000 * Math.pow(2, essai);          // 1s, 2s, 4s
+    await sleep(attente + Math.random() * 400);
+    return get(url, essai + 1);
   }
   if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,200));
   return r.text();
@@ -253,10 +257,23 @@ function sections(text){
 }
 
 // le chapeau + les sections humaines, dans l'ordre du document
+/* Sections de pur palmarès : tableaux de combats, titres, références. Aucune
+   matière humaine, et elles polluent l'analyse si on les laisse passer. */
+const RECORD_SECTIONS = /^(?:mixed martial arts record|professional [a-z ]*record|amateur [a-z ]*record|kickboxing record|boxing record|championships|accomplishments|titles|honou?rs|records?|see also|references|external links|notes|further reading|bibliography|filmography|palmar[èe]s|r[ée]sultats|combats|distinctions|notes et r[ée]f[ée]rences|r[ée]f[ée]rences|liens externes|annexes|bibliographie|voir aussi|filmographie)/i;
+
 function humanText(text){
   const secs = sections(text);
   const lead = (secs[0]?.body || '').split(/\n\s*\n/).slice(0,2).join(' ');
-  const rest = secs.slice(1).filter(s => HUMAN_SECTIONS.test(s.title)).map(s => s.body);
+  const human = secs.slice(1).filter(s => HUMAN_SECTIONS.test(s.title));
+
+  /* Beaucoup d'articles de combattants n'ont AUCUNE section « Jeunesse » : la
+     biographie est diluée dans le récit de carrière. Se limiter au chapeau dans
+     ce cas revenait à ne rien trouver — mesuré sur un run réel : 669 pages
+     exploitables sur 707 partaient à la poubelle. À défaut de section dédiée on
+     prend donc tout l'article sauf le palmarès, et c'est le lexique qui trie. */
+  const rest = (human.length ? human : secs.slice(1).filter(s => !RECORD_SECTIONS.test(s.title)))
+                 .map(s => s.body);
+
   return { lead: lead.trim(), body: rest.join('\n').trim(), all: [lead, ...rest].join('\n').trim() };
 }
 
@@ -379,7 +396,7 @@ function pickFrenchSentences(text, name){
     out = out ? out + ' ' + o.s : o.s;
     if(++used >= 3) break;
   }
-  if(out.length < 60) return null;
+  if(out.length < 50) return null;
   if(!/[.!?»]$/.test(out)) out += '.';
   return out;
 }
@@ -511,8 +528,10 @@ function factsFromEnglish(text){
   const F = {};
 
   // ── naissance / enfance ──
-  let m = lead.match(/\bborn\b[^.]{0,70}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/)
-       || body.match(/\bwas born\b[^.]{0,40}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/);
+  let m = lead.match(/\b[Bb]orn\b[^.]{0,70}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/)
+       // « Born in Accra, Ghana, Roberts moved… » : la tournure sans « was » est
+       // courante en début de paragraphe, exiger « was born » ratait ces cas
+       || body.match(/\b(?:[Ww]as |[Ww]ere )?[Bb]orn\b[^.]{0,40}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/);
   if(m) F.birth = placeFR(m[1]);
 
   m = all.match(/\bgrew up\b[^.]{0,30}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,2})/);
@@ -657,9 +676,13 @@ function composeFrench(F){
   if(F.armee) p2.push(F.armee);
   else if(F.haut && !F.debut) p2.push(F.haut);
 
-  // seuil de confiance : l'origine seule ne raconte rien, on préfère ne rien afficher
+  /* Seuil de confiance. Une épreuve traversée vaut 2, une discipline d'origine
+     ou un âge de début vaut 1. On accepte à partir de 1 : « Né à Detroit, aux
+     États-Unis. Il vient de la lutte. » n'émeut personne, mais renseigne, et le
+     plancher de longueur plus bas écarte de toute façon les bribes creuses.
+     À 2, on ne gardait que 5 % des pages trouvées. */
   const richesse = dur.length * 2 + (F.debut ? 1 : 0) + (F.arts ? 1 : 0);
-  if(richesse < 2) return null;
+  if(richesse < 1) return null;
 
   const s1 = phrase(tete, dur, F.g);
   const s2 = phrase([], p2, F.g);
@@ -688,9 +711,10 @@ const PASSES = [
   { lang:'en', titre: n => n,
     label:'en.wikipedia (faits recomposés)' },
   { lang:'en', titre: n => n + ' (fighter)',
-    label:'en.wikipedia, homonymes « (fighter) »' },
-  { lang:'en', titre: n => n + ' (mixed martial artist)',
-    label:'en.wikipedia, homonymes « (mixed martial artist) »' }
+    label:'en.wikipedia, homonymes « (fighter) »' }
+  // La passe « (mixed martial artist) » a été retirée : sur un run réel elle a
+  // coûté 227 requêtes pour 9 pages et 0 description. Ce budget sert mieux
+  // ailleurs, en réessais sur les passes qui rapportent.
 ];
 
 // l'intro suffit-elle à dire que cette page parle bien de CE combattant ?
