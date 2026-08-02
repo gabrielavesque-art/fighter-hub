@@ -47,7 +47,7 @@ const ONLY   = (process.argv.find(a => a.startsWith('--only=')) || '').slice(7)
                  .split(',').map(s => s.trim()).filter(Boolean);
 const DRY    = TEST || ONLY.length > 0;   // les deux modes d'essai n'écrivent rien
 
-const SCHEMA      = 1;    // version de la logique ; --force refait tout ce qui n'est pas à jour
+const SCHEMA      = 2;    // version de la logique d'extraction ; monte à chaque changement de rendu
 const MAX_CHARS   = 300;  // longueur visée de la description finale
 const MIN_SCORE   = 3;    // en dessous, la phrase n'apporte rien d'humain
 
@@ -859,9 +859,14 @@ if(require.main !== module){
   } else {
     todo = names.filter(n => {
       const e = db[slugKey(n)];
-      if(e === undefined) return true;                        // jamais tenté
-      if(FORCE && (e === null || e.v !== SCHEMA)) return true; // reconstruction
-      if(RETRY && e === null) return true;                    // réessai des échecs
+      if(e === undefined) return true;     // jamais tenté
+      /* --force doit vraiment TOUT refaire. La condition précédente
+         (e === null || e.v !== SCHEMA) épargnait les entrées déjà remplies et à
+         jour : une description fabriquée par une version boguée du script ne
+         pouvait donc jamais être corrigée, ce qui a laissé « Né à Makhachkala
+         and grew up in the re. » en place malgré un descriptions-rebuild. */
+      if(FORCE) return true;
+      if(RETRY && e === null) return true;  // réessai des seuls échecs
       return false;
     });
     if(TEST){
