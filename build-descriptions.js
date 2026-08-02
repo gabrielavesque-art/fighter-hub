@@ -364,12 +364,35 @@ for(let i = 0; i < NOISE_LEX.length; i++) NOISE_LEX[i] = fixWordBoundaries([NOIS
    4. CHEMIN 1 — vraies phrases de fr.wikipedia
    ═══════════════════════════════════════════════════════════════ */
 
+/* Discours rapporté et citations d'interview. Le découpage en phrases tranche
+   sur la ponctuation À L'INTÉRIEUR des citations, ce qui produit des morceaux
+   comme « …il annonce : « Le Bronx, c'est parce que c'est une favela, non? »
+   — guillemet ouvert, jamais refermé, phrase suspendue. Ça n'apporte rien au
+   portrait et ça fait bâclé, donc on écarte la phrase entière. */
+const CITATION_RE  = /\b(?:d[ée]clar\w*|annonc\w*|confi\w*|expliqu\w*|affirm\w*|racont\w*|indiqu\w*|pr[ée]cis\w*|ajout\w*|lanc\w*)\s*:/i;
+const INTERVIEW_RE = /\b(?:dans une interview|en conf[ée]rence de presse|au micro de|interrog[ée]\w*|selon (?:lui|elle)|d[ée]clare[- ]t[- ]il|dit[- ]il)\b/i;
+
+// une citation coupée laisse des guillemets qui ne se referment pas
+function guillemetsBoiteux(s){
+  const ouvrants = (s.match(/«/g) || []).length;
+  const fermants = (s.match(/»/g) || []).length;
+  const droits   = (s.match(/"/g) || []).length;
+  return ouvrants !== fermants || droits % 2 !== 0;
+}
+
+/* Isolée de son paragraphe, une phrase qui commence par un connecteur pend
+   dans le vide (« Cependant, il rejoint… »). On retire le connecteur plutôt
+   que de jeter la phrase, qui est souvent la meilleure du lot. */
+const CONNECTEUR_RE = /^(?:Ainsi|En effet|Cependant|Toutefois|N[ée]anmoins|Par ailleurs|De plus|En outre|Or|Puis|Ensuite|Enfin|D'ailleurs|Pourtant|Malgr[ée] cela|De ce fait|Dans le m[êe]me temps)\s*,?\s*/i;
+
 function cleanSentence(s, name){
   return s
     .replace(/\s*\([^)]*\)\s*/g, ' ')          // parenthèses : dates, translittérations, précisions
+    .replace(CONNECTEUR_RE, '')
     .replace(/«\s*/g, '« ').replace(/\s*»/g, ' »')
     .replace(/\s+([,;:.!?])/g, '$1')
     .replace(/\s+/g, ' ')
+    .replace(/^./, c => c.toUpperCase())        // le connecteur retiré laissait une minuscule
     .trim();
 }
 
@@ -382,6 +405,9 @@ function pickFrenchSentences(text, name){
     .map(s => cleanSentence(s, name))
     .filter(s => s.length >= 40 && s.length <= 260)
     .filter(s => !/^(?:Il|Elle) (?:est|a) class[ée]/i.test(s))
+    .filter(s => !CITATION_RE.test(s) && !INTERVIEW_RE.test(s))
+    .filter(s => !guillemetsBoiteux(s))
+    .filter(s => /[.!?…»]$/.test(s))            // pas de phrase tronquée en fin de sélection
     .map((s, i) => ({ s, i, sc: score(s, HUMAN_LEX) - score(s, NOISE_LEX) }))
     .filter(o => o.sc >= MIN_SCORE);
 
@@ -507,6 +533,15 @@ function gender(s, g){
                   .replace(/\{e\}/g,  g === 'f' ? 'e' : '');
 }
 
+/* Un nom de lieu : un mot capitalisé, prolongé uniquement par d'autres mots
+   capitalisés ou par des particules (Rio de Janeiro, New York, Saint-Isidore,
+   Newcastle upon Tyne). Tout mot en minuscules hors de cette liste arrête la
+   capture — c'est ce qui empêche « Makhachkala and grew up in… » de passer. */
+const MOT_LIEU = "[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\\-]{1,24}";
+const PARTICULE = "(?:de|du|des|da|dos|das|del|della|di|la|le|les|los|las|el|van|von|der|den|ter|bin|al|of|upon|on|sur|en)";
+const LIEUX = MOT_LIEU + "(?:[ -](?:" + PARTICULE + "|" + MOT_LIEU + "))*"
+            + "(?:,\\s*" + MOT_LIEU + "(?:[ -](?:" + PARTICULE + "|" + MOT_LIEU + "))*){0,3}";
+
 // « Makhachkala, Dagestan, Russian SFSR » -> { ville, pays FR }
 function placeFR(raw){
   if(!raw) return null;
@@ -528,13 +563,18 @@ function factsFromEnglish(text){
   const F = {};
 
   // ── naissance / enfance ──
-  let m = lead.match(/\b[Bb]orn\b[^.]{0,70}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/)
+  /* La version précédente laissait l'espace dans la classe de caractères : sur
+     « born in Makhachkala and grew up in the republic… » elle avalait 32
+     caractères d'un bloc et sortait « Makhachkala and grew up in the re », qui
+     s'est retrouvé tel quel, en anglais, dans la fiche de Makhachev. Un nom de
+     lieu ne continue que sur un mot capitalisé ou une particule connue. */
+  let m = lead.match(new RegExp('\\b[Bb]orn\\b[^.]{0,70}?\\bin\\s+(' + LIEUX + ')'))
        // « Born in Accra, Ghana, Roberts moved… » : la tournure sans « was » est
        // courante en début de paragraphe, exiger « was born » ratait ces cas
-       || body.match(/\b(?:[Ww]as |[Ww]ere )?[Bb]orn\b[^.]{0,40}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,3})/);
+       || body.match(new RegExp('\\b(?:[Ww]as |[Ww]ere )?[Bb]orn\\b[^.]{0,40}?\\bin\\s+(' + LIEUX + ')'));
   if(m) F.birth = placeFR(m[1]);
 
-  m = all.match(/\bgrew up\b[^.]{0,30}?\bin\s+([A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}(?:,\s*[A-ZÀ-Þ][A-Za-zÀ-ÿ'’.\- ]{2,32}){0,2})/);
+  m = all.match(new RegExp('\\bgrew up\\b[^.]{0,30}?\\bin\\s+(' + LIEUX + ')'));
   if(m) F.raised = placeFR(m[1]);
 
   F.g = genderOf(all);
@@ -616,6 +656,11 @@ function factsFromEnglish(text){
   }
   if(arts.length) F.arts = arts;
 
+  /* Année de passage chez les pros : c'est ce qui manquait pour que la phrase
+     se termine au lieu de s'arrêter net sur « il commence le karaté ». */
+  m = all.match(/\b(?:made (?:his|her) (?:professional |pro )?(?:MMA |mixed martial arts )?debut|turned professional|professional debut|began (?:his|her) professional career)\b[^.]{0,50}?\b(?:in|on)\b[^.]{0,24}?\b((?:19|20)\d{2})\b/i);
+  if(m) F.pro = 'passe professionnel en ' + m[1];
+
   if(/\b(served in the (?:army|military|marines|navy)|was a soldier|military service)\b/i.test(all)) F.armee = '{il} passe par l\'armée';
   else if(/\b(police officer|was a cop|firefighter)\b/i.test(all)) F.armee = '{il} a d\'abord été dans la police';
   if(/\b(olympic|olympics|national team|world champion(?:ship)? in (?:wrestling|judo|sambo))\b/i.test(all))
@@ -665,7 +710,15 @@ function composeFrench(F){
 
   // Phrase 2 : comment il arrive au combat
   const p2 = [];
-  const second = F.arts && F.arts.find(a => !F.debut || a.le !== F.debut.art);
+  /* « Il commence le karaté kyokushin, puis le karaté » : deux entrées de la
+     même famille, l'une étant le libellé générique de l'autre. On ne propose
+     une seconde discipline que si elle est vraiment distincte. */
+  const memeFamille = (a, b) => {
+    const x = deaccent(a || ''), y = deaccent(b || '');
+    return !!x && !!y && (x.includes(y) || y.includes(x));
+  };
+  const second = F.arts && F.arts.find(a => !memeFamille(a.le, F.debut ? F.debut.art : null));
+
   if(F.debut){
     p2.push('{il} commence ' + (F.debut.art || 'les arts martiaux')
             + (F.debut.age ? ' à ' + F.debut.age + ' ans' : '')
@@ -675,6 +728,7 @@ function composeFrench(F){
   }
   if(F.armee) p2.push(F.armee);
   else if(F.haut && !F.debut) p2.push(F.haut);
+  if(F.pro) p2.push('{il} ' + F.pro);        // clôt la phrase au lieu de la laisser en suspens
 
   /* Seuil de confiance. Une épreuve traversée vaut 2, une discipline d'origine
      ou un âge de début vaut 1. On accepte à partir de 1 : « Né à Detroit, aux
@@ -688,7 +742,11 @@ function composeFrench(F){
   const s2 = phrase([], p2, F.g);
   let out = [s1, s2].filter(Boolean).join(' ');
   if(out.length > MAX_CHARS) out = s1 || s2;
-  if(!out || out.length < 40 || out.length > MAX_CHARS) return null;
+  /* Le plancher à 40 jetait des descriptions correctes mais brèves — « Né à
+     Rochester. Il vient de la lutte. » fait 37 caractères, et c'est pour ça que
+     Jon Jones n'avait aucune description. À 30 on garde ces cas ; les bribes
+     réellement creuses sont déjà écartées par le seuil de richesse. */
+  if(!out || out.length < 30 || out.length > MAX_CHARS) return null;
   return out;
 }
 
@@ -763,7 +821,28 @@ if(require.main !== module){
     seen.add(k);
     names.push(n);
   }
-  console.log(`  ${names.length} combattants uniques\n`);
+  /* Les combattants hors UFC (PFL, ONE, RIZIN, KSW, Bellator…) sont saisis à la
+     main dans horsufc.json et absents du CSV ufcstats. Beaucoup sont européens
+     ou asiatiques : leur page fr.wikipedia est souvent MEILLEURE que celle des
+     Américains, donc ils profitent du chemin 1 plutôt que des gabarits. */
+  let nHorsUFC = 0;
+  const HORS = path.join(__dirname, 'horsufc.json');
+  if(fs.existsSync(HORS)){
+    try {
+      for(const v of Object.values(JSON.parse(fs.readFileSync(HORS, 'utf8')))){
+        const n = (v && v.name || '').trim();
+        if(!n) continue;
+        const k = slugKey(n);
+        if(seen.has(k)) continue;
+        seen.add(k);
+        names.push(n);
+        nHorsUFC++;
+      }
+    } catch(e){ console.log('→ horsufc.json illisible, ignoré'); }
+  }
+
+  console.log(`  ${names.length} combattants uniques`
+            + (nHorsUFC ? ` (dont ${nHorsUFC} hors UFC)` : '') + '\n');
 
   let db = {};
   if(fs.existsSync(OUT)){
