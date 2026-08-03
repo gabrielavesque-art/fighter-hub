@@ -169,6 +169,42 @@ function parseScheduled(wt){
   return out.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
+/* ─────────────── l'affiche de l'événement ─────────────── */
+// L'infobox d'une page d'événement porte le fichier du poster :
+//   | image = UFC 322 poster.jpg
+// On ne récupère ici que le NOM du fichier ; l'URL se résout ensuite en un seul
+// appel groupé, comme le fait resolve-photos.js pour les combattants.
+function posterFile(wt){
+  const m = wt.match(/^\s*\|\s*(?:image|poster)\s*=\s*(?:\[\[)?(?:File|Image)?:?\s*([^\]|\n<]+?)\s*(?:\||\]\]|$)/im);
+  if(!m) return '';
+  const f = m[1].trim();
+  return /\.(jpe?g|png|gif|webp|svg)$/i.test(f) ? f : '';
+}
+// une seule requête pour toutes les affiches : 50 fichiers par appel maximum
+async function posterUrls(files){
+  const out = new Map();
+  for(let i = 0; i < files.length; i += 50){
+    const lot = files.slice(i, i+50);
+    const url = 'https://en.wikipedia.org/w/api.php?action=query&format=json&formatversion=2'
+      + '&prop=imageinfo&iiprop=url&iiurlwidth=420&titles='
+      + lot.map(f=>encodeURIComponent('File:'+f)).join('|');
+    try{
+      const wait = MIN_GAP_MS - (Date.now() - lastCall);
+      if(wait > 0) await sleep(wait);
+      lastCall = Date.now();
+      const r = await fetch(url, { headers:{ 'User-Agent':UA, 'Accept':'application/json' } });
+      const j = await r.json();
+      for(const pg of j.query?.pages || []){
+        const ii = pg.imageinfo && pg.imageinfo[0];
+        if(ii) out.set(pg.title.replace(/^File:/,''), ii.thumburl || ii.url);
+      }
+    }catch(e){
+      console.warn('  affiches : lot ignoré —', e.message);
+    }
+  }
+  return out;
+}
+
 /* ─────────────── 2. les combats d'une carte ─────────────── */
 // Deux formes cohabitent sur les pages d'événements à venir :
 //   · la liste à puces  «*Heavyweight bout: [[A]] vs. [[B]]»
@@ -235,6 +271,19 @@ const FIXTURES = {
 |-
 | [[UFC Fight Night: Texte vs. Libre]] || November 22, 2099 || [[Frost Bank Center]] || San Antonio, Texas
 |}`,
+  poster: `{{Infobox MMA event
+| event = UFC 321
+| image = UFC 321 poster.jpg
+| caption = Poster promotionnel
+| date = {{dts|2099|10|25}}
+}}
+==Fight card==`,
+  posterLink: `{{Infobox MMA event
+| image = [[File:UFC Fight Night 999.png|thumb]]
+}}`,
+  posterNone: `{{Infobox MMA event
+| venue = [[UFC Apex]]
+}}`,
   bouts: `
 ==Fight card==
 {| class="toccolours"
@@ -286,6 +335,10 @@ function selftest(){
   check('liste à puces lue', [bouts[3].a, bouts[3].b, bouts[3].wc], ['Islam Makhachev','Justin Gaethje','Lightweight']);
   check('doublon liste/tableau ignoré', bouts.filter(b=>b.a==='Tom Aspinall').length, 1);
 
+  check('affiche lue dans l\'infobox', posterFile(FIXTURES.poster), 'UFC 321 poster.jpg');
+  check('affiche en lien [[File:...]]', posterFile(FIXTURES.posterLink), 'UFC Fight Night 999.png');
+  check('pas d\'affiche, pas d\'invention', posterFile(FIXTURES.posterNone), '');
+
   console.log(ko ? `\n${ko} test(s) en échec.` : '\nTous les tests passent.');
   process.exit(ko ? 1 : 0);
 }
@@ -329,6 +382,7 @@ function mergeManual(events){
     try{
       const wt = await wikitext(ev.name);
       ev.bouts = parseBouts(wt);
+      ev.posterFile = posterFile(wt);
       console.log(`  ${ev.date}  ${ev.name} — ${ev.bouts.length} affiche(s)`);
       if(DUMP && !ev.bouts.length) console.log('    (page lue, aucun « vs. » reconnu)');
     }catch(e){
@@ -336,6 +390,18 @@ function mergeManual(events){
       ev.bouts = [];
       console.warn(`  ${ev.date}  ${ev.name} — carte pas encore publiée (${e.message})`);
     }
+  }
+  // les affiches en un seul appel groupé, une fois toutes les pages lues
+  const files = events.map(e=>e.posterFile).filter(Boolean);
+  if(files.length){
+    const urls = await posterUrls(files);
+    for(const ev of events){
+      if(ev.posterFile && urls.has(ev.posterFile)) ev.poster = urls.get(ev.posterFile);
+      delete ev.posterFile;
+    }
+    console.log(`${events.filter(e=>e.poster).length} affiche(s) récupérée(s).`);
+  } else {
+    for(const ev of events) delete ev.posterFile;
   }
   events = mergeManual(events);
 
