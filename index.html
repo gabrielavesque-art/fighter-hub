@@ -711,6 +711,293 @@ footer a:hover{color:var(--tx-2)}
   .evt{max-width:110px}
   .search-row{flex-direction:column}
 }
+/* ══ PRONOS (la carte + le marché) ══ */
+/* même empilement que les autres sections : sous le header, au-dessus du fond */
+.pn-page{position:fixed;top:58px;left:0;right:0;bottom:0;z-index:150;background:var(--bg);overflow-y:auto;display:none}
+.pn-page.on{display:block}
+.pn-body{max-width:980px;margin:0 auto;padding:36px clamp(16px,4vw,44px) 90px}
+.pn-lead{font-size:14.5px;line-height:1.65;color:var(--tx-2);font-weight:300;max-width:680px;margin-bottom:20px}
+.pn-lead b{color:var(--tx);font-weight:600}
+.pn-lead em{color:var(--red-lt);font-style:normal;font-weight:600}
+/* bandeau bankroll : quatre chiffres, puis le duel homme/machine en dessous */
+.pn-bankrow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.pn-kpi{background:var(--bg-2);padding:13px 16px}
+.pn-kpi b{display:block;font-family:'JetBrains Mono',monospace;font-size:21px;font-weight:700;color:#e9c877;line-height:1;font-variant-numeric:tabular-nums}
+.pn-kpi span{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.1px;text-transform:uppercase;color:var(--tx-3);margin-top:6px}
+.pn-duel{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:11px 16px;margin-bottom:24px;
+  font-size:13.5px;color:var(--tx-2)}
+.pn-duel b{color:var(--tx);font-family:'JetBrains Mono',monospace}
+.pn-duel.win{border-color:rgba(37,160,92,.35)}
+.pn-duel.lose{border-color:rgba(224,26,43,.3)}
+.pn-vs{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tx-3)}
+.pn-note{font-size:14px;line-height:1.65;color:var(--tx-2);max-width:680px;margin:18px 0 10px}
+.pn-note b{color:var(--tx);font-weight:600}
+.pn-hint{font-size:12.5px;line-height:1.6;color:var(--tx-3);max-width:680px;margin:8px 0 4px}
+.pn-sec{display:flex;align-items:center;gap:10px;margin:30px 0 12px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;text-transform:uppercase;letter-spacing:.6px}
+.pn-sec::before{content:'';width:4px;height:18px;background:var(--red);border-radius:2px}
+.pn-sec span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--tx-3);font-weight:400}
+.pn-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0}
+.pn-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tx-2);cursor:pointer;white-space:nowrap}
+.pn-check input{accent-color:var(--red);width:15px;height:15px;cursor:pointer}
+.pn-tools .pn-hint{margin:0;flex:1;min-width:200px}
+
+/* ── une affiche ── */
+.pn-bout{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.pn-head{display:grid;grid-template-columns:1fr minmax(150px,220px) 1fr;gap:14px;align-items:center;padding:14px 16px}
+.pn-side{display:flex;align-items:center;gap:11px;min-width:0}
+.pn-side.right{justify-content:flex-end;text-align:right}
+.pn-face{width:46px;height:46px;border-radius:9px;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,#1C1C24,#0F0F14)}
+.pn-face .avatar{font-size:14px}
+.pn-face .ph{object-fit:cover;object-position:center 14%}
+.pn-name{font-size:15.5px;font-weight:600;letter-spacing:-.1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-st{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3);margin-top:4px;font-variant-numeric:tabular-nums}
+/* la jauge est la cote : rouge à gauche, neutre à droite, largeur = probabilité */
+.pn-bar{height:6px;border-radius:4px;background:var(--bg-3);overflow:hidden}
+.pn-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--red-lt));border-radius:4px;transition:width .3s}
+.pn-oddsrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px;
+  font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-2);font-variant-numeric:tabular-nums}
+.pn-oddsrow em{font-style:normal;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);white-space:nowrap}
+.pn-when{text-align:center;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.6px;color:var(--tx-3);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pn-bout.blind .pn-name{color:var(--tx-3);font-style:italic}
+
+/* ── formulaire de pari ── */
+.pn-form{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding:13px 16px;border-top:1px solid var(--line);background:rgba(255,255,255,.014)}
+.pn-fld{display:flex;flex-direction:column;gap:5px;min-width:0}
+.pn-fld label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--tx-3)}
+.pn-fld select,.pn-fld input,.pn-compose input,.pn-compose select,.pn-buy input{
+  background:var(--bg-3);border:1px solid var(--line-2);border-radius:6px;padding:7px 9px;font-size:13px;color:var(--tx);
+  max-width:100%}
+.pn-fld input[type=number],.pn-buy input{width:84px;font-family:'JetBrains Mono',monospace}
+.pn-fld select:focus,.pn-fld input:focus,.pn-compose input:focus,.pn-buy input:focus{outline:none;border-color:var(--red)}
+.pn-quote{flex:1;min-width:150px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tx-3);padding-bottom:8px}
+.pn-quote.live{color:var(--tx-2)}
+.pn-quote b{color:#e9c877}
+.pn-btn{background:var(--red);border:1px solid var(--red);border-radius:6px;color:#fff;font-weight:600;font-size:13px;
+  padding:8px 16px;cursor:pointer;transition:filter .15s,background .15s;white-space:nowrap}
+.pn-btn:hover{filter:brightness(1.12)}
+.pn-btn.ghost{background:transparent;color:var(--tx-2);border-color:var(--line-2)}
+.pn-btn.ghost:hover{border-color:var(--red);color:var(--red-lt)}
+.pn-btn.sm{padding:6px 11px;font-size:12px}
+.pn-mini{background:none;border:none;color:var(--tx-3);font-size:11.5px;text-decoration:underline;cursor:pointer;padding:0 4px}
+.pn-mini:hover{color:var(--red-lt)}
+.pn-mini.danger:hover{color:var(--red)}
+.pn-ticket,.pn-settled{padding:11px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--tx-2);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pn-ticket b,.pn-settled b{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--tx-3)}
+.pn-ticket span{color:var(--tx-3)}
+.pn-settled.win{background:var(--green-dim)}
+.pn-settled.win b{color:#3fd183}
+.pn-settled.lose{background:var(--red-dim)}
+.pn-settled.lose b{color:#ff6b78}
+
+/* ── composeur + cartes annoncées ── */
+.pn-compose{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.pn-compose input[name=a],.pn-compose input[name=b]{flex:1;min-width:150px}
+.pn-compose.err input[name=a],.pn-compose.err input[name=b]{border-color:var(--red)}
+.pn-vs2{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tx-3)}
+.pn-evt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.pn-evt b{font-size:15px}
+.pn-evt span{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3)}
+.pn-adds{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px}
+.pn-add{background:var(--bg-2);border:1px solid var(--line-2);border-radius:100px;color:var(--tx-2);font-size:12.5px;
+  padding:6px 13px;cursor:pointer;transition:all .15s}
+.pn-add:hover{border-color:var(--red);color:var(--tx)}
+.pn-share{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px}
+.pn-share .pn-hint{margin:0;flex:1;min-width:220px}
+
+/* ── le marché ── */
+.pn-cats{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 16px}
+.pn-cat{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3);
+  background:transparent;border:1px solid var(--line-2);border-radius:100px;padding:5px 11px;cursor:pointer;transition:all .15s}
+.pn-cat:hover{color:var(--tx-2);border-color:var(--tx-3)}
+.pn-cat.on{background:var(--red);border-color:var(--red);color:#fff}
+.pn-prop{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
+.pn-prop.gagne{border-color:rgba(37,160,92,.35)}
+.pn-prop.perdu{opacity:.65}
+.pn-ptop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.pn-ptitle{font-size:15px;line-height:1.45;font-weight:500;min-width:0}
+.pn-pprice{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.pn-pprice b{font-family:'JetBrains Mono',monospace;font-size:19px;font-weight:700;color:#e9c877;font-variant-numeric:tabular-nums}
+.pn-pprice span{font-family:'JetBrains Mono',monospace;font-size:11px;font-variant-numeric:tabular-nums}
+.pn-pprice .up,.pn-pos .up{color:#3fd183}
+.pn-pprice .down,.pn-pos .down{color:#ff6b78}
+.pn-pprice .flat{color:var(--tx-3)}
+/* la courbe du prix : ce que ta conviction vaut au fil des semaines */
+.pn-spark{width:64px;height:22px}
+.pn-spark polyline{fill:none;stroke:var(--tx-3);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.pn-spark.up polyline{stroke:#3fd183}
+.pn-spark.down polyline{stroke:#ff6b78}
+.pn-pfoot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.pn-deadline{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--tx-3)}
+.pn-buy{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pn-verdict{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;letter-spacing:.8px;text-transform:uppercase}
+.pn-verdict.gagne{color:#3fd183}
+.pn-verdict.perdu{color:#ff6b78}
+.pn-pos{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--tx-2);font-variant-numeric:tabular-nums}
+.pn-pos b{color:var(--tx)}
+.pn-pos em{font-style:normal;font-weight:700}
+.pn-tag{font-size:9px;letter-spacing:1.2px;border-radius:3px;padding:3px 6px;border:1px solid var(--line-2);color:var(--tx-3)}
+.pn-tag.oui{color:#3fd183;border-color:rgba(37,160,92,.4)}
+.pn-tag.non{color:#ff6b78;border-color:rgba(224,26,43,.35)}
+
+/* ── tickets ── */
+.pn-verdictbox{background:var(--bg-2);border:1px solid var(--line-2);border-left:3px solid var(--red);border-radius:10px;
+  padding:15px 18px;font-size:14px;line-height:1.6;color:var(--tx-2);margin-bottom:8px}
+.pn-verdictbox.win{border-left-color:var(--green)}
+.pn-verdictbox b{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;
+  color:var(--tx);margin-bottom:5px}
+.pn-verdictbox span{display:block;margin-top:8px;font-size:12.5px;color:var(--tx-3)}
+.pn-line{display:grid;grid-template-columns:96px minmax(0,1fr) auto auto;gap:14px;align-items:center;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:10px 14px;margin-bottom:7px;font-size:13.5px}
+.pn-line.win{border-left:3px solid var(--green)}
+.pn-line.lose{border-left:3px solid var(--red)}
+.pn-when2{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3);white-space:nowrap}
+.pn-what{min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--tx-2)}
+.pn-what b{color:var(--tx);font-weight:600}
+.pn-what em{font-style:normal;color:var(--tx-3)}
+.pn-res{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--tx-3);white-space:nowrap}
+.pn-gain{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;white-space:nowrap;color:var(--tx-2)}
+.pn-gain.win{color:#3fd183}
+.pn-gain.lose{color:#ff6b78}
+
+@media(max-width:880px){
+  .pn-bankrow{grid-template-columns:repeat(2,1fr)}
+  .pn-head{grid-template-columns:1fr;gap:10px}
+  .pn-side.right{flex-direction:row-reverse;justify-content:flex-start;text-align:left}
+  .pn-when{text-align:left}
+  .pn-line{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}
+  .pn-when2{grid-column:1/-1}
+  .pn-ptop{flex-direction:column;gap:10px}
+  .pn-pprice{align-self:flex-start}
+}
+@media(max-width:560px){
+  .pn-form{gap:8px}
+  .pn-fld{flex:1;min-width:calc(50% - 4px)}
+  .pn-fld select,.pn-fld input{width:100%}
+  .pn-quote{min-width:100%}
+  .pn-btn{width:100%}
+  .pn-compose input[name=a],.pn-compose input[name=b]{min-width:calc(50% - 30px)}
+}
+/* ══ PRONOS — mouvement et finitions ══ */
+/* Tout le mouvement de la section est regroupé ici pour qu'une seule règle
+   puisse le désactiver (préférence système « moins d'animations »). Rien ne
+   dépend d'une animation pour être lisible : elles arrivent en plus. */
+:root{
+  --blue:#3F6FD8;                /* coin bleu — n'existe QUE dans les pronos */
+  --blue-dim:rgba(63,111,216,.14);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+@keyframes pnRise{ from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+@keyframes pnFade{ from{opacity:0} to{opacity:1} }
+@keyframes pnBarIn{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
+@keyframes pnDraw{ from{stroke-dashoffset:120} to{stroke-dashoffset:0} }
+@keyframes pnSweep{ 0%{background-position:-140% 0} 100%{background-position:240% 0} }
+@keyframes pnPop{ 0%{transform:scale(1)} 40%{transform:scale(1.14)} 100%{transform:scale(1)} }
+
+/* entrée de la section : le corps monte d'un bloc, les listes s'échelonnent */
+.pn-page.on .pn-body{ animation:pnRise .38s var(--ease) both }
+.pn-bout,.pn-prop,.pn-line{
+  animation:pnRise .44s var(--ease) both;
+  /* plafonné à 10 crans : au-delà l'attente se verrait plus que l'effet */
+  animation-delay:calc(min(var(--i,0),10) * 34ms);
+}
+#pnView.swap{ animation:pnFade .26s ease-out both }
+
+/* la jauge de cote se remplit depuis la gauche à chaque rendu */
+.pn-bar i{ transform-origin:left center; animation:pnBarIn .62s var(--ease) both }
+/* la courbe d'une conviction se trace */
+.pn-spark polyline{ stroke-dasharray:120; animation:pnDraw .9s ease-out both }
+
+/* survol : la carte se soulève, son liseré s'allume */
+.pn-bout,.pn-prop{ transition:transform .18s var(--ease), border-color .18s, box-shadow .18s }
+.pn-bout:hover,.pn-prop:hover{
+  transform:translateY(-2px);
+  border-color:var(--line-2);
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+}
+.pn-btn{ transition:filter .15s, background .15s, transform .1s, box-shadow .18s }
+.pn-btn:hover{ box-shadow:0 4px 14px rgba(224,26,43,.28) }
+.pn-btn.ghost:hover{ box-shadow:none }
+.pn-btn:active{ transform:translateY(1px) scale(.985) }
+.pn-add,.pn-cat{ transition:all .16s var(--ease) }
+.pn-add:hover,.pn-cat:hover{ transform:translateY(-1px) }
+
+/* les crédits : le chiffre défile jusqu'à sa nouvelle valeur, la case pulse */
+.pn-kpi b{ transition:color .3s }
+.pn-kpi.up b{ color:#3fd183 }
+.pn-kpi.down b{ color:#ff6b78 }
+.pn-kpi.moved b{ animation:pnPop .5s var(--ease) }
+.pn-bankrow{ background:linear-gradient(180deg,rgba(255,255,255,.03),transparent),var(--line) }
+
+/* un règlement qui vient de tomber : un balayage passe une fois sur la ligne */
+.pn-settled.just{
+  background-image:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.11) 45%,transparent 70%);
+  background-size:200% 100%;
+  animation:pnSweep 1.1s ease-out 1;
+}
+
+/* ── l'affiche : coin rouge / coin bleu, comme au bord de la cage ── */
+.pn-bout{ position:relative }
+.pn-bout::before,.pn-bout::after{
+  content:'';position:absolute;top:0;bottom:0;width:3px;opacity:.55;transition:opacity .2s;
+}
+.pn-bout::before{ left:0;background:linear-gradient(180deg,var(--red),transparent) }
+.pn-bout::after{ right:0;background:linear-gradient(180deg,var(--blue),transparent) }
+.pn-bout:hover::before,.pn-bout:hover::after{ opacity:1 }
+/* le favori ELO ressort, l'outsider s'efface : l'info se lit sans lire les chiffres */
+.pn-side.fav .pn-name{ color:var(--tx) }
+.pn-side:not(.fav) .pn-name{ color:var(--tx-2) }
+.pn-face{ cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s }
+.pn-face:hover{ transform:scale(1.06);box-shadow:0 0 0 2px var(--line-2) }
+.pn-vsmark{
+  display:block;text-align:center;margin-bottom:7px;
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:12px;
+  letter-spacing:2.5px;color:var(--tx-3);
+}
+.pn-bar{ position:relative;background:linear-gradient(90deg,var(--bg-3),rgba(63,111,216,.28)) }
+/* la ligne d'un combat réglé prend la couleur du verdict sur toute sa hauteur */
+.pn-bout.won{ border-color:rgba(37,160,92,.3) }
+.pn-bout.lost{ border-color:rgba(224,26,43,.22) }
+
+/* ── conviction : une barre de prix sous le titre, plus parlante qu'un chiffre ── */
+.pn-pline{ height:3px;border-radius:3px;background:var(--bg-3);margin-top:11px;overflow:hidden }
+.pn-pline i{
+  display:block;height:100%;border-radius:3px;transform-origin:left center;
+  background:linear-gradient(90deg,var(--gold),#e9c877);
+  animation:pnBarIn .62s var(--ease) both;
+}
+.pn-prop.gagne .pn-pline i{ background:linear-gradient(90deg,var(--green),#3fd183) }
+.pn-prop.perdu .pn-pline i{ background:var(--tx-3) }
+.pn-tag{ transition:all .15s }
+.pn-pos{ animation:pnFade .3s ease-out both }
+
+@media (prefers-reduced-motion: reduce){
+  .pn-page.on .pn-body,.pn-bout,.pn-prop,.pn-line,.pn-bar i,.pn-spark polyline,
+  .pn-pline i,.pn-settled.just,.pn-kpi.moved b,#pnView.swap{ animation:none !important }
+  .pn-bout:hover,.pn-prop:hover,.pn-face:hover,.pn-add:hover,.pn-cat:hover{ transform:none }
+}
+/* la jauge du duel : à gauche ce que tu as gagné, à droite ce que l'algo a gagné */
+.pn-duelside{display:flex;align-items:baseline;gap:7px;font-size:13px;color:var(--tx-2);white-space:nowrap}
+.pn-duelside.right{justify-content:flex-end}
+.pn-duelside b{font-family:'JetBrains Mono',monospace;color:var(--tx)}
+.pn-duelside em{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--tx-3)}
+.pn-duel.win .pn-duelside:first-child em{color:#3fd183}
+.pn-duel.lose .pn-duelside.right em{color:#ff6b78}
+.pn-duelbar{flex:1;min-width:90px;height:7px;border-radius:5px;overflow:hidden;
+  background:linear-gradient(90deg,var(--bg-3),rgba(63,111,216,.35))}
+.pn-duelbar i{display:block;height:100%;border-radius:5px;transform-origin:left center;
+  background:linear-gradient(90deg,var(--red),var(--red-lt));animation:pnBarIn .62s var(--ease) both;
+  transition:width .4s var(--ease)}
+@media(max-width:560px){
+  .pn-duel{gap:8px}
+  .pn-duelbar{order:3;flex-basis:100%;min-width:100%}
+}
 </style>
 </head>
 <body>
@@ -862,6 +1149,20 @@ footer a:hover{color:var(--tx-2)}
       <p class="ep-p">L'ELO est une <b>estimation statistique</b>, pas une vérité absolue. Il est calculé uniquement sur les combats UFC, dans l'ordre chronologique, sur toute l'histoire de la promotion. Les combats hors UFC ne comptent pas. C'est un outil pour comparer et débattre, pas un verdict définitif.</p>
       <p class="ep-note">Fighter Hub est un projet de fan, sans lien avec l'UFC. L'ELO affiché est notre propre calcul.</p>
     </div>
+  </div>
+</div>
+
+<div class="pn-page" id="pnPage">
+  <div class="pn-body">
+    <h2 class="pg-title">Salle des <i>paris</i></h2>
+    <p class="pn-lead">Des crédits fictifs, aucune inscription, rien qui sorte de ton navigateur. Ce qui change, c'est la cote : elle ne vient d'aucun bookmaker, elle est <b>calculée depuis l'ELO du site</b>. Tu ne joues donc pas contre la maison, tu joues <em>contre notre modèle</em> — et on garde le score.</p>
+    <div id="pnBank"></div>
+    <div class="rk-modes" id="pnTabs">
+      <button class="rk-mode on" data-tab="carte">La Carte</button>
+      <button class="rk-mode" data-tab="marche">Le Marché</button>
+      <button class="rk-mode" data-tab="tickets">Mes tickets</button>
+    </div>
+    <div id="pnView"></div>
   </div>
 </div>
 
@@ -1664,6 +1965,7 @@ async function loadFights(){
 
     const [oa, ob] = outcome.split('/').map(s=>(s||'').trim());
     const cls = normWC(wcRaw);
+    const isTitle = /title bout/i.test(wcRaw) && !/interim|tournament/i.test(wcRaw);
     const when = eventDate.get(event) || 0;
 
     const apply = (self, opp, out) => {
@@ -1675,7 +1977,11 @@ async function loadFights(){
       if(cls && !self.wc) self.wc = cls;
       if(when > (self.last||0)) self.last = when;   // dernier combat -> filtre « actifs »
       // la date sert aussi a distinguer les revanches quand on cherche la video
-      self.history.push({ out, opp, method, event, rnd, tm, wc: cls, date: when });
+      // combat de titre : le marché des pronostics en déduit les champions
+      // actuels sans aucune source externe (le dernier vainqueur d'une ceinture
+      // la porte encore). Intérimaires et tournois exclus : ce ne sont pas des
+      // ceintures pleines.
+      self.history.push({ out, opp, method, event, rnd, tm, wc: cls, date: when, title: isTitle });
     };
     apply(fa, b, oa);
     apply(fb, a, ob);
@@ -2134,6 +2440,7 @@ function closeEloPage(){
 const NAV = [
   { id:'home', label:'Combattants', hash:'',     title:"Tous les combattants de l'UFC" },
   { id:'p4p',  label:'P4P',         hash:'#p4p', title:'Classement pound-for-pound et par division' },
+  { id:'pronos', label:'Pronos',    hash:'#pronos', title:'Pronostics : la carte du week-end et le marché des convictions' },
 ];
 function buildNav(){
   document.getElementById('nav').innerHTML = NAV.map(n=>
@@ -2158,12 +2465,20 @@ function navigate(hash){
 function applyRoute(){
   const h = location.hash;
   const isP4P = h.startsWith('#p4p'), isElo = h === '#elo';
+  // #duel-<ticket> est un lien de défi partagé : il ouvre la salle des paris
+  const isPn = h.startsWith('#pronos') || h.startsWith('#duel-');
   if(!isP4P && rankPage.classList.contains('on')) closeRank();
   if(!isElo && eloPage.classList.contains('on'))  closeEloPage();
+  if(!isPn  && pnPage.classList.contains('on'))   closePronos();
   if(isP4P) openRank(divFromHash(h));
   if(isElo) openEloPage();
+  if(isPn)  openPronos(pnTabFromHash(h));
   document.querySelectorAll('.nav-lnk').forEach(a=>
-    a.classList.toggle('on', !isElo && a.dataset.nav === (isP4P ? 'p4p' : 'home')));
+    a.classList.toggle('on', !isElo && a.dataset.nav === (isP4P ? 'p4p' : isPn ? 'pronos' : 'home')));
+  // la nav défile horizontalement sur mobile : sans ça, ouvrir une section dont
+  // l'onglet est hors champ n'affiche aucun onglet actif. Même remède que la
+  // barre de divisions du classement.
+  document.querySelector('.nav-lnk.on')?.scrollIntoView({inline:'center', block:'nearest'});
   document.getElementById('navHelp').classList.toggle('on', isElo);
 }
 window.addEventListener('hashchange', applyRoute);   // URL éditée à la main
@@ -2345,8 +2660,1011 @@ wireSwitch('rkModes', b=>{ rkMode  = b.dataset.mode;  });
 window.addEventListener('keydown', e=>{
   if(e.key!=='Escape') return;
   if(document.getElementById('ov').classList.contains('on')) return;   // la fiche part en premier
-  if(rankPage.classList.contains('on') || eloPage.classList.contains('on')) navigate('');
+  if(rankPage.classList.contains('on') || eloPage.classList.contains('on') || pnPage.classList.contains('on')) navigate('');
 }, true);
+
+/* ═══════════ PRONOS — bankroll, cotes maison, règlement automatique ═══════════
+
+   Deux horizons, une seule bankroll :
+
+   · LA CARTE  — pronostic combat par combat. Il se règle tout seul dès que le
+                 résultat entre dans ufc_fight_results.csv, déjà chargé par
+                 loadFights() : aucun serveur, aucun appel de plus.
+   · LE MARCHÉ — convictions longue durée. Chaque prop est une CONDITION
+                 déclarative évaluée sur les données du site ; son prix (= la
+                 probabilité du modèle) est recalculé à chaque visite, donc une
+                 position bouge même les semaines sans combat.
+
+   La cote ne vient d'aucun bookmaker : elle sort de notre propre ELO. Parier,
+   ici, c'est parier CONTRE le modèle du site — d'où le score « toi vs l'algo ».
+   Tout vit en localStorage ; le partage passe par un ticket encodé dans l'URL.
+*/
+const PN_KEY   = 'fh.pronos.v1';
+const PN_START = 1000;              // crédits offerts à la première visite
+const PN_DAY   = 864e5;
+const PN_DEF_ELO = 1000;            // ELO par défaut : un combattant sans classement
+let PN = null;
+let pnTab = 'carte';
+let pnBlind = false;                // « carte aveugle » : on parie sur les stats, pas sur le nom
+let pnCat = '';                     // filtre de catégorie du marché ('' = tout)
+const pnFresh = new Set();          // règlements tombés depuis l'ouverture : signalés une fois
+let pnShownBank = null;             // dernière valeur affichée, pour animer le compteur
+const PN_MARKET_LIMIT = 40;         // au-delà on ne lit plus, on fait défiler
+let pnDuel = null;                  // ticket d'un pote, décodé depuis l'URL
+
+function pnBlank(){
+  return { v:1, bank:PN_START, name:'', bouts:[], tickets:[], positions:[], hist:{}, resolved:{} };
+}
+function pnLoad(){
+  try{
+    const raw = localStorage.getItem(PN_KEY);
+    PN = raw ? Object.assign(pnBlank(), JSON.parse(raw)) : pnBlank();
+  }catch(e){ PN = pnBlank(); }
+}
+function pnSave(){
+  // navigation privée, quota plein : le site doit continuer de tourner
+  try{ localStorage.setItem(PN_KEY, JSON.stringify(PN)); }
+  catch(e){ console.warn('[pronos] sauvegarde impossible :', e.message); }
+}
+
+/* ── modèle de cotes ─────────────────────────────────────────────────────── */
+function pnElo(key){ const e = eloDB.get(key); return e ? e.elo : PN_DEF_ELO; }
+// exactement la formule de build-elo.js : la cote du site EST son classement
+function pnP(ea, eb){ return 1/(1+Math.pow(10,(eb-ea)/400)); }
+function pnOdds(p){ return p>0 ? Math.min(99, Math.max(1.01, 1/p)) : 99; }
+function pnClamp(p){ return Math.min(.97, Math.max(.02, p)); }
+
+// Distribution des méthodes de victoire, lissée vers la moyenne UFC : sur trois
+// combats on ne peut pas conclure qu'un combattant finit toujours par KO.
+const PN_PRIOR = { ko:.33, sub:.20, dec:.47 };
+function pnMethodMix(f){
+  const n = (f ? (f.ko||0)+(f.sub||0)+(f.dec||0) : 0);
+  const w = n/(n+6);
+  const mix = {};
+  for(const k of ['ko','sub','dec']) mix[k] = w*(n ? (f[k]||0)/n : PN_PRIOR[k]) + (1-w)*PN_PRIOR[k];
+  return mix;
+}
+// les finitions arrivent tôt : répartition décroissante, renormalisée sur 3 ou 5 rounds
+const PN_RND = [.34,.25,.18,.13,.10];
+function pnRoundMix(rounds){
+  const a = PN_RND.slice(0, rounds||3);
+  const s = a.reduce((x,y)=>x+y,0);
+  return a.map(v=>v/s);
+}
+// probabilité composée d'un ticket : vainqueur × méthode × round
+function pnQuote(bout, pick){
+  const kw = slugKey(pick.win);
+  const other = kw===slugKey(bout.a) ? bout.b : bout.a;
+  const p = pnP(pnElo(kw), pnElo(slugKey(other)));
+  let q = p;
+  if(pick.method){
+    q *= pnMethodMix(BY_NAME.get(kw))[pick.method] || .1;
+    if(pick.method!=='dec' && pick.round) q *= pnRoundMix(bout.rounds)[pick.round-1] || .1;
+  }
+  return { p, q, odds: pnOdds(q) };
+}
+
+/* ── règlement automatique ───────────────────────────────────────────────── */
+function pnClassify(m){
+  const s = (m||'').toUpperCase();
+  if(s.includes('KO') || s.includes('TKO')) return 'ko';
+  if(s.includes('SUB')) return 'sub';
+  if(s.includes('DEC')) return 'dec';
+  return 'other';                       // DQ, no contest, résultat annulé
+}
+// Retrouve le combat dans le palmarès déjà chargé. La date sert à ne pas régler
+// un pari sur une revanche avec le résultat du premier combat.
+function pnResult(bout){
+  const fa = BY_NAME.get(slugKey(bout.a));
+  if(!fa || !fa.history) return null;
+  const kb = slugKey(bout.b);
+  const from = bout.date ? Date.parse(bout.date) - 3*PN_DAY : 0;
+  const hits = fa.history
+    .filter(h=>slugKey(h.opp)===kb && (!from || !h.date || h.date>=from))
+    .sort((x,y)=>(x.date||0)-(y.date||0));
+  if(!hits.length) return null;
+  const h = hits[0];                    // le premier combat APRÈS la date annoncée
+  return {
+    winner: h.out==='W' ? fa.name : h.out==='L' ? bout.b : null,
+    method: pnClassify(h.method),
+    round : +h.rnd || 0,
+    label : h.method,
+    event : h.event,
+    date  : h.date || 0,
+  };
+}
+function pnSettle(){
+  const news = [];
+  for(const t of PN.tickets){
+    if(t.settled) continue;
+    const bout = PN.bouts.find(b=>b.id===t.boutId);
+    if(!bout) continue;
+    const r = pnResult(bout);
+    if(!r) continue;
+    // nul, DQ, no contest : personne n'avait tort, la mise est rendue
+    if(!r.winner || r.method==='other'){
+      PN.bank += t.stake;
+      t.settled = { ok:null, gain:t.stake, when:Date.now(), res:r.label||'sans vainqueur' };
+      news.push({ bout, t, r });
+      continue;
+    }
+    const ok = slugKey(r.winner)===slugKey(t.win)
+      && (!t.method || t.method===r.method)
+      && (!t.method || t.method==='dec' || !t.round || t.round===r.round);
+    const gain = ok ? Math.round(t.stake*t.odds) : 0;
+    PN.bank += gain;
+    t.settled = { ok, gain, when:Date.now(), res:`${r.winner} · ${pnMethLabel(r.method)}${r.round?' R'+r.round:''}` };
+    news.push({ bout, t, r });
+  }
+  for(const n of news) pnFresh.add(n.bout.id);
+  if(news.length) pnSave();
+  return news;
+}
+// L'algo parie les mêmes combats, les mêmes mises, toujours sur le favori ELO.
+// C'est l'étalon : gagner de l'argent ne suffit pas, il faut faire mieux que lui.
+function pnScore(){
+  const me = {n:0, ok:0, pl:0}, algo = {n:0, ok:0, pl:0};
+  for(const t of PN.tickets){
+    if(!t.settled || t.settled.ok===null) continue;
+    const bout = PN.bouts.find(b=>b.id===t.boutId);
+    if(!bout) continue;
+    const r = pnResult(bout);
+    if(!r || !r.winner) continue;
+    me.n++; if(t.settled.ok) me.ok++;
+    me.pl += (t.settled.gain||0) - t.stake;
+    const pa = pnP(pnElo(slugKey(bout.a)), pnElo(slugKey(bout.b)));
+    const fav = pa>=.5 ? bout.a : bout.b;
+    const won = slugKey(fav)===slugKey(r.winner);
+    algo.n++; if(won) algo.ok++;
+    algo.pl += (won ? Math.round(t.stake*pnOdds(Math.max(pa,1-pa))) : 0) - t.stake;
+  }
+  return { me, algo };
+}
+
+/* ── LE MARCHÉ : champions dérivés, props, prix ──────────────────────────── */
+// Le champion d'une division = le vainqueur du dernier combat de titre. Rien à
+// scraper : ufc_fight_results.csv porte « UFC <division> Title Bout », et
+// loadFights() marque déjà ces combats (h.title). Les ceintures intérimaires et
+// les tournois sont exclus à la source.
+let _champCache = null;
+function pnChampions(){
+  if(_champCache) return _champCache;
+  // même garde que p4pOrder() : tant que les combats ne sont pas là, on répond
+  // sans mémoriser — sinon une ouverture pendant le chargement figerait un
+  // marché vide pour toute la session.
+  if(!fightsLoaded) return new Map();
+  const best = new Map();
+  for(const f of FIGHTERS){
+    for(const h of f.history||[]){
+      if(!h.title || h.out!=='W' || !h.wc) continue;
+      const cur = best.get(h.wc);
+      if(!cur || (h.date||0) > cur.date) best.set(h.wc, { key:f.key, name:f.name, date:h.date||0, since:h.event });
+    }
+  }
+  _champCache = best;
+  return best;
+}
+// ELO médian des combattants classables d'une division — l'adversaire « type »
+let _medCache = null;
+function pnDivMedian(div){
+  if(!_medCache){
+    _medCache = new Map();
+    const by = new Map();
+    for(const f of FIGHTERS){
+      if(!f.wc || !eloDB.has(f.key) || !isActiveFighter(f)) continue;
+      if(!by.has(f.wc)) by.set(f.wc, []);
+      by.get(f.wc).push(pnElo(f.key));
+    }
+    for(const [d, arr] of by){
+      arr.sort((a,b)=>a-b);
+      _medCache.set(d, arr[Math.floor(arr.length/2)] || PN_DEF_ELO);
+    }
+  }
+  return _medCache.get(div) || PN_DEF_ELO;
+}
+// wcShort() donne « LHW » : parfait dans un tableau, illisible dans une phrase
+const PN_DIV_FR = {
+  'Heavyweight':'lourds', 'Light Heavyweight':'mi-lourds', 'Middleweight':'moyens',
+  'Welterweight':'mi-moyens', 'Lightweight':'légers', 'Featherweight':'plumes',
+  'Bantamweight':'coqs', 'Flyweight':'mouches', 'Strawweight':'pailles',
+  "Women's Strawweight":'pailles', "Women's Flyweight":'mouches',
+  "Women's Bantamweight":'coqs', "Women's Featherweight":'plumes',
+};
+function pnDiv(d){ return PN_DIV_FR[d] || d || 'sa division'; }
+function pnChampWord(d){ return /women/i.test(d||'') ? 'championne' : 'champion'; }
+// meilleur prétendant d'une division = plus haut ELO actif, champion exclu
+function pnChallenger(div, champKey){
+  let best = null;
+  for(const f of FIGHTERS){
+    if(f.wc!==div || f.key===champKey || !eloDB.has(f.key) || !isActiveFighter(f)) continue;
+    if(!best || pnElo(f.key) > pnElo(best.key)) best = f;
+  }
+  return best;
+}
+// série de victoires en cours
+function pnStreak(key){
+  const f = BY_NAME.get(key);
+  if(!f || !f.history) return 0;
+  const h = f.history.slice().sort((a,b)=>(b.date||0)-(a.date||0));
+  let n = 0;
+  for(const x of h){ if(x.out==='W') n++; else if(x.out==='L' || x.out==='D') break; }
+  return n;
+}
+function pnActiveTop(div, n){
+  return FIGHTERS
+    .filter(f=>f.wc===div && eloDB.has(f.key) && isActiveFighter(f))
+    .sort((a,b)=>pnElo(b.key)-pnElo(a.key))
+    .slice(0, n);
+}
+
+// Le catalogue n'est pas écrit à la main : il est DÉDUIT des données. Chaque
+// combat joué peut donc faire apparaître de nouvelles convictions.
+let _propCache = null;
+function pnPropCat(){
+  if(_propCache) return _propCache;
+  if(!fightsLoaded || !eloDB.size) return [];      // rien à mémoriser tant que rien n'est chargé
+  const out = [], now = Date.now(), Y = new Date().getFullYear();
+  const endY  = Date.parse(`${Y}-12-31T23:59:59`);
+  const endY1 = Date.parse(`${Y+1}-12-31T23:59:59`);
+  const horizon = endY - now < 120*PN_DAY ? endY1 : endY;   // en novembre, viser fin d'année n'a plus de sel
+  const hLabel = new Date(horizon).getFullYear();
+
+  // 1 — les ceintures
+  for(const [div, c] of pnChampions()){
+    if(now - c.date > 900*PN_DAY) continue;    // ceinture dormante : champion retiré, titre vacant
+    out.push({ id:'champ|'+div, cat:'Ceintures', deadline:horizon,
+      titre:`${c.name} encore ${pnChampWord(div)} des poids ${pnDiv(div)} au 31 décembre ${hLabel}`,
+      res:{ type:'champion_at', key:c.key, div } });
+  }
+  // 2 — les prétendants : le top de chaque division qui n'a pas la ceinture
+  for(const [div, c] of pnChampions()){
+    for(const f of pnActiveTop(div, 3)){
+      if(f.key===c.key) continue;
+      out.push({ id:'shot|'+f.key, cat:'Ceintures', deadline:endY1,
+        titre:`${f.name} combat pour la ceinture des poids ${pnDiv(div)} avant fin ${Y+1}`,
+        res:{ type:'title_shot', key:f.key, since:now } });
+    }
+  }
+  // 3 — les séries en cours. Limitées au haut de chaque division : une série de
+  //     trois en préliminaire n'intéresse personne et noierait le marché.
+  const ranked = new Set();
+  for(const div of WCS) for(const f of pnActiveTop(div, 15)) ranked.add(f.key);
+  for(const f of FIGHTERS){
+    if(!ranked.has(f.key)) continue;
+    const s = pnStreak(f.key);
+    if(s < 3) continue;
+    out.push({ id:'streak|'+f.key+'|'+(s+2), cat:'Séries', deadline:endY1,
+      titre:`${f.name} porte sa série à ${s+2} victoires (il en est à ${s})`,
+      res:{ type:'streak', key:f.key, n:s+2 } });
+  }
+  // 4 — les paliers ELO
+  for(const [key] of p4pOrder().slice(0, 25)){
+    const f = BY_NAME.get(key);
+    if(!f || !isActiveFighter(f)) continue;
+    const target = Math.ceil((pnElo(key)+25)/50)*50;
+    out.push({ id:'elo|'+key+'|'+target, cat:'Niveau', deadline:endY1,
+      titre:`${f.name} franchit les ${target} points d'ELO (il est à ${pnElo(key)})`,
+      res:{ type:'elo_above', key, v:target } });
+  }
+  // 5 — les affiches qu'on attend : les deux meilleurs d'une division qui ne se
+  //     sont jamais croisés
+  for(const [div] of pnChampions()){
+    const top = pnActiveTop(div, 2);
+    if(top.length < 2) continue;
+    const [x, y] = top;
+    if((x.history||[]).some(h=>slugKey(h.opp)===y.key)) continue;
+    out.push({ id:'duel|'+x.key+'|'+y.key, cat:'Affiches', deadline:endY1,
+      titre:`${x.name} vs ${y.name} a lieu avant fin ${Y+1}`,
+      res:{ type:'fight_happens', a:x.key, b:y.key } });
+  }
+  _propCache = out;
+  return out;
+}
+
+// Une prop tranchée le reste : sinon une série cassée ferait « regagner » une
+// conviction déjà perdue au prochain chargement.
+function pnStatus(p){
+  const fixed = PN.resolved[p.id];
+  if(fixed) return fixed.st;
+  const st = pnResolve(p);
+  if(st!=='ouvert'){ PN.resolved[p.id] = { st, when:Date.now() }; pnSave(); }
+  return st;
+}
+function pnResolve(p){
+  const now = Date.now(), r = p.res;
+  const late = now >= p.deadline;
+  switch(r.type){
+    case 'champion_at': {
+      const c = pnChampions().get(r.div);
+      if(!c || c.key!==r.key) return 'perdu';         // il a lâché la ceinture
+      return late ? 'gagne' : 'ouvert';
+    }
+    case 'title_shot': {
+      const f = BY_NAME.get(r.key);
+      if((f?.history||[]).some(h=>h.title && (h.date||0) > (r.since||0))) return 'gagne';
+      return late ? 'perdu' : 'ouvert';
+    }
+    case 'streak':      return pnStreak(r.key) >= r.n ? 'gagne' : late ? 'perdu' : 'ouvert';
+    case 'elo_above':   return pnElo(r.key) >= r.v    ? 'gagne' : late ? 'perdu' : 'ouvert';
+    case 'fight_happens': {
+      const f = BY_NAME.get(r.a);
+      if((f?.history||[]).some(h=>slugKey(h.opp)===r.b)) return 'gagne';
+      return late ? 'perdu' : 'ouvert';
+    }
+  }
+  return 'ouvert';
+}
+
+// Le prix EST la probabilité du modèle. Il ne dépend que des données du site,
+// donc il bouge à chaque rebuild de l'ELO — même sans combat de l'intéressé,
+// puisqu'un prétendant qui monte fait baisser le champion.
+function pnPrice(p){
+  const r = p.res;
+  const months = Math.max(0, (p.deadline - Date.now())/(30.44*PN_DAY));
+  switch(r.type){
+    case 'champion_at': {
+      const c = pnChampions().get(r.div);
+      if(!c || c.key!==r.key) return .02;
+      const ch = pnChallenger(r.div, r.key);
+      const pd = pnP(pnElo(r.key), ch ? pnElo(ch.key) : PN_DEF_ELO+300);
+      const defenses = months/9;                       // ~une défense tous les 9 mois
+      return pnClamp(Math.pow(pd, defenses) * .97);    // 3 % d'aléa : blessure, titre retiré
+    }
+    case 'title_shot': {
+      const f = BY_NAME.get(r.key);
+      const rank = f && f.wc ? pnActiveTop(f.wc, 12).findIndex(x=>x.key===r.key) : 8;
+      const base = Math.pow(.72, Math.max(0, rank<0 ? 8 : rank));
+      return pnClamp(base * (1 - Math.exp(-months/7)));
+    }
+    case 'streak': {
+      const need = Math.max(0, r.n - pnStreak(r.key));
+      if(!need) return .97;
+      const f = BY_NAME.get(r.key);
+      const pw = pnP(pnElo(r.key), pnDivMedian(f?.wc));
+      if(months/6 < need) return .03;                  // ~un combat tous les 6 mois
+      return pnClamp(Math.pow(pw, need));
+    }
+    case 'elo_above': {
+      const gap = r.v - pnElo(r.key);
+      if(gap <= 0) return .97;
+      const need = Math.ceil(gap/18);                  // ~18 points par victoire
+      const f = BY_NAME.get(r.key);
+      const pw = pnP(pnElo(r.key), pnDivMedian(f?.wc));
+      if(months/6 < need) return .03;
+      return pnClamp(Math.pow(pw, need));
+    }
+    case 'fight_happens': {
+      const fa = BY_NAME.get(r.a), fb = BY_NAME.get(r.b);
+      const both = fa && fb && isActiveFighter(fa) && isActiveFighter(fb);
+      return pnClamp((both ? .5 : .12) * (1 - Math.exp(-months/9)));
+    }
+  }
+  return .5;
+}
+function pnSide(p, side){ const q = pnPrice(p); return side==='non' ? 1-q : q; }
+
+// Une mesure par jour : le graphe d'une conviction, c'est justement ce qu'aucun
+// site de stats ne montre.
+function pnSample(props){
+  const day = Math.floor(Date.now()/PN_DAY);
+  let dirty = false;
+  for(const p of props){
+    const h = PN.hist[p.id] || (PN.hist[p.id] = []);
+    if(h.length && h[h.length-1][0] === day) continue;
+    h.push([day, Math.round(pnPrice(p)*1000)]);
+    if(h.length > 90) h.shift();
+    dirty = true;
+  }
+  if(dirty) pnSave();
+}
+function pnSpark(id, w, hgt){
+  const h = PN.hist[id] || [];
+  if(h.length < 2) return `<svg class="pn-spark" viewBox="0 0 ${w} ${hgt}"></svg>`;
+  const ys = h.map(x=>x[1]);
+  const lo = Math.min(...ys), hi = Math.max(...ys), span = Math.max(1, hi-lo);
+  const pts = h.map((x,i)=>{
+    const px = h.length>1 ? (i/(h.length-1))*w : 0;
+    return `${px.toFixed(1)},${(hgt - ((x[1]-lo)/span)*(hgt-2) - 1).toFixed(1)}`;
+  }).join(' ');
+  const up = ys[ys.length-1] >= ys[0];
+  return `<svg class="pn-spark ${up?'up':'down'}" viewBox="0 0 ${w} ${hgt}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}"/></svg>`;
+}
+
+/* ── cartes annoncées (events.json, optionnel) ───────────────────────────── */
+// Le fichier est produit par build-events.js en CI. S'il manque, la section
+// marche quand même : on compose ses affiches à la main.
+let EVENTS = null;
+async function loadEventsDB(){
+  try{
+    const r = await fetch('events.json', {cache:'no-cache'});
+    if(!r.ok) throw new Error('events.json '+r.status);
+    const j = await r.json();
+    EVENTS = Array.isArray(j.events) ? j.events : null;
+  }catch(e){
+    EVENTS = null;                    // pas de carte annoncée : le composeur suffit
+  }
+}
+
+/* ── libellés ────────────────────────────────────────────────────────────── */
+function pnMethLabel(m){ return m==='ko'?'KO/TKO' : m==='sub'?'Soumission' : m==='dec'?'Décision' : m||'—'; }
+function pnPick(bout){ return PN.tickets.find(t=>t.boutId===bout.id) || null; }
+function pnDateFR(ts){ return ts ? new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
+function pnPct(p){ return Math.round(p*100)+'%'; }
+function pnCr(n){ return (n>0?'+':'') + fmtInt(Math.round(n)) + ' cr'; }
+function pnNextSat(){
+  const d = new Date();
+  d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
+  return d.toISOString().slice(0,10);
+}
+// mini-vignette réutilisant le cache photos.json (aucune requête réseau)
+function pnFace(f){
+  return f ? `<div class="pn-face" data-photo="${f.key}"><div class="avatar">${initials(f.name)}</div></div>`
+           : `<div class="pn-face"><div class="avatar">??</div></div>`;
+}
+
+/* ── bandeau bankroll ────────────────────────────────────────────────────── */
+function pnBankHTML(){
+  const s = pnScore();
+  const open = PN.tickets.filter(t=>!t.settled).length;
+  const pos  = PN.positions.filter(p=>!p.closed).length;
+  let val = 0;
+  for(const p of PN.positions){
+    if(p.closed) continue;
+    const prop = pnPropCat().find(x=>x.id===p.propId);
+    if(prop) val += p.shares * pnSide(prop, p.side);
+  }
+  // la jauge se partage sur les gains : à mises égales, c'est la seule mesure
+  // qui dit qui a vu ce que l'autre n'a pas vu
+  const lo = Math.min(s.me.pl, s.algo.pl, 0);
+  const mine = s.me.pl - lo, his = s.algo.pl - lo, tot = mine + his;
+  const share = tot > 0 ? (mine/tot)*100 : 50;
+  const duelLine = s.me.n
+    ? `<div class="pn-duel ${s.me.pl>s.algo.pl?'win':s.me.pl<s.algo.pl?'lose':''}">
+         <span class="pn-duelside">Toi <b>${s.me.ok}/${s.me.n}</b> <em>${pnCr(s.me.pl)}</em></span>
+         <span class="pn-duelbar"><i style="width:${share.toFixed(1)}%"></i></span>
+         <span class="pn-duelside right">L'algo <b>${s.algo.ok}/${s.algo.n}</b> <em>${pnCr(s.algo.pl)}</em></span>
+       </div>`
+    : `<div class="pn-duel"><span class="pn-vs">L'algo t'attend : place ton premier pronostic.</span></div>`;
+  return `
+    <div class="pn-bankrow">
+      <div class="pn-kpi"><b>${fmtInt(Math.round(PN.bank))}</b><span>crédits</span></div>
+      <div class="pn-kpi"><b>${fmtInt(Math.round(val))}</b><span>en convictions</span></div>
+      <div class="pn-kpi"><b>${open}</b><span>ticket${open>1?'s':''} en cours</span></div>
+      <div class="pn-kpi"><b>${pos}</b><span>position${pos>1?'s':''} ouverte${pos>1?'s':''}</span></div>
+    </div>${duelLine}`;
+}
+
+/* ── LA CARTE ────────────────────────────────────────────────────────────── */
+function pnBoutHTML(b, i){
+  const fa = BY_NAME.get(slugKey(b.a)), fb = BY_NAME.get(slugKey(b.b));
+  const t  = pnPick(b);
+  const res = pnResult(b);
+  const blind = pnBlind && !t && !res;
+  const nameA = blind ? 'Coin rouge' : b.a, nameB = blind ? 'Coin bleu' : b.b;
+  const pa = pnP(pnElo(slugKey(b.a)), pnElo(slugKey(b.b)));
+  const q = { a: pnOdds(pa), b: pnOdds(1-pa) };
+  const st = (f, k) => f ? `${f.w}–${f.l}${f.d?'–'+f.d:''} · ELO ${pnElo(k)}` : 'inconnu';
+
+  let foot;
+  if(t && t.settled){
+    const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
+    foot = `<div class="pn-settled ${cls}${pnFresh.has(t.boutId)?' just':''}">
+      <b>${t.settled.ok===null?'Annulé' : t.settled.ok?'Gagné':'Perdu'}</b>
+      ${esc(t.settled.res)} · ${t.settled.ok===null?'mise rendue':(t.settled.gain?pnCr(t.settled.gain-t.stake):pnCr(-t.stake))}
+    </div>`;
+  } else if(t){
+    foot = `<div class="pn-ticket">
+      <b>Ton pari</b> ${esc(t.win)}${t.method?' · '+pnMethLabel(t.method):''}${t.round?' · R'+t.round:''}
+      — ${fmtInt(t.stake)} cr à ${t.odds.toFixed(2)} <span>(gain ${fmtInt(Math.round(t.stake*t.odds))} cr)</span>
+      <button class="pn-mini" data-drop="${b.id}">annuler</button>
+    </div>`;
+  } else {
+    foot = `<form class="pn-form" data-bet="${b.id}">
+      <div class="pn-fld"><label>Vainqueur</label>
+        <select name="win"><option value="">—</option><option value="${esc(b.a)}">${esc(nameA)}</option><option value="${esc(b.b)}">${esc(nameB)}</option></select></div>
+      <div class="pn-fld"><label>Méthode</label>
+        <select name="method"><option value="">Peu importe</option><option value="ko">KO/TKO</option><option value="sub">Soumission</option><option value="dec">Décision</option></select></div>
+      <div class="pn-fld"><label>Round</label>
+        <select name="round"><option value="">Peu importe</option>${
+          Array.from({length:b.rounds||3},(_,i)=>`<option value="${i+1}">R${i+1}</option>`).join('')}</select></div>
+      <div class="pn-fld"><label>Mise</label><input name="stake" type="number" min="1" step="1" value="50"></div>
+      <div class="pn-quote" data-quote="${b.id}">Choisis un vainqueur</div>
+      <button class="pn-btn" type="submit">Parier</button>
+    </form>`;
+  }
+
+  // l'état du combat colore la carte entière, pas seulement le pied
+  const tone = t && t.settled ? (t.settled.ok ? ' won' : t.settled.ok===false ? ' lost' : '') : '';
+  return `<div class="pn-bout${blind?' blind':''}${tone}" style="--i:${i||0}">
+    <div class="pn-head">
+      <div class="pn-side${pa>=.5?' fav':''}">${blind?'':pnFace(fa)}<div><div class="pn-name">${esc(nameA)}</div><div class="pn-st">${st(fa, slugKey(b.a))}</div></div></div>
+      <div class="pn-mid">
+        <span class="pn-vsmark">VS</span>
+        <div class="pn-bar"><i style="width:${(pa*100).toFixed(1)}%"></i></div>
+        <div class="pn-oddsrow"><span>${pnPct(pa)} · ${q.a.toFixed(2)}</span><em>${esc(b.wc||'')}${b.title?' · titre':''}</em><span>${pnPct(1-pa)} · ${q.b.toFixed(2)}</span></div>
+        <div class="pn-when">${b.event?esc(b.event)+' · ':''}${b.date?pnDateFR(Date.parse(b.date)):''}</div>
+      </div>
+      <div class="pn-side right${pa<.5?' fav':''}"><div><div class="pn-name">${esc(nameB)}</div><div class="pn-st">${st(fb, slugKey(b.b))}</div></div>${blind?'':pnFace(fb)}</div>
+    </div>
+    ${foot}
+  </div>`;
+}
+
+function pnViewCarte(){
+  const actives = FIGHTERS.filter(f=>isActiveFighter(f)).map(f=>f.name).sort();
+  const mine = PN.bouts.slice().sort((a,b)=>Date.parse(a.date||0)-Date.parse(b.date||0));
+  const announced = (EVENTS||[]).slice(0,2);
+
+  return `
+  <p class="pn-note">La cote ne vient d'aucun bookmaker : elle sort de l'ELO du site. Tu ne joues pas contre le hasard, tu joues <b>contre le modèle</b> — et le score en haut de page dit lequel de vous deux a raison.</p>
+
+  <div class="pn-tools">
+    <label class="pn-check"><input type="checkbox" id="pnBlindBox" ${pnBlind?'checked':''}> Carte aveugle</label>
+    <span class="pn-hint">Les noms et les visages disparaissent : tu ne pronostiques plus que sur le bilan et l'ELO.</span>
+  </div>
+
+  ${announced.length ? `<div class="pn-sec">Cartes annoncées</div>` + announced.map(ev=>`
+    <div class="pn-evt"><b>${esc(ev.name)}</b><span>${esc(ev.date||'')}${ev.location?' · '+esc(ev.location):''}</span></div>
+    <div class="pn-adds">${(ev.bouts||[]).map((bt,i)=>`
+      <button class="pn-add" data-add="${esc(ev.name)}" data-i="${i}">${esc(bt.a)} vs ${esc(bt.b)}${bt.title?' &#127942;':''}</button>`).join('')}</div>`).join('') : ''}
+
+  <div class="pn-sec">Composer une affiche</div>
+  <form class="pn-compose" id="pnCompose">
+    <input name="a" list="pnNames" placeholder="Combattant A" autocomplete="off" required>
+    <span class="pn-vs2">vs</span>
+    <input name="b" list="pnNames" placeholder="Combattant B" autocomplete="off" required>
+    <input name="date" type="date" value="${pnNextSat()}" required>
+    <select name="rounds"><option value="3">3 rounds</option><option value="5">5 rounds</option></select>
+    <button class="pn-btn" type="submit">Ajouter</button>
+  </form>
+  <datalist id="pnNames">${actives.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+  <p class="pn-hint">N'importe quels deux combattants actifs. Le pari se règle tout seul le jour où ce combat apparaît dans les résultats officiels — annoncé ou non.</p>
+
+  <div class="pn-sec">Tes affiches ${mine.length?`<span>${mine.length}</span>`:''}</div>
+  ${mine.length ? mine.map((b,i)=>pnBoutHTML(b,i)).join('')
+    : `<div class="rk-empty"><b>Aucune affiche</b>Compose ton premier combat ci-dessus, ou pioche dans les cartes annoncées.</div>`}
+  ${mine.length ? `<div class="pn-share"><button class="pn-btn ghost" id="pnShare">Défier un pote</button>
+     <span class="pn-hint">Ton ticket est encodé dans un lien. Ton pote l'ouvre, voit tes pronostics, fait les siens — sans compte et sans serveur.</span></div>` : ''}
+  ${pnDuel ? pnDuelHTML() : ''}`;
+}
+
+/* ── LE MARCHÉ ───────────────────────────────────────────────────────────── */
+// tourniquet : une conviction de chaque catégorie, puis on recommence
+function pnInterleave(list, cats){
+  if(pnCat) return list;
+  const files = cats.map(c=>list.filter(p=>p.cat===c));
+  const out = [];
+  for(let i=0; out.length < list.length; i++){
+    let moved = false;
+    for(const f of files){ if(f[i]){ out.push(f[i]); moved = true; } }
+    if(!moved) break;
+  }
+  return out;
+}
+
+function pnPropHTML(p, i){
+  const st = pnStatus(p);
+  const price = pnPrice(p);
+  const h = PN.hist[p.id] || [];
+  const mv = h.length>1 ? (h[h.length-1][1] - h[0][1])/10 : 0;
+  const mine = PN.positions.filter(x=>x.propId===p.id && !x.closed);
+  const closed = st!=='ouvert';
+
+  const posHTML = mine.map(m=>{
+    const now = pnSide(p, m.side);
+    const val = m.shares * now;
+    const pl  = val - m.stake;
+    return `<div class="pn-pos">
+      <span class="pn-tag ${m.side}">${m.side==='oui'?'OUI':'NON'}</span>
+      ${fmtInt(m.stake)} cr à ${pnPct(m.price)} → <b>${fmtInt(Math.round(val))} cr</b>
+      <em class="${pl>=0?'up':'down'}">${pnCr(pl)}</em>
+      ${closed?'':`<button class="pn-mini" data-cut="${m.id}">couper</button>`}
+    </div>`;
+  }).join('');
+
+  return `<div class="pn-prop ${st}" style="--i:${i||0}">
+    <div class="pn-ptop">
+      <div class="pn-ptitle">${esc(p.titre)}</div>
+      <div class="pn-pprice">
+        ${pnSpark(p.id, 64, 22)}
+        <b>${pnPct(price)}</b>
+        ${mv ? `<span class="${mv>0?'up':'down'}">${mv>0?'+':''}${mv.toFixed(1)}</span>` : `<span class="flat">—</span>`}
+      </div>
+    </div>
+    <div class="pn-pline"><i style="width:${(price*100).toFixed(1)}%"></i></div>
+    <div class="pn-pfoot">
+      <span class="pn-deadline">échéance ${pnDateFR(p.deadline)}</span>
+      ${closed
+        ? `<span class="pn-verdict ${st}">${st==='gagne'?'Conviction validée':'Conviction perdue'}</span>`
+        : `<span class="pn-buy">
+             <input type="number" min="1" step="1" value="50" data-stake="${esc(p.id)}">
+             <button class="pn-btn sm" data-buy="${esc(p.id)}" data-side="oui">Oui · ${pnOdds(price).toFixed(2)}</button>
+             <button class="pn-btn sm ghost" data-buy="${esc(p.id)}" data-side="non">Non · ${pnOdds(1-price).toFixed(2)}</button>
+           </span>`}
+    </div>
+    ${posHTML}
+  </div>`;
+}
+function pnViewMarche(){
+  const props = pnPropCat();
+  const cats = [...new Set(props.map(p=>p.cat))];
+  // les convictions les plus discutables d'abord : celles dont le modèle lui-même
+  // n'est pas sûr. Une prop à 3 % ou à 95 % n'a rien à raconter.
+  const pool = props
+    .filter(p=>pnStatus(p)==='ouvert' && (!pnCat || p.cat===pnCat))
+    .sort((a,b)=>Math.abs(pnPrice(a)-.5) - Math.abs(pnPrice(b)-.5));
+  // trier par indécision seule donne dix « franchit les 1200 points » d'affilée :
+  // on pioche à tour de rôle dans chaque catégorie pour que la tête de liste
+  // raconte quatre histoires différentes.
+  const open = pnInterleave(pool, cats).slice(0, PN_MARKET_LIMIT);
+  const total = props.filter(p=>pnStatus(p)==='ouvert' && (!pnCat || p.cat===pnCat)).length;
+  return `
+  <p class="pn-note">Ici on ne parie pas sur un combat, on prend position sur une <b>trajectoire</b>. Chaque conviction est une condition que le site sait vérifier tout seul, et son prix est recalculé à chaque visite : une position bouge <b>même les semaines sans combat</b>, parce qu'un prétendant qui monte fait baisser un champion.</p>
+  <p class="pn-hint">Le prix est la probabilité du modèle. Tu mises 50 crédits à 20 % → tu achètes 250 parts ; chaque part vaut 1 crédit si la conviction se vérifie, 0 sinon. Tu peux couper avant l'échéance au prix du moment.</p>
+  <div class="pn-cats">
+    <button class="pn-cat${pnCat?'':' on'}" data-cat="">Tout · ${props.length}</button>
+    ${cats.map(c=>`<button class="pn-cat${pnCat===c?' on':''}" data-cat="${esc(c)}">${esc(c)} · ${props.filter(p=>p.cat===c).length}</button>`).join('')}
+  </div>
+  ${total>open.length?`<p class="pn-hint">${open.length} convictions sur ${total} — les plus indécises d'abord, celles où l'algo ne tranche pas.</p>`:''}
+  ${open.length ? open.map((p,i)=>pnPropHTML(p,i)).join('')
+    : `<div class="rk-empty"><b>Marché vide</b>Le catalogue se construit à partir des données : il apparaît dès que l'ELO et les combats sont chargés.</div>`}`;
+}
+
+/* ── MES TICKETS ─────────────────────────────────────────────────────────── */
+function pnViewTickets(){
+  const done = PN.tickets.filter(t=>t.settled).sort((a,b)=>b.settled.when-a.settled.when);
+  const live = PN.tickets.filter(t=>!t.settled);
+  const cut  = PN.positions.filter(p=>p.closed).sort((a,b)=>b.closed.at-a.closed.at);
+  const props = pnPropCat();
+  const archive = props.filter(p=>pnStatus(p)!=='ouvert' && PN.positions.some(x=>x.propId===p.id));
+  const s = pnScore();
+
+  return `
+  ${s.me.n ? `<div class="pn-verdictbox ${s.me.pl>s.algo.pl?'win':''}">
+    <b>${s.me.pl>s.algo.pl ? 'Tu bats l\'algo.' : s.me.pl<s.algo.pl ? 'L\'algo te bat.' : 'Vous êtes à égalité.'}</b>
+    Sur ${s.me.n} combat${s.me.n>1?'s':''} joué${s.me.n>1?'s':''} : toi ${s.me.ok}/${s.me.n} pour ${pnCr(s.me.pl)}, lui ${s.algo.ok}/${s.algo.n} pour ${pnCr(s.algo.pl)}.
+    <span>Il prend toujours le favori ELO, aux mêmes mises que toi. Le battre, c'est voir ce que le modèle ne voit pas.</span>
+  </div>` : ''}
+
+  ${live.length ? `<div class="pn-sec">En attente du verdict <span>${live.length}</span></div>` + live.map(t=>{
+    const b = PN.bouts.find(x=>x.id===t.boutId) || {a:'?', b:'?'};
+    return `<div class="pn-line">
+      <span class="pn-when2">${b.date?pnDateFR(Date.parse(b.date)):''}</span>
+      <span class="pn-what"><b>${esc(b.a)} vs ${esc(b.b)}</b> — tu dis ${esc(t.win)}${t.method?' par '+pnMethLabel(t.method):''}${t.round?' R'+t.round:''}</span>
+      <span class="pn-res">${fmtInt(t.stake)} cr à ${t.odds.toFixed(2)}</span>
+      <span class="pn-gain">${fmtInt(Math.round(t.stake*t.odds))} cr</span>
+    </div>`;
+  }).join('') : ''}
+
+  <div class="pn-sec">Pronostics réglés ${done.length?`<span>${done.length}</span>`:''}</div>
+  ${done.length ? done.map((t,i)=>{
+    const b = PN.bouts.find(x=>x.id===t.boutId) || {a:'?',b:'?'};
+    const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
+    return `<div class="pn-line ${cls}" style="--i:${i}">
+      <span class="pn-when2">${pnDateFR(t.settled.when)}</span>
+      <span class="pn-what"><b>${esc(b.a)} vs ${esc(b.b)}</b> — tu disais ${esc(t.win)}${t.method?' par '+pnMethLabel(t.method):''}${t.round?' R'+t.round:''}</span>
+      <span class="pn-res">${esc(t.settled.res)}</span>
+      <span class="pn-gain ${cls}">${t.settled.ok===null?'rendu':pnCr((t.settled.gain||0)-t.stake)}</span>
+    </div>`;
+  }).join('') : `<div class="rk-empty"><b>Rien de réglé</b>Tes paris se règlent tout seuls dès que le résultat entre dans la base officielle.</div>`}
+
+  ${archive.length ? `<div class="pn-sec">Convictions tranchées <span>${archive.length}</span></div>` + archive.map(p=>{
+    const st = pnStatus(p), when = PN.resolved[p.id]?.when;
+    return `<div class="pn-line ${st==='gagne'?'win':'lose'}">
+      <span class="pn-when2">${pnDateFR(when)}</span>
+      <span class="pn-what">${esc(p.titre)}</span>
+      <span class="pn-res">${st==='gagne'?'vérifiée':'démentie'}</span>
+    </div>`;
+  }).join('') : ''}
+
+  ${cut.length ? `<div class="pn-sec">Positions coupées <span>${cut.length}</span></div>` + cut.map(p=>{
+    const prop = props.find(x=>x.id===p.propId);
+    return `<div class="pn-line ${p.closed.gain>=p.stake?'win':'lose'}">
+      <span class="pn-when2">${pnDateFR(p.closed.at)}</span>
+      <span class="pn-what">${esc(prop?prop.titre:p.propId)} <em>(${p.side})</em></span>
+      <span class="pn-res">sortie à ${pnPct(p.closed.price)}</span>
+      <span class="pn-gain">${pnCr(p.closed.gain - p.stake)}</span>
+    </div>`;
+  }).join('') : ''}
+
+  <div class="pn-sec">Remise à zéro</div>
+  <p class="pn-hint">Tout est stocké dans ce navigateur, rien n'est envoyé nulle part. <button class="pn-mini danger" id="pnReset">Effacer mes pronostics</button></p>`;
+}
+
+/* ── duel partagé ────────────────────────────────────────────────────────── */
+function pnDuelHTML(){
+  const rows = (pnDuel.p||[]).map(x=>{
+    const b = PN.bouts.find(o=>o.id===x.i);
+    const mine = b ? pnPick(b) : null;
+    const same = mine && slugKey(mine.win)===slugKey(x.w);
+    return `<div class="pn-line ${mine?(same?'':'lose'):''}">
+      <span class="pn-what"><b>${b?esc(b.a)+' vs '+esc(b.b):esc(x.i)}</b></span>
+      <span class="pn-res">lui : ${esc(x.w)}${x.m?' · '+pnMethLabel(x.m):''}</span>
+      <span class="pn-res">${mine?'toi : '+esc(mine.win):'tu n\'as pas joué'}</span>
+      <span class="pn-gain">${mine?(same?'d\'accord':'désaccord'):''}</span>
+    </div>`;
+  }).join('');
+  return `<div class="pn-sec">Le défi de ${esc(pnDuel.n||'ton pote')}</div>${rows}
+    <p class="pn-hint">Ses combats ont été ajoutés à tes affiches : fais tes propres pronostics ci-dessus, ils se régleront en même temps.</p>`;
+}
+function pnEncode(){
+  const p = PN.tickets.filter(t=>!t.settled).map(t=>({ i:t.boutId, w:t.win, m:t.method||'', r:t.round||0 }));
+  const bouts = PN.bouts.filter(b=>p.some(x=>x.i===b.id)).map(b=>({ id:b.id, a:b.a, b:b.b, d:b.date, r:b.rounds, e:b.event||'' }));
+  const payload = JSON.stringify({ n:PN.name||'', p, b:bouts });
+  return btoa(unescape(encodeURIComponent(payload))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function pnDecode(s){
+  try{
+    const j = JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/')))));
+    if(!j || !Array.isArray(j.p)) return null;
+    return j;
+  }catch(e){ return null; }
+}
+// on adopte les affiches du défi pour pouvoir pronostiquer les mêmes combats
+function pnAdoptDuel(){
+  if(!pnDuel || !Array.isArray(pnDuel.b)) return;
+  for(const b of pnDuel.b){
+    if(PN.bouts.some(x=>x.id===b.id)) continue;
+    PN.bouts.push({ id:b.id, a:b.a, b:b.b, date:b.d, rounds:b.r||3, event:b.e||'', wc:'' });
+  }
+  pnSave();
+}
+
+/* ── mouvement ───────────────────────────────────────────────────────────── */
+const pnStill = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// le solde ne saute pas d'un chiffre à l'autre : il défile jusqu'à sa valeur
+function pnRoll(el, from, to, ms){
+  if(from===to || pnStill()){ el.textContent = fmtInt(to); return; }
+  const t0 = performance.now();
+  const step = now => {
+    const k = Math.min(1, (now-t0)/(ms||600));
+    el.textContent = fmtInt(Math.round(from + (to-from)*(1-Math.pow(1-k,3))));
+    if(k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── rendu + branchements ────────────────────────────────────────────────── */
+function pnRender(){
+  if(!PN) return;
+  const view = document.getElementById('pnView');
+  if(!view) return;
+  // un pari peut porter sur un combat déjà disputé (affiche composée après coup) :
+  // on repasse le règlement avant chaque rendu plutôt qu'au seul chargement.
+  pnSettle();
+  pnPayout();
+  const bankBox = document.getElementById('pnBank');
+  bankBox.innerHTML = pnBankHTML();
+  // le premier KPI est le solde : on le fait défiler depuis ce qui était affiché
+  const kpi = bankBox.querySelector('.pn-kpi');
+  const shown = Math.round(PN.bank);
+  if(kpi && pnShownBank !== null && pnShownBank !== shown){
+    kpi.classList.add('moved', shown > pnShownBank ? 'up' : 'down');
+    pnRoll(kpi.querySelector('b'), pnShownBank, shown);
+    setTimeout(()=>kpi.classList.remove('moved','up','down'), 900);
+  }
+  pnShownBank = shown;
+
+  view.innerHTML = pnTab==='carte'  ? pnViewCarte()
+                 : pnTab==='marche' ? pnViewMarche()
+                 : pnViewTickets();
+  // relancer l'animation d'entrée : retirer puis reposer la classe force le
+  // navigateur à rejouer, sinon un re-rendu du même onglet resterait figé
+  view.classList.remove('swap');
+  void view.offsetWidth;
+  view.classList.add('swap');
+  // photos : uniquement ce qui est déjà dans photos.json, aucune requête réseau
+  view.querySelectorAll('.pn-face[data-photo]').forEach(el=>{
+    const f = BY_NAME.get(el.dataset.photo);
+    if(f) paintPhoto(f);
+  });
+  pnWire(view);
+}
+
+function pnWire(view){
+  // cote recalculée pendant qu'on remplit le formulaire
+  view.querySelectorAll('form[data-bet]').forEach(form=>{
+    const bout = PN.bouts.find(b=>b.id===form.dataset.bet);
+    const out  = form.querySelector('.pn-quote');
+    const refresh = ()=>{
+      const d = new FormData(form);
+      const win = d.get('win');
+      if(!win){ out.textContent = 'Choisis un vainqueur'; out.classList.remove('live'); return; }
+      const pick = { win, method:d.get('method')||'', round:+d.get('round')||0 };
+      const { odds } = pnQuote(bout, pick);
+      const stake = Math.max(1, +d.get('stake')||0);
+      out.classList.add('live');
+      out.innerHTML = `cote <b>${odds.toFixed(2)}</b> · gain <b>${fmtInt(Math.round(stake*odds))} cr</b>`;
+    };
+    form.addEventListener('input', refresh);
+    form.addEventListener('change', refresh);
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const d = new FormData(form);
+      const win = d.get('win');
+      if(!win) return;
+      const stake = Math.round(Math.max(1, +d.get('stake')||0));
+      if(stake > PN.bank){ out.textContent = 'Pas assez de crédits.'; return; }
+      const pick = { win, method:d.get('method')||'', round:+d.get('round')||0 };
+      const { odds } = pnQuote(bout, pick);
+      PN.bank -= stake;
+      PN.tickets.push({ boutId:bout.id, win, method:pick.method, round:pick.round, stake, odds, at:Date.now(), settled:null });
+      pnSave(); pnRender();
+    });
+    refresh();
+  });
+
+  // annuler un pari non réglé : la mise revient
+  view.querySelectorAll('[data-drop]').forEach(b=>b.addEventListener('click', ()=>{
+    const i = PN.tickets.findIndex(t=>t.boutId===b.dataset.drop && !t.settled);
+    if(i<0) return;
+    PN.bank += PN.tickets[i].stake;
+    PN.tickets.splice(i,1);
+    pnSave(); pnRender();
+  }));
+
+  // composer une affiche
+  const comp = view.querySelector('#pnCompose');
+  if(comp) comp.addEventListener('submit', e=>{
+    e.preventDefault();
+    const d = new FormData(comp);
+    const a = BY_NAME.get(slugKey(d.get('a'))), b = BY_NAME.get(slugKey(d.get('b')));
+    if(!a || !b || a.key===b.key){ comp.classList.add('err'); return; }
+    comp.classList.remove('err');
+    const date = d.get('date');
+    const id = `${a.key}-${b.key}-${date}`;
+    if(!PN.bouts.some(x=>x.id===id)){
+      PN.bouts.push({ id, a:a.name, b:b.name, date, rounds:+d.get('rounds')||3, wc:a.wc||b.wc||'', event:'', title:false });
+      pnSave();
+    }
+    pnRender();
+  });
+
+  // reprendre un combat d'une carte annoncée
+  view.querySelectorAll('[data-add]').forEach(btn=>btn.addEventListener('click', ()=>{
+    const ev = (EVENTS||[]).find(e=>e.name===btn.dataset.add);
+    const bt = ev && (ev.bouts||[])[+btn.dataset.i];
+    if(!bt) return;
+    const id = `${slugKey(bt.a)}-${slugKey(bt.b)}-${ev.date}`;
+    if(!PN.bouts.some(x=>x.id===id)){
+      PN.bouts.push({ id, a:bt.a, b:bt.b, date:ev.date, rounds:bt.title?5:(bt.rounds||3),
+                      wc:bt.wc||'', event:ev.name, title:!!bt.title });
+      pnSave();
+    }
+    pnRender();
+  }));
+
+  // filtre de catégorie du marché
+  // un visage ouvre la fiche : on parie souvent sans se souvenir du palmarès
+  view.querySelectorAll('.pn-face[data-photo]').forEach(el=>el.addEventListener('click', e=>{
+    e.stopPropagation();
+    const f = BY_NAME.get(el.dataset.photo);
+    if(f) openModal(f);
+  }));
+
+  view.querySelectorAll('[data-cat]').forEach(b=>b.addEventListener('click', ()=>{
+    pnCat = b.dataset.cat; pnRender();
+  }));
+
+  // carte aveugle
+  const blind = view.querySelector('#pnBlindBox');
+  if(blind) blind.addEventListener('change', ()=>{ pnBlind = blind.checked; pnRender(); });
+
+  // prendre position sur une conviction
+  view.querySelectorAll('[data-buy]').forEach(btn=>btn.addEventListener('click', ()=>{
+    // l'identifiant d'une conviction contient déjà des « | » (champ|Heavyweight) :
+    // le camp vit dans son propre attribut, sinon le découpage se trompe de champ
+    const propId = btn.dataset.buy, side = btn.dataset.side;
+    const p = pnPropCat().find(x=>x.id===propId);
+    if(!p || pnStatus(p)!=='ouvert') return;
+    const inp = view.querySelector(`[data-stake="${CSS.escape(propId)}"]`);
+    const stake = Math.round(Math.max(1, +(inp?.value)||0));
+    if(stake > PN.bank) return;
+    const price = pnSide(p, side);
+    PN.bank -= stake;
+    PN.positions.push({ id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+                        propId, side, price, stake, shares:stake/price, at:Date.now(), closed:null });
+    pnSave(); pnRender();
+  }));
+
+  // couper une position au prix du moment
+  view.querySelectorAll('[data-cut]').forEach(btn=>btn.addEventListener('click', ()=>{
+    const pos = PN.positions.find(x=>x.id===btn.dataset.cut && !x.closed);
+    if(!pos) return;
+    const p = pnPropCat().find(x=>x.id===pos.propId);
+    if(!p) return;
+    const price = pnSide(p, pos.side);
+    const gain = pos.shares*price;
+    PN.bank += gain;
+    pos.closed = { at:Date.now(), price, gain };
+    pnSave(); pnRender();
+  }));
+
+  const share = view.querySelector('#pnShare');
+  if(share) share.addEventListener('click', async ()=>{
+    if(!PN.name){
+      const n = prompt('Ton pseudo pour le défi ?', '');
+      if(n){ PN.name = n.slice(0,24); pnSave(); }
+    }
+    const url = location.origin + location.pathname + '#duel-' + pnEncode();
+    try{ await navigator.clipboard.writeText(url); share.textContent = 'Lien copié !'; }
+    catch(e){ prompt('Copie ce lien :', url); }
+    setTimeout(()=>{ share.textContent = 'Défier un pote'; }, 2200);
+  });
+
+  const reset = view.querySelector('#pnReset');
+  if(reset) reset.addEventListener('click', ()=>{
+    if(!confirm('Effacer tous tes pronostics, positions et crédits ?')) return;
+    PN = pnBlank(); pnSave(); pnRender();
+  });
+}
+
+/* ── règlement des convictions ───────────────────────────────────────────── */
+// Une position sur une conviction tranchée est payée sans rien demander :
+// 1 crédit par part si elle s'est vérifiée, 0 sinon.
+function pnPayout(){
+  let dirty = false;
+  for(const pos of PN.positions){
+    if(pos.closed) continue;
+    const p = pnPropCat().find(x=>x.id===pos.propId);
+    if(!p) continue;
+    const st = pnStatus(p);
+    if(st==='ouvert') continue;
+    const won = (st==='gagne') === (pos.side==='oui');
+    const gain = won ? pos.shares : 0;
+    PN.bank += gain;
+    pos.closed = { at:Date.now(), price: won?1:0, gain, resolved:true };
+    dirty = true;
+  }
+  if(dirty) pnSave();
+}
+
+/* ── section ─────────────────────────────────────────────────────────────── */
+const pnPage = document.getElementById('pnPage');
+function openPronos(tab){
+  const wasOpen = pnPage.classList.contains('on');
+  pnTab = tab || 'carte';
+  document.getElementById('pnTabs').querySelectorAll('.rk-mode')
+    .forEach(x=>x.classList.toggle('on', x.dataset.tab===pnTab));
+  pnRender();
+  pnPage.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  if(!wasOpen) pnPage.scrollTop = 0;
+  // comme les chips de division : changer d'onglet ne doit pas empiler une entrée
+  // d'historique par clic. Un lien de défi garde son hash : c'est lui qui porte
+  // le ticket du pote, et pnBoot() le relit après le chargement des données.
+  if(!location.hash.startsWith('#duel-')){
+    history.replaceState(null, '', pnTab==='carte' ? '#pronos' : '#pronos-'+pnTab);
+  }
+}
+function closePronos(){
+  pnPage.classList.remove('on');
+  if(!document.getElementById('ov').classList.contains('on')
+     && !rankPage.classList.contains('on') && !eloPage.classList.contains('on')){
+    document.body.style.overflow = '';
+  }
+}
+function pnTabFromHash(h){
+  const s = h.replace(/^#pronos-?/,'');
+  return s==='marche' || s==='tickets' ? s : 'carte';
+}
+// les onglets vivent hors de #pnView : ils survivent aux re-rendus, donc on les
+// branche une seule fois, pas dans pnWire()
+document.getElementById('pnTabs').querySelectorAll('.rk-mode')
+  .forEach(b=>b.addEventListener('click', ()=>openPronos(b.dataset.tab)));
+
+// Le catalogue et les champions dépendent des combats : tout est recalculé une
+// fois les données chargées, jamais avant (sinon on fige un marché vide).
+function pnBoot(){
+  pnLoad();
+  _champCache = _medCache = _propCache = null;
+  const duel = location.hash.startsWith('#duel-') ? pnDecode(location.hash.slice(6)) : null;
+  if(duel){ pnDuel = duel; pnAdoptDuel(); }
+  pnSettle();
+  pnPayout();
+  pnSample(pnPropCat());
+  if(pnPage.classList.contains('on') || pnDuel) openPronos(pnDuel ? 'carte' : pnTab);
+}
 
 /* ═══════════ CHIPS ═══════════ */
 function buildChips(){
@@ -2414,6 +3732,7 @@ function skeleton(){
     await loadStatsDB();          // stats avancees pre-calculees si disponibles
     await loadEloDB();            // classement ELO pre-calcule si disponible
     await loadVideoDB();          // videos YouTube rattachees aux combats si disponibles
+    await loadEventsDB();         // cartes annoncees (build-events.js) si disponibles
     document.getElementById('resTxt').textContent = 'Calcul des palmarès…';
     setProgress(60);
 
@@ -2437,6 +3756,9 @@ function skeleton(){
 
     // le classement a pu être ouvert avant que les données n'arrivent
     if(rankPage.classList.contains('on')) renderRank();
+    // les pronostics arrivent en dernier : ils ont besoin des combats (règlement,
+    // champions) ET de l'ELO (cotes). Avant ça le marché serait vide.
+    pnBoot();
   }catch(err){
     console.error(err);
     setProgress(100);
