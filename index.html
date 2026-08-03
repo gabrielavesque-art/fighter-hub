@@ -998,6 +998,85 @@ footer a:hover{color:var(--tx-2)}
   .pn-duel{gap:8px}
   .pn-duelbar{order:3;flex-basis:100%;min-width:100%}
 }
+/* ══ PRONOS — onglets, cartes annoncées, correctifs ══ */
+/* CORRECTIF : .ph est en position:absolute ; sans repère positionné ici, la
+   photo se calait sur la carte entière et débordait par-dessus tout. */
+.pn-face{position:relative}
+.pn-face .ph{width:100%;height:100%}
+
+/* les onglets portent la navigation de la section : ils doivent peser autant
+   qu'elle, pas ressembler à un réglage secondaire */
+.pn-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px 0 4px;
+}
+.pn-tab{
+  position:relative;display:flex;flex-direction:column;gap:3px;text-align:left;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:11px;
+  padding:13px 15px;cursor:pointer;overflow:hidden;
+  transition:border-color .18s,background .18s,transform .18s var(--ease);
+}
+.pn-tab b{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--tx-2);transition:color .18s;
+}
+.pn-tab span{font-size:11.5px;color:var(--tx-3);line-height:1.3}
+.pn-tab em{
+  position:absolute;top:11px;right:13px;font-style:normal;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--tx-3);background:var(--bg-3);border-radius:20px;padding:2px 8px;
+  transition:all .18s;
+}
+.pn-tab::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .26s var(--ease);
+}
+.pn-tab:hover{border-color:var(--line-2);transform:translateY(-1px)}
+.pn-tab:hover b{color:var(--tx)}
+.pn-tab.on{background:var(--bg-3);border-color:var(--line-2)}
+.pn-tab.on b{color:var(--tx)}
+.pn-tab.on em{background:var(--red);color:#fff}
+.pn-tab.on::after{transform:scaleX(1)}
+
+/* en-tête d'une carte officielle : le nom pèse, le compte à rebours accroche */
+.pn-evt{margin:22px 0 12px}
+.pn-evt-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.pn-evt b{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:23px;
+  letter-spacing:.3px;text-transform:uppercase;color:var(--tx)}
+.pn-evt span{display:block;margin-top:5px;font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;letter-spacing:.8px;color:var(--tx-3)}
+.pn-countdown{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--red-lt);border:1px solid rgba(224,26,43,.35);background:var(--red-dim);
+  border-radius:20px;padding:3px 10px;white-space:nowrap;
+}
+.pn-cardlbl{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;
+  color:var(--tx-3);margin:16px 0 8px;display:flex;align-items:center;gap:10px;
+}
+.pn-cardlbl::after{content:'';flex:1;height:1px;background:var(--line)}
+.pn-noevt code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red-lt)}
+/* un combat de titre se voit avant qu'on lise la division */
+.pn-bout.title-bout{border-color:rgba(211,162,74,.32)}
+.pn-bout.title-bout .pn-oddsrow em{color:var(--gold)}
+
+/* la ligne d'un ticket accueille maintenant un bouton : on lui fait de la place */
+.pn-line{grid-template-columns:96px minmax(0,1fr) auto auto auto}
+
+@media(max-width:760px){
+  .pn-tabs{grid-template-columns:1fr;gap:6px}
+  .pn-tab{flex-direction:row;align-items:baseline;gap:9px;padding:11px 14px}
+  .pn-tab span{flex:1}
+  .pn-tab em{position:static}
+  .pn-evt b{font-size:20px}
+}
+/* la division tient en trois lettres, la ceinture prend un badge : sinon la
+   ligne de cotes se casse en deux sur les affiches de titre */
+.pn-oddsrow em{display:flex;align-items:center;gap:6px}
+.pn-belt{
+  font-style:normal;font-size:8px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(211,162,74,.4);border-radius:3px;padding:2px 5px;
+}
+.pn-oddsrow>span{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -1157,10 +1236,10 @@ footer a:hover{color:var(--tx-2)}
     <h2 class="pg-title">Salle des <i>paris</i></h2>
     <p class="pn-lead">Des crédits fictifs, aucune inscription, rien qui sorte de ton navigateur. Ce qui change, c'est la cote : elle ne vient d'aucun bookmaker, elle est <b>calculée depuis l'ELO du site</b>. Tu ne joues donc pas contre la maison, tu joues <em>contre notre modèle</em> — et on garde le score.</p>
     <div id="pnBank"></div>
-    <div class="rk-modes" id="pnTabs">
-      <button class="rk-mode on" data-tab="carte">La Carte</button>
-      <button class="rk-mode" data-tab="marche">Le Marché</button>
-      <button class="rk-mode" data-tab="tickets">Mes tickets</button>
+    <div class="pn-tabs" id="pnTabs">
+      <button class="pn-tab on" data-tab="carte"><b>La Carte</b><span>combat par combat</span><em id="pnCntCarte"></em></button>
+      <button class="pn-tab" data-tab="marche"><b>Le Marché</b><span>convictions longue durée</span><em id="pnCntMarche"></em></button>
+      <button class="pn-tab" data-tab="tickets"><b>Mes tickets</b><span>tout ce que tu joues</span><em id="pnCntTickets"></em></button>
     </div>
     <div id="pnView"></div>
   </div>
@@ -3090,7 +3169,12 @@ function pnMethLabel(m){ return m==='ko'?'KO/TKO' : m==='sub'?'Soumission' : m==
 function pnPick(bout){ return PN.tickets.find(t=>t.boutId===bout.id) || null; }
 function pnDateFR(ts){ return ts ? new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
 function pnPct(p){ return Math.round(p*100)+'%'; }
-function pnCr(n){ return (n>0?'+':'') + fmtInt(Math.round(n)) + ' cr'; }
+function pnCr(n){
+  const v = Math.round(n);
+  return (v>0?'+':v<0?'−':'') + fmtInt(Math.abs(v)) + ' cr';
+}
+// en dessous du crédit près, un gain n'en est pas un : la ligne reste neutre
+function pnTone(n){ return Math.abs(n) < .5 ? '' : n > 0 ? 'win' : 'lose'; }
 function pnNextSat(){
   const d = new Date();
   d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7 || 7));
@@ -3135,7 +3219,7 @@ function pnBankHTML(){
 }
 
 /* ── LA CARTE ────────────────────────────────────────────────────────────── */
-function pnBoutHTML(b, i){
+function pnBoutHTML(b, i, opt){
   const fa = BY_NAME.get(slugKey(b.a)), fb = BY_NAME.get(slugKey(b.b));
   const t  = pnPick(b);
   const res = pnResult(b);
@@ -3175,14 +3259,18 @@ function pnBoutHTML(b, i){
 
   // l'état du combat colore la carte entière, pas seulement le pied
   const tone = t && t.settled ? (t.settled.ok ? ' won' : t.settled.ok===false ? ' lost' : '') : '';
-  return `<div class="pn-bout${blind?' blind':''}${tone}" style="--i:${i||0}">
+  return `<div class="pn-bout${blind?' blind':''}${tone}${b.title?' title-bout':''}" style="--i:${i||0}">
     <div class="pn-head">
       <div class="pn-side${pa>=.5?' fav':''}">${blind?'':pnFace(fa)}<div><div class="pn-name">${esc(nameA)}</div><div class="pn-st">${st(fa, slugKey(b.a))}</div></div></div>
       <div class="pn-mid">
         <span class="pn-vsmark">VS</span>
         <div class="pn-bar"><i style="width:${(pa*100).toFixed(1)}%"></i></div>
-        <div class="pn-oddsrow"><span>${pnPct(pa)} · ${q.a.toFixed(2)}</span><em>${esc(b.wc||'')}${b.title?' · titre':''}</em><span>${pnPct(1-pa)} · ${q.b.toFixed(2)}</span></div>
-        <div class="pn-when">${b.event?esc(b.event)+' · ':''}${b.date?pnDateFR(Date.parse(b.date)):''}</div>
+        <div class="pn-oddsrow">
+          <span>${pnPct(pa)} · ${q.a.toFixed(2)}</span>
+          <em>${b.title?'<i class="pn-belt">ceinture</i>':''}${esc(wcShort(b.wc)||'')}</em>
+          <span>${pnPct(1-pa)} · ${q.b.toFixed(2)}</span>
+        </div>
+        <div class="pn-when">${b.event && !(opt&&opt.hideEvent) ? esc(b.event)+' · ' : ''}${b.date?pnDateFR(Date.parse(b.date)):''}</div>
       </div>
       <div class="pn-side right${pa<.5?' fav':''}"><div><div class="pn-name">${esc(nameB)}</div><div class="pn-st">${st(fb, slugKey(b.b))}</div></div>${blind?'':pnFace(fb)}</div>
     </div>
@@ -3190,10 +3278,52 @@ function pnBoutHTML(b, i){
   </div>`;
 }
 
+// Les combats des cartes annoncées ne sont PAS stockés : ils vivent dans
+// events.json et deviennent une affiche à toi au moment où tu paries dessus.
+function pnAnnounced(){
+  const out = [];
+  for(const ev of EVENTS || []){
+    for(const bt of ev.bouts || []){
+      out.push({
+        id: `${slugKey(bt.a)}-${slugKey(bt.b)}-${ev.date}`,
+        a: bt.a, b: bt.b, date: ev.date, rounds: bt.rounds || (bt.title ? 5 : 3),
+        wc: bt.wc || '', event: ev.name, title: !!bt.title, card: bt.card || 'main',
+      });
+    }
+  }
+  return out;
+}
+// une affiche peut venir des trois côtés : composée, annoncée, ou reçue par défi
+function pnBoutById(id){
+  return PN.bouts.find(b=>b.id===id) || pnAnnounced().find(b=>b.id===id) || null;
+}
+const PN_CARD_FR = { main:'Carte principale', prelim:'Préliminaires', early:'Premières préliminaires' };
+
 function pnViewCarte(){
   const actives = FIGHTERS.filter(f=>isActiveFighter(f)).map(f=>f.name).sort();
-  const mine = PN.bouts.slice().sort((a,b)=>Date.parse(a.date||0)-Date.parse(b.date||0));
-  const announced = (EVENTS||[]).slice(0,2);
+  // « tes affiches » = celles que tu as composées ; les cartes officielles ont
+  // leur propre bloc, même quand tu as déjà parié dessus
+  const mine = PN.bouts.filter(b=>!b.event).sort((a,b)=>Date.parse(a.date||0)-Date.parse(b.date||0));
+  const events = EVENTS || [];
+  let n = 0;
+
+  const cardBlock = ev => {
+    const bouts = pnAnnounced().filter(b=>b.event===ev.name);
+    if(!bouts.length) return '';
+    const groups = ['main','prelim','early'].filter(g=>bouts.some(b=>b.card===g));
+    const jours = ev.date ? Math.ceil((Date.parse(ev.date) - Date.now())/PN_DAY) : null;
+    return `
+    <div class="pn-evt">
+      <div class="pn-evt-h">
+        <b>${esc(ev.name)}</b>
+        ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+      </div>
+      <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''} · ${bouts.length} combats</span>
+    </div>
+    ${groups.map(g=>`
+      ${groups.length>1?`<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>`:''}
+      ${bouts.filter(b=>b.card===g).map(b=>pnBoutHTML(b, n++, {hideEvent:true})).join('')}`).join('')}`;
+  };
 
   return `
   <p class="pn-note">La cote ne vient d'aucun bookmaker : elle sort de l'ELO du site. Tu ne joues pas contre le hasard, tu joues <b>contre le modèle</b> — et le score en haut de page dit lequel de vous deux a raison.</p>
@@ -3203,10 +3333,15 @@ function pnViewCarte(){
     <span class="pn-hint">Les noms et les visages disparaissent : tu ne pronostiques plus que sur le bilan et l'ELO.</span>
   </div>
 
-  ${announced.length ? `<div class="pn-sec">Cartes annoncées</div>` + announced.map(ev=>`
-    <div class="pn-evt"><b>${esc(ev.name)}</b><span>${esc(ev.date||'')}${ev.location?' · '+esc(ev.location):''}</span></div>
-    <div class="pn-adds">${(ev.bouts||[]).map((bt,i)=>`
-      <button class="pn-add" data-add="${esc(ev.name)}" data-i="${i}">${esc(bt.a)} vs ${esc(bt.b)}${bt.title?' &#127942;':''}</button>`).join('')}</div>`).join('') : ''}
+  <div class="pn-sec">À l'affiche ${events.length?`<span>${events.length} carte${events.length>1?'s':''}</span>`:''}</div>
+  ${events.length
+    ? events.map(cardBlock).join('')
+    : `<div class="rk-empty pn-noevt"><b>Aucune carte annoncée</b>
+        Les prochains combats officiels s'affichent ici dès que <code>events.json</code> existe :
+        lance la tâche <b>events</b> dans les GitHub Actions du dépôt, elle va lire les cartes
+        programmées et les déposer à côté d'index.html.<br><br>
+        En attendant — et pour toute affiche que tu imagines — compose la toi-même juste en dessous.
+        Un pari se règle de la même façon dans les deux cas.</div>`}
 
   <div class="pn-sec">Composer une affiche</div>
   <form class="pn-compose" id="pnCompose">
@@ -3218,12 +3353,12 @@ function pnViewCarte(){
     <button class="pn-btn" type="submit">Ajouter</button>
   </form>
   <datalist id="pnNames">${actives.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
-  <p class="pn-hint">N'importe quels deux combattants actifs. Le pari se règle tout seul le jour où ce combat apparaît dans les résultats officiels — annoncé ou non.</p>
+  <p class="pn-hint">N'importe quels deux combattants actifs, même un combat que personne n'a annoncé. Le pari se règle tout seul le jour où il apparaît dans les résultats officiels.</p>
 
-  <div class="pn-sec">Tes affiches ${mine.length?`<span>${mine.length}</span>`:''}</div>
-  ${mine.length ? mine.map((b,i)=>pnBoutHTML(b,i)).join('')
-    : `<div class="rk-empty"><b>Aucune affiche</b>Compose ton premier combat ci-dessus, ou pioche dans les cartes annoncées.</div>`}
-  ${mine.length ? `<div class="pn-share"><button class="pn-btn ghost" id="pnShare">Défier un pote</button>
+  ${mine.length ? `<div class="pn-sec">Tes affiches <span>${mine.length}</span></div>`
+    + mine.map(b=>pnBoutHTML(b, n++)).join('') : ''}
+
+  ${(mine.length || PN.tickets.some(t=>!t.settled)) ? `<div class="pn-share"><button class="pn-btn ghost" id="pnShare">Défier un pote</button>
      <span class="pn-hint">Ton ticket est encodé dans un lien. Ton pote l'ouvre, voit tes pronostics, fait les siens — sans compte et sans serveur.</span></div>` : ''}
   ${pnDuel ? pnDuelHTML() : ''}`;
 }
@@ -3257,7 +3392,7 @@ function pnPropHTML(p, i){
     return `<div class="pn-pos">
       <span class="pn-tag ${m.side}">${m.side==='oui'?'OUI':'NON'}</span>
       ${fmtInt(m.stake)} cr à ${pnPct(m.price)} → <b>${fmtInt(Math.round(val))} cr</b>
-      <em class="${pl>=0?'up':'down'}">${pnCr(pl)}</em>
+      <em class="${pnTone(pl)==='win'?'up':pnTone(pl)==='lose'?'down':''}">${pnCr(pl)}</em>
       ${closed?'':`<button class="pn-mini" data-cut="${m.id}">couper</button>`}
     </div>`;
   }).join('');
@@ -3314,8 +3449,9 @@ function pnViewMarche(){
 function pnViewTickets(){
   const done = PN.tickets.filter(t=>t.settled).sort((a,b)=>b.settled.when-a.settled.when);
   const live = PN.tickets.filter(t=>!t.settled);
-  const cut  = PN.positions.filter(p=>p.closed).sort((a,b)=>b.closed.at-a.closed.at);
   const props = pnPropCat();
+  const openPos = PN.positions.filter(p=>!p.closed);
+  const cut  = PN.positions.filter(p=>p.closed).sort((a,b)=>b.closed.at-a.closed.at);
   const archive = props.filter(p=>pnStatus(p)!=='ouvert' && PN.positions.some(x=>x.propId===p.id));
   const s = pnScore();
 
@@ -3326,9 +3462,9 @@ function pnViewTickets(){
     <span>Il prend toujours le favori ELO, aux mêmes mises que toi. Le battre, c'est voir ce que le modèle ne voit pas.</span>
   </div>` : ''}
 
-  ${live.length ? `<div class="pn-sec">En attente du verdict <span>${live.length}</span></div>` + live.map(t=>{
-    const b = PN.bouts.find(x=>x.id===t.boutId) || {a:'?', b:'?'};
-    return `<div class="pn-line">
+  ${live.length ? `<div class="pn-sec">Combats en attente <span>${live.length}</span></div>` + live.map((t,i)=>{
+    const b = pnBoutById(t.boutId) || {a:'?', b:'?'};
+    return `<div class="pn-line" style="--i:${i}">
       <span class="pn-when2">${b.date?pnDateFR(Date.parse(b.date)):''}</span>
       <span class="pn-what"><b>${esc(b.a)} vs ${esc(b.b)}</b> — tu dis ${esc(t.win)}${t.method?' par '+pnMethLabel(t.method):''}${t.round?' R'+t.round:''}</span>
       <span class="pn-res">${fmtInt(t.stake)} cr à ${t.odds.toFixed(2)}</span>
@@ -3336,9 +3472,24 @@ function pnViewTickets(){
     </div>`;
   }).join('') : ''}
 
+  ${openPos.length ? `<div class="pn-sec">Convictions en cours <span>${openPos.length}</span></div>` + openPos.map((m,i)=>{
+    const p = props.find(x=>x.id===m.propId);
+    // une conviction dont le catalogue ne parle plus (division vidée, combattant
+    // retiré) garde sa position : on l'affiche au prix d'entrée, sans mouvement
+    const now = p ? pnSide(p, m.side) : m.price;
+    const val = m.shares * now, pl = val - m.stake;
+    return `<div class="pn-line ${pnTone(pl)}" style="--i:${i}">
+      <span class="pn-when2">${pnDateFR(m.at)}</span>
+      <span class="pn-what"><span class="pn-tag ${m.side}">${m.side==='oui'?'OUI':'NON'}</span> ${esc(p?p.titre:m.propId)}</span>
+      <span class="pn-res">${fmtInt(m.stake)} cr à ${pnPct(m.price)} → ${pnPct(now)}</span>
+      <span class="pn-gain ${pnTone(pl)}">${pnCr(pl)}</span>
+      <button class="pn-mini" data-cut="${m.id}">couper</button>
+    </div>`;
+  }).join('') : ''}
+
   <div class="pn-sec">Pronostics réglés ${done.length?`<span>${done.length}</span>`:''}</div>
   ${done.length ? done.map((t,i)=>{
-    const b = PN.bouts.find(x=>x.id===t.boutId) || {a:'?',b:'?'};
+    const b = pnBoutById(t.boutId) || {a:'?',b:'?'};
     const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
     return `<div class="pn-line ${cls}" style="--i:${i}">
       <span class="pn-when2">${pnDateFR(t.settled.when)}</span>
@@ -3348,22 +3499,22 @@ function pnViewTickets(){
     </div>`;
   }).join('') : `<div class="rk-empty"><b>Rien de réglé</b>Tes paris se règlent tout seuls dès que le résultat entre dans la base officielle.</div>`}
 
-  ${archive.length ? `<div class="pn-sec">Convictions tranchées <span>${archive.length}</span></div>` + archive.map(p=>{
+  ${archive.length ? `<div class="pn-sec">Convictions tranchées <span>${archive.length}</span></div>` + archive.map((p,i)=>{
     const st = pnStatus(p), when = PN.resolved[p.id]?.when;
-    return `<div class="pn-line ${st==='gagne'?'win':'lose'}">
+    return `<div class="pn-line ${st==='gagne'?'win':'lose'}" style="--i:${i}">
       <span class="pn-when2">${pnDateFR(when)}</span>
       <span class="pn-what">${esc(p.titre)}</span>
       <span class="pn-res">${st==='gagne'?'vérifiée':'démentie'}</span>
     </div>`;
   }).join('') : ''}
 
-  ${cut.length ? `<div class="pn-sec">Positions coupées <span>${cut.length}</span></div>` + cut.map(p=>{
+  ${cut.length ? `<div class="pn-sec">Positions closes <span>${cut.length}</span></div>` + cut.map((p,i)=>{
     const prop = props.find(x=>x.id===p.propId);
-    return `<div class="pn-line ${p.closed.gain>=p.stake?'win':'lose'}">
+    return `<div class="pn-line ${p.closed.gain>=p.stake?'win':'lose'}" style="--i:${i}">
       <span class="pn-when2">${pnDateFR(p.closed.at)}</span>
       <span class="pn-what">${esc(prop?prop.titre:p.propId)} <em>(${p.side})</em></span>
-      <span class="pn-res">sortie à ${pnPct(p.closed.price)}</span>
-      <span class="pn-gain">${pnCr(p.closed.gain - p.stake)}</span>
+      <span class="pn-res">${p.closed.resolved?'échéance atteinte':'sortie à '+pnPct(p.closed.price)}</span>
+      <span class="pn-gain ${p.closed.gain>=p.stake?'win':'lose'}">${pnCr(p.closed.gain - p.stake)}</span>
     </div>`;
   }).join('') : ''}
 
@@ -3445,6 +3596,13 @@ function pnRender(){
   }
   pnShownBank = shown;
 
+  // un chiffre par onglet : on voit ce qui vit ailleurs sans y aller
+  const nCarte = pnAnnounced().length + PN.bouts.filter(b=>!b.event).length;
+  const nMarche = pnPropCat().filter(p=>pnStatus(p)==='ouvert').length;
+  const nTickets = PN.tickets.filter(t=>!t.settled).length + PN.positions.filter(p=>!p.closed).length;
+  const cnt = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v || ''; };
+  cnt('pnCntCarte', nCarte); cnt('pnCntMarche', nMarche); cnt('pnCntTickets', nTickets);
+
   view.innerHTML = pnTab==='carte'  ? pnViewCarte()
                  : pnTab==='marche' ? pnViewMarche()
                  : pnViewTickets();
@@ -3464,7 +3622,8 @@ function pnRender(){
 function pnWire(view){
   // cote recalculée pendant qu'on remplit le formulaire
   view.querySelectorAll('form[data-bet]').forEach(form=>{
-    const bout = PN.bouts.find(b=>b.id===form.dataset.bet);
+    const bout = pnBoutById(form.dataset.bet);
+    if(!bout) return;
     const out  = form.querySelector('.pn-quote');
     const refresh = ()=>{
       const d = new FormData(form);
@@ -3487,6 +3646,9 @@ function pnWire(view){
       if(stake > PN.bank){ out.textContent = 'Pas assez de crédits.'; return; }
       const pick = { win, method:d.get('method')||'', round:+d.get('round')||0 };
       const { odds } = pnQuote(bout, pick);
+      // parier sur un combat annoncé le fait entrer dans tes affiches : c'est
+      // à ce moment-là qu'il devient réglable, events.json pouvant changer
+      if(!PN.bouts.some(b=>b.id===bout.id)) PN.bouts.push(Object.assign({}, bout));
       PN.bank -= stake;
       PN.tickets.push({ boutId:bout.id, win, method:pick.method, round:pick.round, stake, odds, at:Date.now(), settled:null });
       pnSave(); pnRender();
@@ -3496,10 +3658,15 @@ function pnWire(view){
 
   // annuler un pari non réglé : la mise revient
   view.querySelectorAll('[data-drop]').forEach(b=>b.addEventListener('click', ()=>{
-    const i = PN.tickets.findIndex(t=>t.boutId===b.dataset.drop && !t.settled);
+    const id = b.dataset.drop;
+    const i = PN.tickets.findIndex(t=>t.boutId===id && !t.settled);
     if(i<0) return;
     PN.bank += PN.tickets[i].stake;
     PN.tickets.splice(i,1);
+    // affiche officielle reprise pour ce seul pari : sans pari, elle repart
+    // dans events.json et n'encombre plus tes affiches
+    const k = PN.bouts.findIndex(x=>x.id===id && x.event);
+    if(k>-1 && !PN.tickets.some(t=>t.boutId===id)) PN.bouts.splice(k,1);
     pnSave(); pnRender();
   }));
 
@@ -3624,7 +3791,7 @@ const pnPage = document.getElementById('pnPage');
 function openPronos(tab){
   const wasOpen = pnPage.classList.contains('on');
   pnTab = tab || 'carte';
-  document.getElementById('pnTabs').querySelectorAll('.rk-mode')
+  document.getElementById('pnTabs').querySelectorAll('.pn-tab')
     .forEach(x=>x.classList.toggle('on', x.dataset.tab===pnTab));
   pnRender();
   pnPage.classList.add('on');
@@ -3650,7 +3817,7 @@ function pnTabFromHash(h){
 }
 // les onglets vivent hors de #pnView : ils survivent aux re-rendus, donc on les
 // branche une seule fois, pas dans pnWire()
-document.getElementById('pnTabs').querySelectorAll('.rk-mode')
+document.getElementById('pnTabs').querySelectorAll('.pn-tab')
   .forEach(b=>b.addEventListener('click', ()=>openPronos(b.dataset.tab)));
 
 // Le catalogue et les champions dépendent des combats : tout est recalculé une
