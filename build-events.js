@@ -46,7 +46,11 @@ const UA = 'FighterHub/1.0 (https://github.com/gabrielavesque-art/fighter-hub; p
 
 const SELFTEST = process.argv.includes('--selftest');
 const TEST     = process.argv.includes('--test');
-const MAX_EVENTS = 4;        // deux mois de cartes suffisent à un pronostiqueur
+// Wikipedia n'est pas joignable depuis toutes les machines : quand la lecture
+// rend zéro, --dump recrache ce que le script a réellement vu. Une exécution en
+// CI suffit alors à comprendre, au lieu de deviner.
+const DUMP     = process.argv.includes('--dump');
+const MAX_EVENTS = 24;       // tout ce que Wikipedia annonce, jusqu'au plus lointain
 const MIN_GAP_MS = 700;      // l'IP des runners GitHub est partagée : on espace
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -105,47 +109,64 @@ function divOf(line){
 const isTitle = line => /championship|title/i.test(line);
 
 /* ─────────────── 1. les événements programmés ─────────────── */
-// Le tableau « Scheduled events » : une ligne par événement, les colonnes
-// varient (avec ou sans numéro), donc on lit le nom, la date et le lieu par
-// leur forme et pas par leur position.
-function parseScheduled(wt){
+// Découpe une ligne de tableau en cellules. Wikipedia mélange trois formes dans
+// le même tableau : cellules « | valeur », cellules d'en-tête « ! valeur », et
+// cellules portant des attributs « ! scope="row" | valeur ». C'est cette
+// dernière qui porte le nom de l'événement — la rater, c'est ne rien lire.
+function rowCells(row){
   const out = [];
-  const block = wt.split(/\n\|-/);
-  for(const row of block){
+  for(let line of row.split('\n')){
+    line = line.trim();
+    if(!/^[|!]/.test(line)) continue;
+    line = line.replace(/^[|!]+/, '');
+    for(let cell of line.split(/\|\||!!/)){
+      // « scope="row" | valeur » → « valeur » ; on s'arrête au premier [ ou {
+      // pour ne jamais couper dans un lien ou un modèle
+      cell = cell.replace(/^[^|[{]*\|(?!\|)/, '').trim();
+      if(cell) out.push(cell);
+    }
+  }
+  return out;
+}
+// Lit une date, qu'elle soit dans un {{dts}} ou écrite en toutes lettres.
+function cellDate(c){
+  const dts = c.match(/\{\{\s*dts\s*\|([^}]+)\}\}/i);
+  if(dts){
+    const parts = dts[1].split('|').map(x=>x.trim()).filter(x=>!/^(format|link|abbr)/i.test(x));
+    const [y, m, d] = parts;
+    if(/^\d{4}$/.test(y||'') && m && d) return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  }
+  const t = plain(c).match(/([A-Z][a-z]+)\s+(\d{1,2}),?\s*(\d{4})/);
+  if(t){
+    const ms = Date.parse(`${t[1]} ${t[2]}, ${t[3]} UTC`);
+    if(!isNaN(ms)) return new Date(ms).toISOString().slice(0,10);
+  }
+  return '';
+}
+// On ne cherche plus la section « Scheduled events » : son titre change, et son
+// index de section encore plus. On lit TOUTES les lignes de la page et on garde
+// celles dont la date est à venir — un événement passé se disqualifie tout seul.
+function parseScheduled(wt){
+  const out = [], seen = new Set();
+  const today = new Date().toISOString().slice(0,10);
+  for(const row of wt.split(/\n\|-/)){
     if(!/UFC/.test(row)) continue;
-    const cells = row.split(/\n?\|\||\n\|/).map(c=>c.trim()).filter(Boolean);
+    const cells = rowCells(row);
     if(cells.length < 2) continue;
     let name = '', date = '';
-    const place = [];      // salle puis ville : les deux intéressent le lecteur
+    const place = [];
     for(const c of cells){
-      const dts = c.match(/\{\{\s*dts\s*\|([^}]+)\}\}/i);
-      if(!date && dts){
-        const parts = dts[1].split('|').map(s=>s.trim()).filter(s=>!/^format/i.test(s));
-        const iso = parts.join('-').replace(/[^0-9-]/g, '');
-        if(/^\d{4}-\d{1,2}-\d{1,2}$/.test(iso)){
-          const [y,m,d] = iso.split('-');
-          date = `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`;
-        }
-        continue;
-      }
-      if(!date){
-        const txt = plain(c);
-        const md = txt.match(/([A-Z][a-z]+)\s+(\d{1,2}),\s*(\d{4})/);
-        if(md){
-          const t = Date.parse(`${md[1]} ${md[2]}, ${md[3]} UTC`);
-          if(!isNaN(t)) { date = new Date(t).toISOString().slice(0,10); continue; }
-        }
-      }
+      if(!date){ const d = cellDate(c); if(d){ date = d; continue; } }
       const txt = plain(c);
-      if(!name && /^UFC\b/.test(txt)) { name = txt; continue; }
-      if(name && date && txt && !/^\d+$/.test(txt)) place.push(txt);
+      if(!name && /^UFC\b/i.test(txt)){ name = txt; continue; }
+      if(name && date && txt && !/^\d+$/.test(txt) && !/^(TBD|TBA|N\/A)$/i.test(txt)) place.push(txt);
     }
-    if(name && date) out.push({ name, date, location: place.join(', ') });
+    if(!name || !date || date < today) continue;
+    if(seen.has(name)) continue;
+    seen.add(name);
+    out.push({ name, date, location: place.join(', ') });
   }
-  // une carte annoncée est forcément dans le futur ; on trie du plus proche au
-  // plus lointain pour que « la prochaine » soit vraiment la prochaine
-  const today = new Date().toISOString().slice(0,10);
-  return out.filter(e=>e.date >= today).sort((a,b)=>a.date.localeCompare(b.date));
+  return out.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 /* ─────────────── 2. les combats d'une carte ─────────────── */
@@ -195,22 +216,33 @@ function parseBouts(wt){
 
 /* ─────────────── selftest : les parseurs, sans réseau ─────────────── */
 const FIXTURES = {
+  // forme réelle de « List of UFC events » : le nom est une cellule d'en-tête
+  // porteuse d'attributs, pas une cellule ordinaire
   scheduled: `
-{| class="wikitable"
+{| class="wikitable sortable"
 ! # !! Event !! Date !! Venue !! City
 |-
-| 726 || [[UFC 321]] || {{dts|2099-10-25}} || [[Etihad Arena]] || {{flagicon|UAE}} [[Abu Dhabi]], UAE
+! scope="row" | 726
+| [[UFC 321]] || {{dts|2099|10|25}} || [[Etihad Arena]] || {{flagicon|UAE}} [[Abu Dhabi]], UAE
 |-
-| 727 || [[UFC Fight Night: Smith vs. Jones]] || {{dts|2099-11-08}} || [[UFC Apex]] || {{flagicon|USA}} [[Las Vegas]], Nevada, US
+! scope="row" | [[UFC Fight Night: Smith vs. Jones]]
+| {{dts|2099|11|08}}
+| [[UFC Apex]]
+| {{flagicon|USA}} [[Las Vegas]], Nevada, US
 |-
-| 700 || [[UFC 300]] || {{dts|2020-01-01}} || [[T-Mobile Arena]] || {{flagicon|USA}} [[Las Vegas]], US
+! scope="row" | [[UFC 300]]
+| {{dts|2020|01|01}} || [[T-Mobile Arena]] || {{flagicon|USA}} [[Las Vegas]], US
+|-
+| [[UFC Fight Night: Texte vs. Libre]] || November 22, 2099 || [[Frost Bank Center]] || San Antonio, Texas
 |}`,
   bouts: `
 ==Fight card==
 {| class="toccolours"
 ! colspan=8 | Main card
 |-
-| Heavyweight || {{flagicon|GBR}} [[Tom Aspinall]] (c) || vs. || {{flagicon|USA}} [[Jon Jones]] || For the [[UFC Heavyweight Championship]]
+! Weight class !! !! !! !! !! !! !! Notes
+|-
+| Heavyweight || {{flagicon|GBR}} [[Tom Aspinall]] (c) || ''vs.'' || {{flagicon|USA}} [[Jon Jones]] || ''For the [[UFC Heavyweight Championship]]''
 |-
 | Women's Flyweight || {{flagicon|KGZ}} [[Valentina Shevchenko]] || vs. || {{flagicon|BRA}} [[Manon Fiorot]] ||
 |-
@@ -220,7 +252,7 @@ const FIXTURES = {
 |}
 
 ===Announced bouts===
-*Lightweight bout: [[Islam Makhachev]] vs. [[Justin Gaethje]]
+* [[Lightweight]] bout: {{flagicon|RUS}} [[Islam Makhachev]] vs. {{flagicon|USA}} [[Justin Gaethje]]
 *Women's Bantamweight bout: [[Kayla Harrison]] vs. [[Amanda Nunes]]
 *Heavyweight bout: [[Tom Aspinall]] vs. [[Jon Jones]]
 `,
@@ -235,10 +267,14 @@ function selftest(){
   };
 
   const sched = parseScheduled(FIXTURES.scheduled);
-  check('événements programmés : noms', sched.map(e=>e.name), ['UFC 321','UFC Fight Night: Smith vs. Jones']);
-  check('événements programmés : dates', sched.map(e=>e.date), ['2099-10-25','2099-11-08']);
+  check('événements programmés : noms',
+    sched.map(e=>e.name),
+    ['UFC 321','UFC Fight Night: Smith vs. Jones','UFC Fight Night: Texte vs. Libre']);
+  check('événements programmés : dates', sched.map(e=>e.date), ['2099-10-25','2099-11-08','2099-11-22']);
+  check('nom en cellule d\'en-tête avec attributs', sched[1].name, 'UFC Fight Night: Smith vs. Jones');
+  check('date écrite en toutes lettres', sched[2].date, '2099-11-22');
   check('les événements passés sont écartés', sched.some(e=>e.name==='UFC 300'), false);
-  check('lieu lu', /Abu Dhabi/.test(sched[0].location), true);
+  check('salle ET ville', /Etihad Arena/.test(sched[0].location) && /Abu Dhabi/.test(sched[0].location), true);
 
   const bouts = parseBouts(FIXTURES.bouts);
   check('affiches dédoublonnées', bouts.length, 5);
@@ -275,36 +311,41 @@ function mergeManual(events){
 
   let events = [];
   try{
-    // la section « Scheduled events » est en tête de l'article ; on prend tout
-    // le wikitext et on isole le tableau qui suit ce titre
     const wt = await wikitext('List of UFC events');
-    const i = wt.search(/==\s*Scheduled events\s*==/i);
-    const chunk = i > -1 ? wt.slice(i, wt.indexOf('\n==', i + 5)) : wt;
-    events = parseScheduled(chunk).slice(0, MAX_EVENTS);
-    console.log(`${events.length} événement(s) programmé(s).`);
+    console.log(`page lue : ${wt.length} caractères, ${wt.split(/\n\|-/).length} lignes de tableau`);
+    events = parseScheduled(wt);
+    console.log(`${events.length} événement(s) à venir.`);
+    if(DUMP){
+      const rows = wt.split(/\n\|-/).filter(r=>/UFC/.test(r));
+      console.log('\n──── 6 lignes brutes contenant « UFC » ────');
+      for(const r of rows.slice(-6)) console.log(JSON.stringify(r.slice(0, 400)), '\n  cellules →', JSON.stringify(rowCells(r)));
+    }
+    events = events.slice(0, MAX_EVENTS);
   }catch(e){
     console.error('Liste des événements indisponible :', e.message);
   }
 
   for(const ev of events){
     try{
-      ev.bouts = parseBouts(await wikitext(ev.name));
-      console.log(`  ${ev.name} (${ev.date}) — ${ev.bouts.length} affiche(s)`);
+      const wt = await wikitext(ev.name);
+      ev.bouts = parseBouts(wt);
+      console.log(`  ${ev.date}  ${ev.name} — ${ev.bouts.length} affiche(s)`);
+      if(DUMP && !ev.bouts.length) console.log('    (page lue, aucun « vs. » reconnu)');
     }catch(e){
+      // page pas encore créée : l'événement existe quand même, sa carte viendra
       ev.bouts = [];
-      console.warn(`  ${ev.name} — page illisible : ${e.message}`);
+      console.warn(`  ${ev.date}  ${ev.name} — carte pas encore publiée (${e.message})`);
     }
   }
-  events = events.filter(e=>e.bouts && e.bouts.length);
   events = mergeManual(events);
 
-  if(TEST){
+  if(TEST || DUMP){
     console.log(JSON.stringify({ events }, null, 2));
     return;
   }
   if(!events.length){
     // mieux vaut la carte d'hier que pas de carte du tout
-    console.warn('Aucune carte exploitable : events.json laissé en l\'état.');
+    console.warn('Aucun événement à venir : events.json laissé en l\'état.');
     return;
   }
   fs.writeFileSync(OUT, JSON.stringify({
@@ -312,5 +353,6 @@ function mergeManual(events){
     source: 'en.wikipedia.org — List of UFC events',
     events,
   }, null, 1));
-  console.log(`events.json écrit : ${events.length} carte(s), ${events.reduce((n,e)=>n+e.bouts.length,0)} affiche(s).`);
+  const nb = events.reduce((n,e)=>n+(e.bouts?e.bouts.length:0), 0);
+  console.log(`events.json écrit : ${events.length} carte(s) jusqu'au ${events[events.length-1].date}, ${nb} affiche(s).`);
 })();
