@@ -76,6 +76,12 @@ Avant toute modification :
 - `build-events.js --selftest` teste les parseurs **sans réseau ni Wikipedia**.
   Dans la liste `DIVISIONS`, « Light Heavyweight » doit rester **avant**
   « Heavyweight » : le motif du second est contenu dans le premier.
+- `.ph` est en `position:absolute` : **tout** conteneur de photo doit porter
+  `position:relative`, sinon l'image se cale sur le premier ancêtre positionné
+  et déborde par-dessus la carte entière (le cas s'est produit sur `.pn-face`).
+- Les combats des cartes annoncées ne sont **pas** stockés : ils vivent dans
+  `events.json` et n'entrent dans `PN.bouts` qu'au moment où l'on parie dessus
+  (et en ressortent si le pari est annulé). `pnBoutById()` cherche des deux côtés.
 - Tout le mouvement de la section vit dans un seul bloc CSS (« PRONOS — mouvement
   et finitions ») et se coupe d'une règle avec `prefers-reduced-motion`. Rien n'y
   est nécessaire à la lecture : les animations arrivent en plus.
