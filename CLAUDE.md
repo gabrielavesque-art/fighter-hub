@@ -19,7 +19,13 @@ Avant toute modification :
 - `resolve-photos.js` → `photos.json` | `build-stats.js` → `stats.json` | `build-elo.js` → `elo.json`
 - `build-descriptions.js` → `descriptions.json` (descriptions humaines, Wikipedia FR puis EN)
 - `build-videos.js` → `videos.json` (combat ⇄ vidéo YouTube, chaînes UFC + RMC)
+- `build-events.js` → `events.json` (cartes UFC à venir, Wikipedia EN) — **optionnel** :
+  sans lui la section Pronos marche, on compose ses affiches à la main
 - Scripts lancés via **GitHub Actions uniquement** (jamais en local) — Vercel auto-déploie sur push main
+- Section **Pronos** (`#pronos`) : bankroll fictive en `localStorage`, cotes dérivées
+  de `elo.json`, règlement automatique contre le CSV des résultats. Aucun serveur,
+  aucun compte. Deux onglets : « La Carte » (combat par combat) et « Le Marché »
+  (convictions longue durée, prix recalculé à chaque visite).
 
 ## Pièges
 
@@ -53,9 +59,36 @@ Avant toute modification :
 - `node build-videos.js --selftest` teste le parseur **sans clé ni réseau
   YouTube** — à lancer avant tout changement des regex de titre.
 
+- `pnPropCat()` et `pnChampions()` ne mémorisent **rien** tant que `fightsLoaded`
+  est faux — même piège que `p4pOrder()` : ouvrir la section pendant le chargement
+  figerait un marché vide pour toute la session.
+- Le champion d'une division est **déduit** du dernier « UFC <div> Title Bout »
+  gagné (`h.title`, posé dans `loadFights`), intérimaires et tournois exclus.
+  Aucune source externe — ne pas ajouter de scrape pour ça.
+- Les identifiants de convictions contiennent déjà des `|` (`champ|Heavyweight`) :
+  ne jamais empiler une seconde valeur dans le même `data-`, elle part dans le
+  mauvais champ au `split`. Un attribut par valeur (`data-buy` + `data-side`).
+- Les onglets `#pnTabs` vivent **hors** de `#pnView` : ils survivent aux re-rendus,
+  donc on les branche une seule fois — pas dans `pnWire()`, qui rebranche à chaque
+  rendu ce qui est à l'intérieur.
+- `openPronos()` ne réécrit pas l'URL quand le hash est un `#duel-…` : c'est lui
+  qui porte le ticket du pote, `pnBoot()` le relit après le chargement des données.
+- `build-events.js --selftest` teste les parseurs **sans réseau ni Wikipedia**.
+  Dans la liste `DIVISIONS`, « Light Heavyweight » doit rester **avant**
+  « Heavyweight » : le motif du second est contenu dans le premier.
+- Tout le mouvement de la section vit dans un seul bloc CSS (« PRONOS — mouvement
+  et finitions ») et se coupe d'une règle avec `prefers-reduced-motion`. Rien n'y
+  est nécessaire à la lecture : les animations arrivent en plus.
+- Rejouer une animation demande de **retirer la classe, lire `offsetWidth`, la
+  reposer** (`#pnView.swap`) — sinon un re-rendu du même onglet reste figé.
+- La barre de nav déborde dès 3 entrées sur mobile (≈524 px de contenu pour 390 px
+  d'écran) : elle défile, et `applyRoute()` recentre l'onglet actif. Une 4ᵉ entrée
+  demandera de repenser le header.
+
 ## Roadmap
 
 1. ~~Pages de classement P4P + par catégorie~~ — fait
 2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
 3. ~~Vidéos de combat rattachées au palmarès (YouTube UFC + RMC)~~ — fait
-4. (Plus tard) Comparateur, URLs SEO, notes communautaires
+4. ~~Pronostics : carte du week-end + marché des convictions~~ — fait
+5. (Plus tard) Comparateur, URLs SEO, notes communautaires
