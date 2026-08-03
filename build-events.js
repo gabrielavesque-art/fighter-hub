@@ -128,24 +128,51 @@ function rowCells(row){
   }
   return out;
 }
-// Lit une date, qu'elle soit dans un {{dts}} ou écrite en toutes lettres.
+// Lit une date, quelle que soit sa forme. {{dts}} accepte le mois en chiffres
+// COMME en toutes lettres ({{dts|2026|Apr|04}}) : compléter « Apr » par des
+// zéros donnait « 2026-Apr-04 », qui se trie alphabétiquement et se compare
+// faux — d'où des événements passés annoncés comme à venir.
+const MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12,
+                january:1,february:2,march:3,april:4,june:6,july:7,august:8,september:9,october:10,
+                november:11,december:12};
+function monthNum(v){
+  const t = String(v||'').trim();
+  if(/^\d{1,2}$/.test(t)) return +t;
+  return MONTHS[t.toLowerCase().replace(/\.$/,'')] || 0;
+}
+function iso(y, m, d){
+  const mm = monthNum(m), dd = +String(d).trim();
+  if(!/^\d{4}$/.test(String(y).trim()) || !mm || !dd || dd > 31) return '';
+  return `${String(y).trim()}-${String(mm).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;
+}
 function cellDate(c){
   const dts = c.match(/\{\{\s*dts\s*\|([^}]+)\}\}/i);
   if(dts){
-    const parts = dts[1].split('|').map(x=>x.trim()).filter(x=>!/^(format|link|abbr)/i.test(x));
-    const [y, m, d] = parts;
-    if(/^\d{4}$/.test(y||'') && m && d) return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const parts = dts[1].split('|').map(x=>x.trim()).filter(x=>x && !/^(format|link|abbr)/i.test(x) && !x.includes('='));
+    const d = iso(parts[0], parts[1], parts[2]);
+    if(d) return d;
   }
-  const t = plain(c).match(/([A-Z][a-z]+)\s+(\d{1,2}),?\s*(\d{4})/);
-  if(t){
-    const ms = Date.parse(`${t[1]} ${t[2]}, ${t[3]} UTC`);
-    if(!isNaN(ms)) return new Date(ms).toISOString().slice(0,10);
-  }
+  const txt = plain(c);
+  let m = txt.match(/([A-Za-z]{3,9})\.?\s+(\d{1,2}),?\s*(\d{4})/);   // April 4, 2026
+  if(m){ const d = iso(m[3], m[1], m[2]); if(d) return d; }
+  m = txt.match(/(\d{1,2})\s+([A-Za-z]{3,9})\.?\s+(\d{4})/);          // 4 April 2026
+  if(m){ const d = iso(m[3], m[2], m[1]); if(d) return d; }
+  m = txt.match(/(\d{4})-(\d{2})-(\d{2})/);                           // déjà ISO
+  if(m) return m[0];
   return '';
 }
 // On ne cherche plus la section « Scheduled events » : son titre change, et son
 // index de section encore plus. On lit TOUTES les lignes de la page et on garde
 // celles dont la date est à venir — un événement passé se disqualifie tout seul.
+const HEADER_WORDS = /^(#|event|date|venue|location|attendance|ref\.?|notes?)$/i;
+function isPlace(t){
+  if(!t) return false;
+  if(HEADER_WORDS.test(t)) return false;
+  if(/^[\d,.\s]+$/.test(t)) return false;        // affluence
+  if(/[=}]/.test(t)) return false;               // rowspan=4, restes de syntaxe
+  if(/^(TBD|TBA|N\/A)$/i.test(t)) return false;
+  return true;
+}
 function parseScheduled(wt){
   const out = [], seen = new Set();
   const today = new Date().toISOString().slice(0,10);
@@ -159,7 +186,10 @@ function parseScheduled(wt){
       if(!date){ const d = cellDate(c); if(d){ date = d; continue; } }
       const txt = plain(c);
       if(!name && /^UFC\b/i.test(txt)){ name = txt; continue; }
-      if(name && date && txt && !/^\d+$/.test(txt) && !/^(TBD|TBA|N\/A)$/i.test(txt)) place.push(txt);
+      // le lieu s'arrête à la ville : au-delà viennent l'affluence, les
+      // attributs de tableau (rowspan=4) et parfois l'en-tête de la table
+      // suivante, qui se retrouvaient collés au nom de la salle
+      if(name && date && place.length < 3 && isPlace(txt)) place.push(txt);
     }
     if(!name || !date || date < today) continue;
     if(seen.has(name)) continue;
@@ -259,7 +289,7 @@ const FIXTURES = {
 ! # !! Event !! Date !! Venue !! City
 |-
 ! scope="row" | 726
-| [[UFC 321]] || {{dts|2099|10|25}} || [[Etihad Arena]] || {{flagicon|UAE}} [[Abu Dhabi]], UAE
+| [[UFC 321]] || {{dts|2099|Oct|25}} || [[Etihad Arena]] || {{flagicon|UAE}} [[Abu Dhabi]], UAE || 18,102 || <ref/>
 |-
 ! scope="row" | [[UFC Fight Night: Smith vs. Jones]]
 | {{dts|2099|11|08}}
@@ -324,6 +354,9 @@ function selftest(){
   check('date écrite en toutes lettres', sched[2].date, '2099-11-22');
   check('les événements passés sont écartés', sched.some(e=>e.name==='UFC 300'), false);
   check('salle ET ville', /Etihad Arena/.test(sched[0].location) && /Abu Dhabi/.test(sched[0].location), true);
+  check('mois abrégé converti en chiffres', sched[0].date, '2099-10-25');
+  check('l\'affluence n\'entre pas dans le lieu', /18,102/.test(sched[0].location), false);
+  check('dates triables et comparables', sched.every(e=>/^\d{4}-\d{2}-\d{2}$/.test(e.date)), true);
 
   const bouts = parseBouts(FIXTURES.bouts);
   check('affiches dédoublonnées', bouts.length, 5);
@@ -370,8 +403,17 @@ function mergeManual(events){
     console.log(`${events.length} événement(s) à venir.`);
     if(DUMP){
       const rows = wt.split(/\n\|-/).filter(r=>/UFC/.test(r));
-      console.log('\n──── 6 lignes brutes contenant « UFC » ────');
-      for(const r of rows.slice(-6)) console.log(JSON.stringify(r.slice(0, 400)), '\n  cellules →', JSON.stringify(rowCells(r)));
+      console.log('\n──── 4 lignes brutes contenant « UFC » ────');
+      for(const r of rows.slice(-4)) console.log(JSON.stringify(r.slice(0, 300)), '\n  cellules →', JSON.stringify(rowCells(r)));
+      // la page d'un événement à venir : c'est elle qui décide du parsing des
+      // combats, et c'est la seule chose qu'on ne peut pas deviner
+      const cible = events.find(e=>/vs\./i.test(e.name)) || events[0];
+      if(cible){
+        const page = await wikitext(cible.name);
+        console.log(`\n──── wikitext de « ${cible.name} » (${page.length} car.) ────`);
+        const i = page.search(/==+\s*(Fight card|Bouts|Announced)/i);
+        console.log(page.slice(i > -1 ? i : 0, (i > -1 ? i : 0) + 2600));
+      }
     }
     events = events.slice(0, MAX_EVENTS);
   }catch(e){
