@@ -1,5 +1,5 @@
 {
- "built": "2026-08-03T14:32:33.939Z",
+ "built": "2026-08-03T18:58:37.094Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -260,30 +260,6 @@
      "title": false,
      "rounds": 3,
      "card": "main"
-    },
-    {
-     "a": "Tony Ferguson",
-     "b": "max Holloway",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Michael Morales",
-     "b": "yaroslav amosov",
-     "wc": "",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Sean Brady",
-     "b": "TBA",
-     "wc": "",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
     }
    ]
   },
@@ -321,22 +297,6 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "kamaru Usman",
-     "b": "Brendan Allen",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Josh hokit",
-     "b": "Alex Pereira",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
      "card": "main"
     }
    ]
