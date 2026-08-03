@@ -1,0 +1,300 @@
+{
+ "built": "2026-08-03T12:43:03.426Z",
+ "source": "en.wikipedia.org — List of UFC events",
+ "events": [
+  {
+   "name": "UFC Fight Night: Moicano vs. Duncan",
+   "date": "2026-Apr-04",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Tommy McMillen",
+     "b": "Manolo Zecchini",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC 327: Procházka vs. Ulberg",
+   "date": "2026-Apr-11",
+   "location": "Kaseya Center, Miami, Florida, U.S., 17,741",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Burns vs. Malott",
+   "date": "2026-Apr-18",
+   "location": "Canada Life Centre, Winnipeg, Manitoba, Canada, 14,051",
+   "bouts": [
+    {
+     "a": "Charles Jourdain",
+     "b": "Kyler Phillips",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Sterling vs. Zalal",
+   "date": "2026-Apr-25",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Davey Grant",
+     "b": "Adrián Luna Martinetti",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Medić vs. Rodriguez",
+   "date": "2026-Aug-01",
+   "location": "Belgrade Arena, Belgrade, Serbia, 18,623",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Gamrot vs. Salkilld",
+   "date": "2026-Aug-08",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S., }, #, Event, Date, Venue, Location, Attendance, Ref.",
+   "bouts": []
+  },
+  {
+   "name": "UFC 330: Makhachev vs. Machado Garry",
+   "date": "2026-Aug-15",
+   "location": "Xfinity Mobile Arena, Philadelphia, Pennsylvania, U.S.",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Hernandez vs. Rodrigues",
+   "date": "2026-Aug-22",
+   "location": "Golden 1 Center, Sacramento, California, U.S.",
+   "bouts": [
+    {
+     "a": "Mason Jones",
+     "b": "MarQuel Mederos",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Nasrat Haqparast",
+     "b": "Chris Padilla",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Jamall Emmers",
+     "b": "Lerryan Douglas",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Nurmagomedov vs. Song",
+   "date": "2026-Aug-29",
+   "location": "SPD Bank Oriental Sports Center, Shanghai, China",
+   "bouts": [
+    {
+     "a": "André Lima",
+     "b": "Namsrai Batbayar",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Sean Woodson",
+     "b": "Jack Jenkins",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC 325: Volkanovski vs. Lopes 2",
+   "date": "2026-Feb-01",
+   "location": "Qudos Bank Arena, Sydney, Australia, 18,102",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Bautista vs. Oliveira",
+   "date": "2026-Feb-07",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Michał Oleksiejczuk",
+     "b": "Marc-André Barriault",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Strickland vs. Hernandez",
+   "date": "2026-Feb-21",
+   "location": "Toyota Center, Houston, Texas, U.S., 17,160",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Moreno vs. Kavanagh",
+   "date": "2026-Feb-28",
+   "location": "Arena CDMX, Mexico City, Mexico, 16,454",
+   "bouts": [
+    {
+     "a": "Regina Tarin",
+     "b": "Ernesta Kareckaitė",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC 324: Gaethje vs. Pimblett",
+   "date": "2026-Jan-24",
+   "location": "T-Mobile Arena, Las Vegas, Nevada, U.S., 19,481",
+   "bouts": []
+  },
+  {
+   "name": "UFC 329: McGregor vs. Holloway 2",
+   "date": "2026-Jul-11",
+   "location": "T-Mobile Arena, Las Vegas, Nevada, U.S., 20,078",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: du Plessis vs. Usman",
+   "date": "2026-Jul-18",
+   "location": "Paycom Center, Oklahoma City, Oklahoma, U.S., 17,173",
+   "bouts": [
+    {
+     "a": "Dricus du Plessis",
+     "b": "Kamaru Usman",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Ankalaev vs. Guskov",
+   "date": "2026-Jul-25",
+   "location": "Etihad Arena, Abu Dhabi, United Arab Emirates",
+   "bouts": [
+    {
+     "a": "Rizvan Kuniev",
+     "b": "Tyrell Fortune",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Muhammad vs. Bonfim",
+   "date": "2026-Jun-06",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Brendan Allen",
+     "b": "Edmen Shahbazyan",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Freedom 250",
+   "date": "2026-Jun-14",
+   "location": "White House, Washington, D.C., U.S.",
+   "bouts": [
+    {
+     "a": "Justin Gaethje",
+     "b": "Ilia Topuria",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Kape vs. Horiguchi",
+   "date": "2026-Jun-20",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Vinicius Oliveira",
+     "b": "Andre Fili",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Fiziev vs. Torres",
+   "date": "2026-Jun-27",
+   "location": "National Gymnastics Arena, Baku, Azerbaijan, rowspan=4",
+   "bouts": []
+  },
+  {
+   "name": "UFC 326: Holloway vs. Oliveira 2",
+   "date": "2026-Mar-07",
+   "location": "T-Mobile Arena, 19,480",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night: Emmett vs. Vallejos",
+   "date": "2026-Mar-14",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Marwan Rahiki",
+     "b": "Harry Hardwick",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  },
+  {
+   "name": "UFC Fight Night: Evloev vs. Murphy",
+   "date": "2026-Mar-21",
+   "location": "The O 2 Arena, London, England, 18,629",
+   "bouts": [
+    {
+     "a": "Mason Jones",
+     "b": "Axel Sola",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ]
+  }
+ ]
+}
