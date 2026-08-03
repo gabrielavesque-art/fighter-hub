@@ -1104,6 +1104,77 @@ footer a:hover{color:var(--tx-2)}
 }
 .pn-evt-txt{min-width:0}
 @media(max-width:560px){ .pn-poster{width:64px} }
+/* ══ HERO — carrousel des prochains événements ══ */
+.hero-inner{display:grid;grid-template-columns:minmax(0,1fr);gap:36px;align-items:start}
+.hero-inner:has(.hero-side:not([hidden])){grid-template-columns:minmax(0,1fr) 320px}
+.hero-main{min-width:0}
+.hero-side{min-width:0;padding-bottom:clamp(32px,6vw,64px)}
+.ev-card{
+  position:relative;display:block;width:100%;text-align:left;cursor:pointer;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  padding:0;color:inherit;
+  transition:border-color .2s,transform .25s var(--ease),box-shadow .25s;
+}
+.ev-card:hover{border-color:var(--line-2);transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.ev-stage{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,#1C1C24,#0F0F14);overflow:hidden}
+.ev-slide{
+  position:absolute;inset:0;opacity:0;transition:opacity .5s ease;
+  display:flex;align-items:center;justify-content:center;
+}
+.ev-slide.on{opacity:1}
+.ev-slide img{width:100%;height:100%;object-fit:cover}
+/* pas d'affiche publiée : on compose une carte lisible plutôt qu'un trou */
+.ev-noimg{
+  padding:22px;text-align:center;
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:26px;line-height:1.05;
+  text-transform:uppercase;color:var(--tx-2);
+  background:radial-gradient(120% 90% at 50% 0%, rgba(224,26,43,.22), transparent 62%);
+}
+.ev-shade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,11,13,.55) 0%,rgba(11,11,13,0) 34%,rgba(11,11,13,.92) 100%)}
+.ev-tag{
+  position:absolute;top:12px;left:12px;z-index:2;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;
+  color:#fff;background:var(--red);border-radius:20px;padding:4px 10px;
+}
+.ev-body{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:14px 16px 15px}
+.ev-name{
+  font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:19px;line-height:1.05;
+  text-transform:uppercase;letter-spacing:.3px;color:#fff;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.ev-meta{margin-top:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.8px;
+  color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* le compte à rebours : quatre blocs, la seconde bouge, le reste est stable */
+.ev-clock{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:11px}
+.ev-unit{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.10);border-radius:7px;padding:6px 2px;text-align:center}
+.ev-unit b{display:block;font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;
+  color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.ev-unit span{display:block;margin-top:3px;font-family:'JetBrains Mono',monospace;font-size:7.5px;
+  letter-spacing:1.1px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.ev-live{grid-column:1/-1;text-align:center;padding:9px;border-radius:7px;
+  background:var(--red);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;
+  font-size:15px;letter-spacing:1.4px;text-transform:uppercase}
+/* navigation : des puces, et des flèches qui n'apparaissent qu'au survol */
+.ev-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.ev-dots{display:flex;gap:6px;flex-wrap:wrap}
+.ev-dot{width:7px;height:7px;border-radius:50%;background:var(--line-2);border:none;cursor:pointer;padding:0;
+  transition:background .2s,transform .2s}
+.ev-dot:hover{background:var(--tx-3)}
+.ev-dot.on{background:var(--red);transform:scale(1.25)}
+.ev-arrows{display:flex;gap:5px}
+.ev-arrow{background:var(--bg-2);border:1px solid var(--line-2);border-radius:6px;color:var(--tx-3);
+  width:26px;height:24px;cursor:pointer;line-height:1;font-size:12px;transition:all .15s}
+.ev-arrow:hover{border-color:var(--red);color:var(--red-lt)}
+.ev-hint{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--tx-3);margin-top:8px;text-align:center}
+
+@media(max-width:1000px){
+  .hero-inner:has(.hero-side:not([hidden])){grid-template-columns:minmax(0,1fr)}
+  .hero-side{max-width:340px}
+  .ev-stage{aspect-ratio:16/9}
+  .ev-name{font-size:17px}
+}
 </style>
 </head>
 <body>
@@ -1117,6 +1188,7 @@ footer a:hover{color:var(--tx-2)}
 
 <div class="hero">
   <div class="hero-inner">
+   <div class="hero-main">
     <div class="kicker">UFC · Base de données complète</div>
     <h1>Chaque combattant.<br><em>Chaque combat.</em></h1>
     <p class="hero-sub">Tous les combattants ayant foulé l'octogone, avec palmarès complet, tale of the tape et historique de carrière. Données officielles ufcstats, rafraîchies quotidiennement.</p>
@@ -1134,6 +1206,10 @@ footer a:hover{color:var(--tx-2)}
       <div class="ribbon-item"><div class="ribbon-num" id="sFights">—</div><div class="ribbon-lbl">Combats</div></div>
       <div class="ribbon-item"><div class="ribbon-num" id="sEvents">—</div><div class="ribbon-lbl">Événements</div></div>
     </div>
+   </div>
+   <!-- affiches des prochains événements : vide et masqué tant qu'events.json
+        n'existe pas, la hero reprend alors toute la largeur -->
+   <aside class="hero-side" id="heroEvents" hidden></aside>
   </div>
 </div>
 
@@ -2769,6 +2845,128 @@ window.addEventListener('keydown', e=>{
   if(rankPage.classList.contains('on') || eloPage.classList.contains('on') || pnPage.classList.contains('on')) navigate('');
 }, true);
 
+
+/* ═══════════ AFFICHES À VENIR — carrousel de la page d'accueil ═══════════
+   Un événement par diapositive : l'affiche officielle si Wikipedia en publie
+   une, sinon une carte composée avec le nom. Sous l'image, un compte à rebours
+   qui se recale sur la diapositive affichée. Cliquer envoie sur les pronostics
+   de cet événement.
+   Tout vient d'events.json : sans le fichier, le bloc reste masqué et la hero
+   reprend toute sa largeur.
+*/
+let evIdx = 0;
+let evTimer = null, evTick = null;
+const EV_ROTATE_MS = 7000;
+
+function evList(){
+  const today = new Date().toISOString().slice(0,10);
+  return (EVENTS || [])
+    .filter(e=>e.date && e.date >= today)
+    .sort((a,b)=>a.date.localeCompare(b.date))
+    .slice(0, 8);
+}
+// ancre stable vers la carte correspondante dans la section Pronos
+function evSlug(name){ return slugKey(name).slice(0, 40); }
+
+function evCountdown(iso){
+  // 22h locales : l'heure exacte n'est pas dans les données, mais une soirée UFC
+  // ne commence jamais à minuit — annoncer « 0 jour » dès le matin serait faux
+  const target = Date.parse(iso + 'T22:00:00');
+  const left = target - Date.now();
+  if(!(left > 0)) return null;
+  const s = Math.floor(left/1000);
+  return { j: Math.floor(s/86400), h: Math.floor(s%86400/3600), m: Math.floor(s%3600/60), s: s%60 };
+}
+function evPaintClock(){
+  const box = document.getElementById('evClock');
+  if(!box) return;
+  const ev = evList()[evIdx];
+  if(!ev) return;
+  const c = evCountdown(ev.date);
+  if(!c){ box.innerHTML = `<div class="ev-live">C'est ce soir</div>`; return; }
+  const pad = n => String(n).padStart(2,'0');
+  box.innerHTML =
+    `<div class="ev-unit"><b>${c.j}</b><span>jours</span></div>` +
+    `<div class="ev-unit"><b>${pad(c.h)}</b><span>heures</span></div>` +
+    `<div class="ev-unit"><b>${pad(c.m)}</b><span>min</span></div>` +
+    `<div class="ev-unit"><b>${pad(c.s)}</b><span>sec</span></div>`;
+}
+function evShow(i){
+  const list = evList();
+  if(!list.length) return;
+  evIdx = (i + list.length) % list.length;
+  document.querySelectorAll('#heroEvents .ev-slide').forEach((el,k)=>el.classList.toggle('on', k===evIdx));
+  document.querySelectorAll('#heroEvents .ev-dot').forEach((el,k)=>el.classList.toggle('on', k===evIdx));
+  const ev = list[evIdx];
+  const nm = document.getElementById('evName'), mt = document.getElementById('evMeta');
+  if(nm) nm.textContent = ev.name;
+  if(mt) mt.textContent = pnDateFR(Date.parse(ev.date)) + (ev.location ? ' · ' + ev.location : '');
+  evPaintClock();
+}
+function evAuto(on){
+  clearInterval(evTimer);
+  // pas de rotation automatique si le système demande moins d'animations :
+  // les flèches et les puces suffisent
+  if(on && evList().length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    evTimer = setInterval(()=>evShow(evIdx+1), EV_ROTATE_MS);
+  }
+}
+function renderHeroEvents(){
+  const box = document.getElementById('heroEvents');
+  if(!box) return;
+  const list = evList();
+  if(!list.length){ box.hidden = true; box.innerHTML = ''; clearInterval(evTimer); clearInterval(evTick); return; }
+  box.hidden = false;
+  box.innerHTML = `
+    <button class="ev-card" id="evCard" type="button">
+      <div class="ev-stage">
+        <span class="ev-tag">Prochains événements</span>
+        ${list.map((e,i)=>`<div class="ev-slide${i===0?' on':''}">${
+          e.poster ? `<img src="${esc(e.poster)}" alt="Affiche ${esc(e.name)}" loading="lazy"
+                        onerror="this.parentNode.innerHTML='<div class=\'ev-noimg\'>'+this.alt.replace('Affiche ','')+'</div>'">`
+                   : `<div class="ev-noimg">${esc(e.name)}</div>`}</div>`).join('')}
+        <div class="ev-shade"></div>
+        <div class="ev-body">
+          <div class="ev-name" id="evName"></div>
+          <div class="ev-meta" id="evMeta"></div>
+          <div class="ev-clock" id="evClock"></div>
+        </div>
+      </div>
+    </button>
+    ${list.length>1 ? `<div class="ev-nav">
+      <div class="ev-dots">${list.map((_,i)=>`<button class="ev-dot${i===0?' on':''}" data-ev="${i}" aria-label="Événement ${i+1}"></button>`).join('')}</div>
+      <div class="ev-arrows">
+        <button class="ev-arrow" data-evgo="-1" aria-label="Précédent">&#8249;</button>
+        <button class="ev-arrow" data-evgo="1" aria-label="Suivant">&#8250;</button>
+      </div>
+    </div>` : ''}
+    <div class="ev-hint">Clique pour pronostiquer cette carte</div>`;
+
+  box.querySelector('#evCard').addEventListener('click', ()=>{
+    const ev = evList()[evIdx];
+    navigate('#pronos');
+    // laisser le rendu se faire avant de viser le bloc de l'événement
+    requestAnimationFrame(()=>{
+      const el = document.getElementById('ev-' + evSlug(ev.name));
+      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+  box.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click', e=>{
+    e.stopPropagation(); evShow(+b.dataset.ev); evAuto(true);
+  }));
+  box.querySelectorAll('[data-evgo]').forEach(b=>b.addEventListener('click', e=>{
+    e.stopPropagation(); evShow(evIdx + (+b.dataset.evgo)); evAuto(true);
+  }));
+  // on ne fait pas défiler sous le doigt de quelqu'un qui lit
+  box.addEventListener('mouseenter', ()=>evAuto(false));
+  box.addEventListener('mouseleave', ()=>evAuto(true));
+
+  evShow(0);
+  clearInterval(evTick);
+  evTick = setInterval(evPaintClock, 1000);   // une seule horloge, pour la carte visible
+  evAuto(true);
+}
+
 /* ═══════════ PRONOS — bankroll, cotes maison, règlement automatique ═══════════
 
    Deux horizons, une seule bankroll :
@@ -3194,6 +3392,9 @@ async function loadEventsDB(){
 /* ── libellés ────────────────────────────────────────────────────────────── */
 function pnMethLabel(m){ return m==='ko'?'KO/TKO' : m==='sub'?'Soumission' : m==='dec'?'Décision' : m||'—'; }
 function pnPick(bout){ return PN.tickets.find(t=>t.boutId===bout.id) || null; }
+// La date fait foi, pas la présence d'un résultat : un combat de samedi soir
+// n'entre dans le CSV que le lendemain, et d'ici là il ne doit plus être jouable.
+function pnPast(b){ return !!b.date && b.date < new Date().toISOString().slice(0,10); }
 function pnDateFR(ts){ return ts ? new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}) : '—'; }
 function pnPct(p){ return Math.round(p*100)+'%'; }
 function pnCr(n){
@@ -3266,6 +3467,14 @@ function pnBoutHTML(b, i, opt){
       ${res.winner ? esc(res.winner)+' · '+pnMethLabel(res.method)+(res.round?' R'+res.round:'') : esc(res.label||'sans vainqueur')}
       ${res.event ? `<span>${esc(res.event)}</span>` : ''}
       <em>Trop tard pour le pronostiquer — le résultat est dans la base.</em>
+    </div>`;
+  } else if(pnPast(b) && !t){
+    // le CSV amont a un jour de retard : entre le combat et sa publication,
+    // le résultat est connu de tout le monde SAUF du site. Sans ce cas, la
+    // fenêtre resterait ouverte pour parier sur une soirée déjà jouée.
+    foot = `<div class="pn-done">
+      <b>Combat passé</b>
+      <em>Le résultat n'est pas encore dans la base officielle — les paris sont clos depuis le ${pnDateFR(Date.parse(b.date))}.</em>
     </div>`;
   } else if(t && t.settled){
     const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
@@ -3349,7 +3558,7 @@ function pnViewCarte(){
     const groups = ['main','prelim','early'].filter(g=>bouts.some(b=>b.card===g));
     const jours = ev.date ? Math.ceil((Date.parse(ev.date) - Date.now())/PN_DAY) : null;
     return `
-    <div class="pn-evt${ev.poster?' with-poster':''}">
+    <div class="pn-evt${ev.poster?' with-poster':''}" id="ev-${evSlug(ev.name)}">
       ${ev.poster?`<img class="pn-poster" src="${esc(ev.poster)}" alt="Affiche ${esc(ev.name)}" loading="lazy" onerror="this.remove()">`:''}
       <div class="pn-evt-txt">
         <div class="pn-evt-h">
@@ -3686,7 +3895,7 @@ function pnWire(view){
       if(!win) return;
       // dernier verrou : le résultat a pu tomber pendant que le formulaire
       // était ouvert (règlement au rendu précédent, onglet resté ouvert la nuit)
-      if(pnResult(bout)){ out.textContent = 'Ce combat a déjà eu lieu.'; return; }
+      if(pnResult(bout) || pnPast(bout)){ out.textContent = 'Ce combat a déjà eu lieu.'; return; }
       const stake = Math.round(Math.max(1, +d.get('stake')||0));
       if(stake > PN.bank){ out.textContent = 'Pas assez de crédits.'; return; }
       const pick = { win, method:d.get('method')||'', round:+d.get('round')||0 };
@@ -3953,12 +4162,15 @@ function skeleton(){
 
     // affiche immédiatement la liste (sans records encore)
     document.getElementById('sFighters').textContent = fmtInt(FIGHTERS.length);
+    // events.json fait quelques kilo-octets et porte le carrousel de la hero :
+    // on ne le fait pas attendre derrière les photos et les combats
+    await loadEventsDB();
+    renderHeroEvents();
     await loadPhotoDB();          // photos pre-calculees si disponibles
     await loadDescDB();           // descriptions Wikipedia pre-calculees si disponibles
     await loadStatsDB();          // stats avancees pre-calculees si disponibles
     await loadEloDB();            // classement ELO pre-calcule si disponible
     await loadVideoDB();          // videos YouTube rattachees aux combats si disponibles
-    await loadEventsDB();         // cartes annoncees (build-events.js) si disponibles
     document.getElementById('resTxt').textContent = 'Calcul des palmarès…';
     setProgress(60);
 
