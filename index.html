@@ -1175,6 +1175,18 @@ footer a:hover{color:var(--tx-2)}
   .ev-stage{aspect-ratio:16/9}
   .ev-name{font-size:17px}
 }
+/* chaque carte officielle est un bloc à part entière, la prochaine se détache */
+.pn-event{margin-bottom:26px}
+.pn-event.next{
+  background:linear-gradient(180deg,rgba(224,26,43,.06),transparent 120px);
+  border-radius:14px;padding:2px 12px 10px;margin:0 -12px 30px;
+}
+.pn-evt .pn-nextlbl{
+  display:inline-block;width:auto;margin:0 0 6px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.6px;text-transform:uppercase;
+  color:#fff;background:var(--red);border-radius:20px;padding:3px 10px;
+}
+.pn-event.next .pn-evt b{font-size:26px}
 </style>
 </head>
 <body>
@@ -3378,12 +3390,32 @@ function pnSpark(id, w, hgt){
 // Le fichier est produit par build-events.js en CI. S'il manque, la section
 // marche quand même : on compose ses affiches à la main.
 let EVENTS = null;
+const EV_MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,sept:9,oct:10,nov:11,dec:12};
+function evISO(d){
+  const t = String(d||'').trim();
+  if(/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+  const m = t.match(/^(\d{4})-([A-Za-z]{3,9})-(\d{1,2})$/);
+  if(m){
+    const mm = EV_MONTHS[m[2].slice(0,3).toLowerCase()];
+    if(mm) return `${m[1]}-${String(mm).padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  }
+  const ms = Date.parse(t);
+  return isNaN(ms) ? '' : new Date(ms).toISOString().slice(0,10);
+}
 async function loadEventsDB(){
   try{
     const r = await fetch('events.json', {cache:'no-cache'});
     if(!r.ok) throw new Error('events.json '+r.status);
     const j = await r.json();
     EVENTS = Array.isArray(j.events) ? j.events : null;
+    // Un events.json produit avant la correction du parseur porte des dates du
+    // type « 2026-Apr-04 » : elles se trient alphabétiquement et se comparent
+    // faux, ce qui faisait passer des soirées déjà jouées pour des cartes à
+    // venir. On remet tout en ISO ici, le reste du site n'a plus à y penser.
+    if(EVENTS){
+      for(const e of EVENTS) e.date = evISO(e.date);
+      EVENTS = EVENTS.filter(e=>e.date).sort((a,b)=>a.date.localeCompare(b.date));
+    }
   }catch(e){
     EVENTS = null;                    // pas de carte annoncée : le composeur suffit
   }
@@ -3516,7 +3548,7 @@ function pnBoutHTML(b, i, opt){
           <em>${b.title?'<i class="pn-belt">ceinture</i>':''}${esc(wcShort(b.wc)||'')}</em>
           <span>${pnPct(1-pa)} · ${q.b.toFixed(2)}</span>
         </div>
-        <div class="pn-when">${b.event && !(opt&&opt.hideEvent) ? esc(b.event)+' · ' : ''}${b.date?pnDateFR(Date.parse(b.date)):''}</div>
+        <div class="pn-when">${b.event && !(opt&&opt.hideEvent) ? esc(b.event)+' · ' : ''}${b.date?pnDateFR(Date.parse(b.date)):''}${b.derived?' · affiche principale (déduite)':''}</div>
       </div>
       <div class="pn-side right${pa<.5?' fav':''}"><div><div class="pn-name">${esc(nameB)}</div><div class="pn-st">${st(fb, slugKey(b.b))}</div></div>${blind?'':pnFace(fb)}</div>
     </div>
@@ -3524,11 +3556,53 @@ function pnBoutHTML(b, i, opt){
   </div>`;
 }
 
+// « UFC 330: Makhachev vs. Machado Garry » dit déjà qui s'affronte. Quand la
+// page Wikipedia n'a pas encore de carte détaillée, le nom de l'événement reste
+// une source fiable pour l'affiche principale — et c'est justement le combat
+// qu'on veut pronostiquer en premier.
+function pnFindFighter(txt){
+  const raw = String(txt||'').replace(/\s*\d+\s*$/, '').trim();   // « Lopes 2 » → « Lopes »
+  if(raw.length < 3) return null;
+  const k = slugKey(raw);
+  const exact = BY_NAME.get(k);
+  if(exact) return exact;
+  // sinon un nom de famille : on garde le mieux classé, c'est lui qui porte
+  // l'affiche (« Makhachev » → Islam, pas Abubakar)
+  let best = null;
+  for(const f of FIGHTERS){
+    if(!isActiveFighter(f)) continue;
+    const fk = slugKey(f.name);
+    if(fk === k || fk.endsWith(k)){
+      if(!best || pnElo(f.key) > pnElo(best.key)) best = f;
+    }
+  }
+  return best;
+}
+function pnMainFromName(name){
+  const after = String(name||'').split(/:\s*/).slice(1).join(': ') || String(name||'');
+  const parts = after.split(/\s+vs\.?\s+/i);
+  if(parts.length !== 2) return null;
+  const a = pnFindFighter(parts[0]), b = pnFindFighter(parts[1]);
+  if(!a || !b || a.key === b.key) return null;
+  return { a: a.name, b: b.name, wc: a.wc || b.wc || '' };
+}
+
 // Les combats des cartes annoncées ne sont PAS stockés : ils vivent dans
 // events.json et deviennent une affiche à toi au moment où tu paries dessus.
 function pnAnnounced(){
   const out = [];
+  const today = new Date().toISOString().slice(0,10);
   for(const ev of EVENTS || []){
+    if(!ev.date || ev.date < today) continue;   // une soirée jouée ne se pronostique plus
+    const seen = new Set((ev.bouts||[]).map(b=>[slugKey(b.a),slugKey(b.b)].sort().join('|')));
+    const main = pnMainFromName(ev.name);
+    if(main && !seen.has([slugKey(main.a),slugKey(main.b)].sort().join('|'))){
+      out.push({
+        id: `${slugKey(main.a)}-${slugKey(main.b)}-${ev.date}`,
+        a: main.a, b: main.b, date: ev.date, rounds: 5, wc: main.wc,
+        event: ev.name, title: false, card: 'main', derived: true,
+      });
+    }
     for(const bt of ev.bouts || []){
       out.push({
         id: `${slugKey(bt.a)}-${slugKey(bt.b)}-${ev.date}`,
@@ -3547,67 +3621,69 @@ const PN_CARD_FR = { main:'Carte principale', prelim:'Préliminaires', early:'Pr
 
 function pnViewCarte(){
   const actives = FIGHTERS.filter(f=>isActiveFighter(f)).map(f=>f.name).sort();
-  // « tes affiches » = celles que tu as composées ; les cartes officielles ont
-  // leur propre bloc, même quand tu as déjà parié dessus
-  const mine = PN.bouts.filter(b=>!b.event).sort((a,b)=>Date.parse(a.date||0)-Date.parse(b.date||0));
-  const events = EVENTS || [];
+  const mine = PN.bouts.filter(b=>!b.event).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  const today = new Date().toISOString().slice(0,10);
+  // seules les cartes à venir : une soirée jouée n'a plus rien à proposer
+  const events = (EVENTS || []).filter(e=>e.date >= today);
   let n = 0;
 
-  const cardBlock = ev => {
+  const cardBlock = (ev, first) => {
     const bouts = pnAnnounced().filter(b=>b.event===ev.name);
     const groups = ['main','prelim','early'].filter(g=>bouts.some(b=>b.card===g));
     const jours = ev.date ? Math.ceil((Date.parse(ev.date) - Date.now())/PN_DAY) : null;
     return `
-    <div class="pn-evt${ev.poster?' with-poster':''}" id="ev-${evSlug(ev.name)}">
-      ${ev.poster?`<img class="pn-poster" src="${esc(ev.poster)}" alt="Affiche ${esc(ev.name)}" loading="lazy" onerror="this.remove()">`:''}
-      <div class="pn-evt-txt">
-        <div class="pn-evt-h">
-          <b>${esc(ev.name)}</b>
-          ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+    <section class="pn-event${first?' next':''}" id="ev-${evSlug(ev.name)}">
+      <header class="pn-evt${ev.poster?' with-poster':''}">
+        ${ev.poster?`<img class="pn-poster" src="${esc(ev.poster)}" alt="Affiche ${esc(ev.name)}" loading="lazy" onerror="this.remove()">`:''}
+        <div class="pn-evt-txt">
+          ${first?'<span class="pn-nextlbl">Prochaine carte</span>':''}
+          <div class="pn-evt-h">
+            <b>${esc(ev.name)}</b>
+            ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+          </div>
+          <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''}${bouts.length?' · '+bouts.length+' combat'+(bouts.length>1?'s':''):''}</span>
         </div>
-        <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''}${bouts.length?' · '+bouts.length+' combats':''}</span>
-      </div>
-    </div>
-    ${bouts.length ? groups.map(g=>`
-      ${groups.length>1?`<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>`:''}
-      ${bouts.filter(b=>b.card===g).map(b=>pnBoutHTML(b, n++, {hideEvent:true})).join('')}`).join('')
-      : `<div class="pn-soon">Carte pas encore annoncée — la date est posée, les combats suivront.
-           Tu peux déjà composer une affiche que tu attends sur cet événement.</div>`}`;
+      </header>
+      ${bouts.length ? groups.map(g=>`
+        ${groups.length>1?`<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>`:''}
+        ${bouts.filter(b=>b.card===g).map(b=>pnBoutHTML(b, n++, {hideEvent:true})).join('')}`).join('')
+        : `<div class="pn-soon">Carte pas encore annoncée — la date est posée, les combats suivront.
+             Tu peux déjà composer une affiche que tu attends sur cet événement.</div>`}
+    </section>`;
   };
 
   return `
   <p class="pn-note">La cote ne vient d'aucun bookmaker : elle sort de l'ELO du site. Tu ne joues pas contre le hasard, tu joues <b>contre le modèle</b> — et le score en haut de page dit lequel de vous deux a raison.</p>
 
-  <div class="pn-tools">
-    <label class="pn-check"><input type="checkbox" id="pnBlindBox" ${pnBlind?'checked':''}> Carte aveugle</label>
-    <span class="pn-hint">Les noms et les visages disparaissent : tu ne pronostiques plus que sur le bilan et l'ELO.</span>
-  </div>
-
-  <div class="pn-sec">À l'affiche ${events.length?`<span>${events.length} carte${events.length>1?'s':''}</span>`:''}</div>
   ${events.length
-    ? events.map(cardBlock).join('')
-    : `<div class="rk-empty pn-noevt"><b>Aucune carte annoncée</b>
+    ? `<div class="pn-sec">À l'affiche <span>${events.length} carte${events.length>1?'s':''} à venir</span></div>`
+      + events.map((ev,i)=>cardBlock(ev, i===0)).join('')
+    : `<div class="pn-sec">À l'affiche</div>
+       <div class="rk-empty pn-noevt"><b>Aucune carte annoncée</b>
         Les prochains combats officiels s'affichent ici dès que <code>events.json</code> existe :
-        lance la tâche <b>events</b> dans les GitHub Actions du dépôt, elle va lire les cartes
-        programmées et les déposer à côté d'index.html.<br><br>
-        En attendant — et pour toute affiche que tu imagines — compose la toi-même juste en dessous.
-        Un pari se règle de la même façon dans les deux cas.</div>`}
+        lance la tâche <b>events</b> dans les GitHub Actions du dépôt.<br><br>
+        En attendant — et pour toute affiche que tu imagines — compose-la toi-même juste en dessous.</div>`}
+
+  ${mine.length ? `<div class="pn-sec">Tes affiches <span>${mine.length}</span></div>`
+    + mine.map(b=>pnBoutHTML(b, n++)).join('') : ''}
 
   <div class="pn-sec">Composer une affiche</div>
+  <p class="pn-hint">N'importe quels deux combattants actifs, même un combat que personne n'a annoncé. Il se règle tout seul le jour où il apparaît dans les résultats officiels.</p>
   <form class="pn-compose" id="pnCompose">
     <input name="a" list="pnNames" placeholder="Combattant A" autocomplete="off" required>
     <span class="pn-vs2">vs</span>
     <input name="b" list="pnNames" placeholder="Combattant B" autocomplete="off" required>
-    <input name="date" type="date" value="${pnNextSat()}" min="${new Date().toISOString().slice(0,10)}" required>
+    <input name="date" type="date" value="${pnNextSat()}" min="${today}" required>
     <select name="rounds"><option value="3">3 rounds</option><option value="5">5 rounds</option></select>
     <button class="pn-btn" type="submit">Ajouter</button>
     <span class="pn-cerr"></span>
   </form>
-  <datalist id="pnNames">${actives.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
-  <p class="pn-hint">N'importe quels deux combattants actifs, même un combat que personne n'a annoncé. Le pari se règle tout seul le jour où il apparaît dans les résultats officiels.</p>
+  <datalist id="pnNames">${actives.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>
 
-  ${mine.length ? `<div class="pn-sec">Tes affiches <span>${mine.length}</span></div>`
-    + mine.map(b=>pnBoutHTML(b, n++)).join('') : ''}
+  <div class="pn-tools">
+    <label class="pn-check"><input type="checkbox" id="pnBlindBox" ${pnBlind?'checked':''}> Carte aveugle</label>
+    <span class="pn-hint">Les noms et les visages disparaissent : tu ne pronostiques plus que sur le bilan et l'ELO.</span>
+  </div>
 
   ${(mine.length || PN.tickets.some(t=>!t.settled)) ? `<div class="pn-share"><button class="pn-btn ghost" id="pnShare">Défier un pote</button>
      <span class="pn-hint">Ton ticket est encodé dans un lien. Ton pote l'ouvre, voit tes pronostics, fait les siens — sans compte et sans serveur.</span></div>` : ''}
