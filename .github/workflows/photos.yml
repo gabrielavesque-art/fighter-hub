@@ -1,6 +1,12 @@
 name: Données Fighter Hub
 
 on:
+  # Les cartes UFC s'annoncent en continu : deux passages par jour suffisent à
+  # ce que le site suive sans qu'on y pense. Les autres tâches restent
+  # manuelles — elles sont longues et n'ont pas besoin d'être régulières.
+  schedule:
+    - cron: '17 5 * * *'
+    - cron: '17 17 * * *'
   workflow_dispatch:
     inputs:
       tache:
@@ -29,6 +35,10 @@ on:
 permissions:
   contents: write
 
+# un déclenchement planifié ne fournit aucune entrée : on retombe sur « events »
+env:
+  TACHE: ${{ inputs.tache || 'events' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -44,7 +54,7 @@ jobs:
 
       - name: Générer
         run: |
-          case "${{ inputs.tache }}" in
+          case "$TACHE" in
             elo)            node build-elo.js ;;
             stats)          node build-stats.js ;;
             photos-test)    node resolve-photos.js --test ;;
@@ -66,13 +76,13 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
       - name: Committer le résultat
-        if: inputs.tache != 'photos-test' && inputs.tache != 'descriptions-test' && inputs.tache != 'videos-test' && inputs.tache != 'events-selftest' && inputs.tache != 'events-dump'
+        if: ${{ !contains(fromJSON('["photos-test","descriptions-test","videos-test","events-selftest","events-dump"]'), env.TACHE) }}
         run: |
           if [ -n "$(git status --porcelain '*.json')" ]; then
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add photos.json stats.json elo.json descriptions.json videos.json events.json 2>/dev/null || true
-            git commit -m "Mise à jour des données (${{ inputs.tache }})"
+            git commit -m "Mise à jour des données ($TACHE)"
             git push
           else
             echo "Aucun fichier modifié."
