@@ -1083,6 +1083,27 @@ footer a:hover{color:var(--tx-2)}
   background:var(--bg-2);border:1px dashed var(--line-2);border-radius:11px;
   padding:16px 18px;font-size:13px;line-height:1.6;color:var(--tx-3);margin-bottom:12px;
 }
+/* combat déjà disputé : on montre le résultat, on ne propose pas de parier */
+.pn-done{
+  padding:11px 16px;border-top:1px solid var(--line);
+  display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  font-size:13px;color:var(--tx-2);background:rgba(255,255,255,.02);
+}
+.pn-done b{
+  font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:13px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--tx-3);
+}
+.pn-done span{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3)}
+.pn-done em{flex-basis:100%;font-style:normal;font-size:12px;color:var(--tx-3)}
+.pn-cerr{flex-basis:100%;font-size:12.5px;color:var(--red-lt);min-height:1px}
+/* l'affiche officielle à côté du titre : elle donne le ton de la soirée */
+.pn-evt.with-poster{display:flex;align-items:flex-start;gap:16px}
+.pn-poster{
+  width:88px;flex-shrink:0;border-radius:8px;border:1px solid var(--line-2);
+  box-shadow:0 6px 18px rgba(0,0,0,.4);
+}
+.pn-evt-txt{min-width:0}
+@media(max-width:560px){ .pn-poster{width:64px} }
 </style>
 </head>
 <body>
@@ -3236,7 +3257,17 @@ function pnBoutHTML(b, i, opt){
   const st = (f, k) => f ? `${f.w}–${f.l}${f.d?'–'+f.d:''} · ELO ${pnElo(k)}` : 'inconnu';
 
   let foot;
-  if(t && t.settled){
+  // Un pronostic se pose AVANT le combat. Si la base connaît déjà le résultat,
+  // le formulaire disparaît : parier sur du connu n'est pas un pronostic, et le
+  // règlement automatique le créditerait dans la seconde.
+  if(res && !t){
+    foot = `<div class="pn-done">
+      <b>Déjà disputé</b>
+      ${res.winner ? esc(res.winner)+' · '+pnMethLabel(res.method)+(res.round?' R'+res.round:'') : esc(res.label||'sans vainqueur')}
+      ${res.event ? `<span>${esc(res.event)}</span>` : ''}
+      <em>Trop tard pour le pronostiquer — le résultat est dans la base.</em>
+    </div>`;
+  } else if(t && t.settled){
     const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
     foot = `<div class="pn-settled ${cls}${pnFresh.has(t.boutId)?' just':''}">
       <b>${t.settled.ok===null?'Annulé' : t.settled.ok?'Gagné':'Perdu'}</b>
@@ -3318,12 +3349,15 @@ function pnViewCarte(){
     const groups = ['main','prelim','early'].filter(g=>bouts.some(b=>b.card===g));
     const jours = ev.date ? Math.ceil((Date.parse(ev.date) - Date.now())/PN_DAY) : null;
     return `
-    <div class="pn-evt">
-      <div class="pn-evt-h">
-        <b>${esc(ev.name)}</b>
-        ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+    <div class="pn-evt${ev.poster?' with-poster':''}">
+      ${ev.poster?`<img class="pn-poster" src="${esc(ev.poster)}" alt="Affiche ${esc(ev.name)}" loading="lazy" onerror="this.remove()">`:''}
+      <div class="pn-evt-txt">
+        <div class="pn-evt-h">
+          <b>${esc(ev.name)}</b>
+          ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+        </div>
+        <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''}${bouts.length?' · '+bouts.length+' combats':''}</span>
       </div>
-      <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''}${bouts.length?' · '+bouts.length+' combats':''}</span>
     </div>
     ${bouts.length ? groups.map(g=>`
       ${groups.length>1?`<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>`:''}
@@ -3355,9 +3389,10 @@ function pnViewCarte(){
     <input name="a" list="pnNames" placeholder="Combattant A" autocomplete="off" required>
     <span class="pn-vs2">vs</span>
     <input name="b" list="pnNames" placeholder="Combattant B" autocomplete="off" required>
-    <input name="date" type="date" value="${pnNextSat()}" required>
+    <input name="date" type="date" value="${pnNextSat()}" min="${new Date().toISOString().slice(0,10)}" required>
     <select name="rounds"><option value="3">3 rounds</option><option value="5">5 rounds</option></select>
     <button class="pn-btn" type="submit">Ajouter</button>
+    <span class="pn-cerr"></span>
   </form>
   <datalist id="pnNames">${actives.map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
   <p class="pn-hint">N'importe quels deux combattants actifs, même un combat que personne n'a annoncé. Le pari se règle tout seul le jour où il apparaît dans les résultats officiels.</p>
@@ -3649,6 +3684,9 @@ function pnWire(view){
       const d = new FormData(form);
       const win = d.get('win');
       if(!win) return;
+      // dernier verrou : le résultat a pu tomber pendant que le formulaire
+      // était ouvert (règlement au rendu précédent, onglet resté ouvert la nuit)
+      if(pnResult(bout)){ out.textContent = 'Ce combat a déjà eu lieu.'; return; }
       const stake = Math.round(Math.max(1, +d.get('stake')||0));
       if(stake > PN.bank){ out.textContent = 'Pas assez de crédits.'; return; }
       const pick = { win, method:d.get('method')||'', round:+d.get('round')||0 };
@@ -3679,13 +3717,27 @@ function pnWire(view){
 
   // composer une affiche
   const comp = view.querySelector('#pnCompose');
+  // le navigateur refuse une date antérieure à min= AVANT d'émettre submit :
+  // sans ce relais, le formulaire se bloque en silence côté message
+  if(comp) comp.querySelectorAll('input,select').forEach(el=>el.addEventListener('invalid', ()=>{
+    const m = comp.querySelector('.pn-cerr');
+    if(m) m.textContent = el.name==='date'
+      ? 'Choisis une date à venir — un pronostic se pose avant le combat.'
+      : 'Remplis les deux combattants.';
+    comp.classList.add('err');
+  }));
   if(comp) comp.addEventListener('submit', e=>{
     e.preventDefault();
     const d = new FormData(comp);
     const a = BY_NAME.get(slugKey(d.get('a'))), b = BY_NAME.get(slugKey(d.get('b')));
-    if(!a || !b || a.key===b.key){ comp.classList.add('err'); return; }
-    comp.classList.remove('err');
     const date = d.get('date');
+    const msg = comp.querySelector('.pn-cerr');
+    const refuse = why => { comp.classList.add('err'); if(msg) msg.textContent = why; };
+    if(!a || !b || a.key===b.key) return refuse('Choisis deux combattants différents, tels qu\'ils apparaissent dans la base.');
+    // une affiche datée dans le passé serait déjà jouée : on pronostique l'avenir
+    if(date < new Date().toISOString().slice(0,10)) return refuse('Choisis une date à venir — un pronostic se pose avant le combat.');
+    comp.classList.remove('err');
+    if(msg) msg.textContent = '';
     const id = `${a.key}-${b.key}-${date}`;
     if(!PN.bouts.some(x=>x.id===id)){
       PN.bouts.push({ id, a:a.name, b:b.name, date, rounds:+d.get('rounds')||3, wc:a.wc||b.wc||'', event:'', title:false });
