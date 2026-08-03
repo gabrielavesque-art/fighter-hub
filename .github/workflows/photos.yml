@@ -22,6 +22,8 @@ on:
           - videos-test
           - videos
           - videos-rebuild
+          - events-selftest
+          - events
 
 permissions:
   contents: write
@@ -55,17 +57,19 @@ jobs:
             videos-test)    node build-videos.js --test ;;
             videos)         node build-videos.js ;;
             videos-rebuild) node build-videos.js --force ;;
+            events-selftest) node build-events.js --selftest ;;
+            events)         node build-events.js ;;
           esac
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
       - name: Committer le résultat
-        if: inputs.tache != 'photos-test' && inputs.tache != 'descriptions-test' && inputs.tache != 'videos-test'
+        if: inputs.tache != 'photos-test' && inputs.tache != 'descriptions-test' && inputs.tache != 'videos-test' && inputs.tache != 'events-selftest'
         run: |
           if [ -n "$(git status --porcelain '*.json')" ]; then
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add photos.json stats.json elo.json descriptions.json videos.json 2>/dev/null || true
+            git add photos.json stats.json elo.json descriptions.json videos.json events.json 2>/dev/null || true
             git commit -m "Mise à jour des données (${{ inputs.tache }})"
             git push
           else
