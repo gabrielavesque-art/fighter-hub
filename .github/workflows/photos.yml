@@ -74,6 +74,8 @@ jobs:
           esac
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          # source secondaire des cartes, quand Wikipedia n'a rien publié
+          MMA_API_KEY: ${{ secrets.MMA_API_KEY }}
 
       - name: Committer le résultat
         if: ${{ !contains(fromJSON('["photos-test","descriptions-test","videos-test","events-selftest","events-dump"]'), env.TACHE) }}
