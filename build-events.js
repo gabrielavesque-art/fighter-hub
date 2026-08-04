@@ -7,15 +7,20 @@
    à la main (ce qui reste possible, et le site fonctionne sans
    events.json : il est purement optionnel).
 
-   Source : Wikipedia anglais, en wikitext (action=parse&prop=wikitext)
-   plutôt qu'en HTML. Le wikitext bouge beaucoup moins que le rendu,
-   et c'est déjà la source de build-descriptions.js.
+   Deux sources, dans cet ordre :
 
-     1. « List of UFC events » → tableau des événements programmés
-        (nom, date, salle, ville).
-     2. la page de chaque événement → les combats annoncés, lus dans
-        les deux formes qu'on rencontre : la liste à puces
-        « Announced bouts » et le tableau de carte.
+     1. Wikipedia anglais, en wikitext (action=parse&prop=wikitext)
+        plutôt qu'en HTML : le wikitext bouge beaucoup moins que le
+        rendu, et c'est déjà la source de build-descriptions.js.
+          · « List of UFC events » → les soirées programmées
+            (nom, date, salle, ville) ;
+          · la page de chaque soirée → les combats annoncés, lus dans
+            les deux formes rencontrées : la liste à puces
+            « Announced bouts » et le tableau de carte.
+     2. l'API MMA (v1.mma.api-sports.io), quand Wikipedia n'a pas encore
+        publié la carte. Elle rend du JSON, donc bien plus stable qu'un
+        scraping de page. Demande le secret MMA_API_KEY ; sans clé, le
+        script s'en passe et se contente de la première source.
 
    Règle d'or, comme ailleurs dans le projet : mieux vaut pas de
    fichier qu'un mauvais fichier. Si la lecture ne donne rien, on
@@ -29,11 +34,14 @@
      node build-events.js --selftest   → teste les parseurs sur des
                                          fixtures, SANS réseau. À lancer
                                          avant tout changement de regex.
-     node build-events.js --test       → lit Wikipedia, affiche, n'écrit rien
+     node build-events.js --test       → lit les sources, affiche, n'écrit rien
+     node build-events.js --dump       → --test + le wikitext brut d'une page
+                                         et la réponse API : de quoi corriger
+                                         un parseur en une seule exécution
      node build-events.js              → écrit events.json
 
    Produit : events.json  (à committer à côté d'index.html)
-   Aucune dépendance, aucune clé API. Node 18+.
+   Aucune dépendance. Node 18+. La clé API est optionnelle.
    ═══════════════════════════════════════════════════════════════ */
 
 const fs = require('fs');
@@ -50,6 +58,11 @@ const TEST     = process.argv.includes('--test');
 // rend zéro, --dump recrache ce que le script a réellement vu. Une exécution en
 // CI suffit alors à comprendre, au lieu de deviner.
 const DUMP     = process.argv.includes('--dump');
+// Deuxième source, quand Wikipedia n'a pas encore publié la carte : l'API MMA
+// (celle que api/fighters.js interroge déjà). Structurée, donc bien plus stable
+// qu'un scraping de page. Sans clé, on s'en passe simplement.
+const API_KEY  = process.env.MMA_API_KEY || '';
+const API_HOST = 'v1.mma.api-sports.io';
 const MAX_EVENTS = 24;       // tout ce que Wikipedia annonce, jusqu'au plus lointain
 const MIN_GAP_MS = 700;      // l'IP des runners GitHub est partagée : on espace
 
@@ -280,6 +293,45 @@ function parseBouts(wt){
   return out;
 }
 
+/* ─────────────── source 2 : l'API MMA ─────────────── */
+async function apiFights(dateISO){
+  if(!API_KEY) return null;
+  const wait = MIN_GAP_MS - (Date.now() - lastCall);
+  if(wait > 0) await sleep(wait);
+  lastCall = Date.now();
+  const r = await fetch(`https://${API_HOST}/fights?date=${dateISO}`, {
+    headers: { 'x-apisports-key': API_KEY, 'Accept': 'application/json' },
+  });
+  if(!r.ok) throw new Error(`API ${r.status}`);
+  return r.json();
+}
+// L'API a changé de forme plusieurs fois selon les versions : on lit
+// défensivement plutôt que de supposer un seul schéma.
+function apiBouts(json){
+  const list = Array.isArray(json?.response) ? json.response
+             : Array.isArray(json?.results)  ? json.results
+             : Array.isArray(json)           ? json : [];
+  const out = [];
+  for(const f of list){
+    const pair = f.fighters || f.teams || f.competitors || {};
+    const nm = x => typeof x === 'string' ? x
+              : x?.name || [x?.first_name, x?.last_name].filter(Boolean).join(' ') || '';
+    let a = nm(pair.first || pair.home || pair[0] || f.fighter_1);
+    let b = nm(pair.second || pair.away || pair[1] || f.fighter_2);
+    if((!a || !b) && typeof f.slug === 'string' && /-vs-/.test(f.slug)){
+      const p = f.slug.split('-vs-').map(x=>x.replace(/-/g,' ').trim());
+      a = a || p[0]; b = b || p[1];
+    }
+    a = cleanName(a); b = cleanName(b);
+    if(!a || !b) continue;
+    const cat = String(f.category || f.weight_class || f.division || '');
+    const main = !!(f.is_main || f.main_event || /main/i.test(String(f.card||'')));
+    const title = /title|championship/i.test(cat + ' ' + String(f.type||''));
+    out.push({ a, b, wc: divOf(cat), title, rounds: title || main ? 5 : 3, card: main ? 'main' : 'prelim' });
+  }
+  return out;
+}
+
 /* ─────────────── selftest : les parseurs, sans réseau ─────────────── */
 const FIXTURES = {
   // forme réelle de « List of UFC events » : le nom est une cellule d'en-tête
@@ -411,8 +463,17 @@ function mergeManual(events){
       if(cible){
         const page = await wikitext(cible.name);
         console.log(`\n──── wikitext de « ${cible.name} » (${page.length} car.) ────`);
-        const i = page.search(/==+\s*(Fight card|Bouts|Announced)/i);
-        console.log(page.slice(i > -1 ? i : 0, (i > -1 ? i : 0) + 2600));
+        const i = page.search(/==+\s*(Fight card|Bouts|Announced|Background)/i);
+        console.log(page.slice(i > -1 ? i : 0, (i > -1 ? i : 0) + 3200));
+        if(API_KEY){
+          try{
+            const j = await apiFights(cible.date);
+            console.log(`\n──── réponse API pour le ${cible.date} ────`);
+            console.log(JSON.stringify(j).slice(0, 2500));
+          }catch(e){ console.log('API :', e.message); }
+        } else {
+          console.log('\n(pas de MMA_API_KEY : la seconde source est désactivée)');
+        }
       }
     }
     events = events.slice(0, MAX_EVENTS);
@@ -425,12 +486,25 @@ function mergeManual(events){
       const wt = await wikitext(ev.name);
       ev.bouts = parseBouts(wt);
       ev.posterFile = posterFile(wt);
+      ev.src = ev.bouts.length ? 'wikipedia' : '';
       console.log(`  ${ev.date}  ${ev.name} — ${ev.bouts.length} affiche(s)`);
       if(DUMP && !ev.bouts.length) console.log('    (page lue, aucun « vs. » reconnu)');
     }catch(e){
       // page pas encore créée : l'événement existe quand même, sa carte viendra
       ev.bouts = [];
-      console.warn(`  ${ev.date}  ${ev.name} — carte pas encore publiée (${e.message})`);
+      console.warn(`  ${ev.date}  ${ev.name} — page Wikipedia absente (${e.message})`);
+    }
+    // Wikipedia muette : on tente l'API sur la date de la soirée
+    if(!ev.bouts.length && API_KEY){
+      try{
+        const json = await apiFights(ev.date);
+        const bouts = apiBouts(json);
+        if(bouts.length){ ev.bouts = bouts; ev.src = 'api'; }
+        console.log(`  ${ev.date}  ${ev.name} — API : ${bouts.length} affiche(s)`);
+        if(DUMP && !bouts.length) console.log('    réponse brute :', JSON.stringify(json).slice(0, 900));
+      }catch(e2){
+        console.warn(`  ${ev.date}  ${ev.name} — API indisponible (${e2.message})`);
+      }
     }
   }
   // les affiches en un seul appel groupé, une fois toutes les pages lues
