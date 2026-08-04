@@ -1,5 +1,5 @@
 {
- "built": "2026-08-03T18:58:37.094Z",
+ "built": "2026-08-04T07:57:02.590Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -7,7 +7,7 @@
    "date": "2026-08-08",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [],
-   "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg"
+   "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
    "name": "UFC 330: Makhachev vs. Machado Garry",
@@ -176,7 +176,7 @@
      "card": "main"
     },
     {
-     "a": "Ozzy Diaz",
+     "a": "Osman Diaz",
      "b": "Ryan Gandra",
      "wc": "Middleweight",
      "title": true,
