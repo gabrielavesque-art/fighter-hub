@@ -1,5 +1,5 @@
 {
- "built": "2026-08-04T07:57:02.590Z",
+ "built": "2026-08-04T18:55:30.183Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -7,6 +7,7 @@
    "date": "2026-08-08",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [],
+   "src": "",
    "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
@@ -44,7 +45,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night: Nurmagomedov vs. Song",
@@ -67,7 +69,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night: Hooker vs. Parnasse",
@@ -138,10 +141,11 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night: Rodriguez vs. Silva",
+   "name": "UFC Fight Night : Rodriguez vs Silva",
    "date": "2026-09-12",
    "location": "Desert Diamond Arena, Glendale, Arizona, U.S.",
    "bouts": []
@@ -223,7 +227,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night 289",
@@ -246,7 +251,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC 332",
@@ -261,7 +267,8 @@
      "rounds": 3,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night 290",
@@ -276,7 +283,8 @@
      "rounds": 3,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night: Buckley vs. Malott",
@@ -299,7 +307,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC 333",
@@ -314,7 +323,8 @@
      "rounds": 5,
      "card": "main"
     }
-   ]
+   ],
+   "src": "wikipedia"
   }
  ]
 }
