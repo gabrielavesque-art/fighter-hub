@@ -1,6 +1,6 @@
 const https = require('https');
 
-const API_KEY = '26dff9119c2af08e07683df2fb88a94f';
+const API_KEY = '631bed3b0972a02b56f48d8506ebd267';
 const API_HOST = 'v1.mma.api-sports.io';
 
 module.exports = async (req, res) => {
