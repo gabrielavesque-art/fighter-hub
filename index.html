@@ -1294,6 +1294,51 @@ footer a:hover{color:var(--tx-2)}
   .pn-search{min-width:100%}
   .pn-axis{grid-template-columns:1fr 70px 1fr}
 }
+/* ══ PRONOS — retouches de couleur et de lecture ══ */
+/* L'or servait à tout : les crédits, les cotes, les gains. Résultat, plus rien
+   ne ressortait. Un gain est vert, une valeur neutre reste blanche. */
+.pn-kpi b{color:var(--tx)}
+.pn-quote b{color:var(--tx)}
+.pn-quote b:last-child{color:#3fd183}
+.pn-pprice b{color:var(--tx)}
+.pn-ticket span{color:#3fd183}
+.pn-pline i{background:linear-gradient(90deg,rgba(224,26,43,.55),var(--red-lt))}
+.pn-cmpr .win{color:#3fd183}
+.pn-rate i{color:#e9c877}
+
+/* les deux boutons d'analyse doivent se voir : ils sont l'intérêt de la fiche */
+.pn-btn.cmp{
+  background:rgba(255,255,255,.05);border-color:var(--line-2);color:var(--tx);
+  font-weight:600;letter-spacing:.2px;
+}
+.pn-btn.cmp:hover{background:rgba(255,255,255,.09);border-color:var(--red);color:#fff;box-shadow:none}
+
+/* retour au calendrier : un vrai bouton, pas un lien perdu */
+.pn-back{
+  background:var(--bg-2);border:1px solid var(--line-2);border-radius:8px;
+  color:var(--tx-2);font-size:13px;font-weight:600;padding:8px 14px;margin-bottom:14px;cursor:pointer;
+  transition:all .15s;
+}
+.pn-back:hover{border-color:var(--red);color:var(--red-lt);transform:translateX(-2px)}
+
+/* vignette « deux visages » quand aucune affiche officielle n'existe */
+.pn-duo,.ev-slide .pn-duo{position:absolute;inset:0;display:flex}
+.pn-duo-f{position:relative;flex:1;overflow:hidden;background:linear-gradient(160deg,#1C1C24,#0F0F14)}
+.pn-duo-f img{width:100%;height:100%;object-fit:cover;object-position:center 15%}
+.pn-duo-f.l img{filter:saturate(.9) contrast(1.05)}
+.pn-duo-f.r img{filter:saturate(.9) contrast(1.05)}
+.pn-duo-f.l::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(224,26,43,.28),transparent 70%)}
+.pn-duo-f.r::after{content:'';position:absolute;inset:0;background:linear-gradient(270deg,rgba(63,111,216,.28),transparent 70%)}
+.pn-ethumb{position:relative}
+
+/* glissement horizontal : on masque le curseur texte pendant le drag */
+.chips.dragging,.rk-divs.dragging,.pn-fchips.dragging,#heroEvents.dragging{cursor:grabbing;user-select:none}
+.chips,.rk-divs,.pn-fchips{cursor:grab}
+.pn-fchips{overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.pn-fchips::-webkit-scrollbar{display:none}
+
+/* la carte des événements respire un peu plus à gauche du bord */
+.hero-side{margin-right:clamp(0px,3.5vw,54px)}
 </style>
 </head>
 <body>
@@ -1455,7 +1500,7 @@ footer a:hover{color:var(--tx-2)}
 
 <div class="pn-page" id="pnPage">
   <div class="pn-body">
-    <h2 class="pg-title">Salle des <i>paris</i></h2>
+    <h2 class="pg-title">Les cartes <i>et tes paris</i></h2>
     <p class="pn-lead">Des crédits fictifs, aucune inscription, rien qui sorte de ton navigateur. Ce qui change, c'est la cote : elle ne vient d'aucun bookmaker, elle est <b>calculée depuis l'ELO du site</b>. Tu ne joues donc pas contre la maison, tu joues <em>contre notre modèle</em> — et on garde le score.</p>
     <div id="pnBank"></div>
     <div class="pn-tabs" id="pnTabs">
@@ -2741,7 +2786,7 @@ function closeEloPage(){
 const NAV = [
   { id:'home', label:'Combattants', hash:'',     title:"Tous les combattants de l'UFC" },
   { id:'p4p',  label:'P4P',         hash:'#p4p', title:'Classement pound-for-pound et par division' },
-  { id:'pronos', label:'Pronos',    hash:'#pronos', title:'Pronostics : la carte du week-end et le marché des convictions' },
+  { id:'pronos', label:'Cartes',    hash:'#pronos', title:'Toutes les cartes UFC, et tes pronostics' },
 ];
 function buildNav(){
   document.getElementById('nav').innerHTML = NAV.map(n=>
@@ -2892,6 +2937,7 @@ function renderRank(){
 
 function buildRankDivs(){
   const el = document.getElementById('rkDivs');
+  dragScroll(el);
   el.innerHTML = `<button class="chip on" data-wc="">P4P · toutes divisions</button>` +
     WCS.map(c=>`<button class="chip" data-wc="${c}">${c.replace("Women's","F.")}</button>`).join('');
   el.querySelectorAll('.chip').forEach(b=>{
@@ -3041,9 +3087,8 @@ function renderHeroEvents(){
       <div class="ev-stage">
         <span class="ev-tag">Prochains événements</span>
         ${list.map((e,i)=>`<div class="ev-slide${i===0?' on':''}">${
-          e.poster ? `<img src="${esc(e.poster)}" alt="Affiche ${esc(e.name)}" loading="lazy"
-                        onerror="this.parentNode.innerHTML='<div class=\'ev-noimg\'>'+this.alt.replace('Affiche ','')+'</div>'">`
-                   : `<div class="ev-noimg">${esc(e.name)}</div>`}</div>`).join('')}
+          e.poster ? `<img src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`
+                   : (pnDuoHTML((pnEvByName(e.name)||{}).bouts) || `<div class="ev-noimg">${esc(e.name)}</div>`)}</div>`).join('')}
         <div class="ev-shade"></div>
         <div class="ev-body">
           <div class="ev-name" id="evName"></div>
@@ -3079,6 +3124,7 @@ function renderHeroEvents(){
   box.addEventListener('mouseenter', ()=>evAuto(false));
   box.addEventListener('mouseleave', ()=>evAuto(true));
 
+  dragScroll(box, { swipe: dir => { evShow(evIdx + dir); evAuto(true); } });
   evShow(0);
   clearInterval(evTick);
   evTick = setInterval(evPaintClock, 1000);   // une seule horloge, pour la carte visible
@@ -3640,7 +3686,7 @@ function pnBoutHTML(b, i, opt){
       <button class="pn-btn" type="submit">Parier</button>
     </form>
     <div class="pn-actions">
-      <button class="pn-btn sm ghost" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer la comparaison':'Comparer les deux'}</button>
+      <button class="pn-btn sm cmp" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer':'&#9878; Comparer'}</button>
     </div>
     ${pnOpenPanel==='cmp:'+b.id ? pnComparHTML(b) : ''}`;
   }
@@ -3966,13 +4012,30 @@ function pnYears(){
   return [...set].sort((a,b)=>b.localeCompare(a));
 }
 
+// Une soirée sans affiche officielle n'est pas obligée d'être un rectangle vide :
+// les deux visages du combat vedette sont déjà dans photos.json.
+function pnDuoHTML(bouts){
+  const b = bouts && bouts[0];
+  if(!b) return '';
+  const pa = photoFor(photoCache.get(slugKey(b.a))), pb = photoFor(photoCache.get(slugKey(b.b)));
+  if(!pa && !pb) return '';
+  const face = (p, side) => p
+    ? `<span class="pn-duo-f ${side}"><img src="${esc(p.src)}" alt="" loading="lazy" onerror="this.remove()"></span>`
+    : `<span class="pn-duo-f ${side}"></span>`;
+  return `<div class="pn-duo">${face(pa,'l')}${face(pb,'r')}</div>`;
+}
+function pnEvThumbHTML(e){
+  if(e.poster) return `<img src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`;
+  const duo = pnDuoHTML(e.bouts);
+  return duo || `<div class="pn-ethumb-txt">${esc(e.name.replace(/^UFC\s*/,'').slice(0,28))}</div>`;
+}
+
 function pnEvCardHTML(e, i){
   const n = e.bouts.length;
   const jours = e.upcoming ? Math.ceil((e.date - Date.now())/PN_DAY) : 0;
   return `<button class="pn-ecard${e.upcoming?' up':''}" data-open="${esc(e.name)}" style="--i:${i}">
     <div class="pn-ethumb">
-      ${e.poster ? `<img src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`
-                 : `<div class="pn-ethumb-txt">${esc(e.name.replace(/^UFC\s*/,'').slice(0,28))}</div>`}
+      ${pnEvThumbHTML(e)}
       ${e.upcoming ? `<span class="pn-ebadge">${jours<=0?'ce soir':jours===1?'demain':'J−'+jours}</span>` : ''}
       <span class="pn-estar${pnFav(e.name)?' on':''}" data-fav="${esc(e.name)}" role="button" title="Mettre en favori">${pnFav(e.name)?'★':'☆'}</span>
     </div>
@@ -4012,7 +4075,7 @@ function pnEvDetailHTML(e){
     ? ['main','prelim','early'].filter(g=>e.bouts.some(b=>(b.card||'main')===g))
     : [null];
   return `
-  <button class="pn-back" id="pnBack">← Toutes les soirées</button>
+  <button class="pn-back" id="pnBack">&#8592; Retour au calendrier</button>
   <header class="pn-evt${e.poster?' with-poster':''}">
     ${e.poster?`<img class="pn-poster" src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`:''}
     <div class="pn-evt-txt">
@@ -4058,8 +4121,8 @@ function pnPastBoutHTML(ev, b, i){
         ${[1,2,3,4,5].map(k=>`<button class="pn-starb${note>=k?' on':''}" data-star="${k}" aria-label="${k} sur 5">${note>=k?'★':'☆'}</button>`).join('')}
         ${note?`<i>${note}/5</i>`:''}
       </span>
-      <button class="pn-btn sm ghost" data-fs="${esc(b.id)}">${pnOpenPanel==='fs:'+b.id?'Masquer les stats':'Stats du combat'}</button>
-      <button class="pn-btn sm ghost" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer':'Comparer'}</button>
+      <button class="pn-btn sm cmp" data-fs="${esc(b.id)}">${pnOpenPanel==='fs:'+b.id?'Masquer les stats':'Stats du combat'}</button>
+      <button class="pn-btn sm cmp" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer':'&#9878; Comparer'}</button>
     </div>
     ${pnOpenPanel==='cmp:'+b.id ? pnComparHTML(b) : ''}
     ${pnOpenPanel==='fs:'+b.id  ? pnFightStatsHTML(ev, b) : ''}
@@ -4437,6 +4500,7 @@ function pnWire(view){
   view.querySelectorAll('[data-fav]').forEach(b=>b.addEventListener('click', e=>{
     e.stopPropagation(); pnToggleFav(b.dataset.fav); pnRender();
   }));
+  dragScroll(view.querySelector('.pn-fchips'));
   view.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click', ()=>{
     pnFilter = b.dataset.filter; pnRender();
   }));
@@ -4591,7 +4655,12 @@ function pnTabFromHash(h){
 // les onglets vivent hors de #pnView : ils survivent aux re-rendus, donc on les
 // branche une seule fois, pas dans pnWire()
 document.getElementById('pnTabs').querySelectorAll('.pn-tab')
-  .forEach(b=>b.addEventListener('click', ()=>openPronos(b.dataset.tab)));
+  .forEach(b=>b.addEventListener('click', ()=>{
+    // recliquer l'onglet déjà actif referme la soirée ouverte : c'est le geste
+    // naturel pour « revenir à la liste »
+    if(b.dataset.tab === 'carte' && pnTab === 'carte'){ pnOpenEv = null; pnOpenPanel = null; }
+    openPronos(b.dataset.tab);
+  }));
 
 // Le catalogue et les champions dépendent des combats : tout est recalculé une
 // fois les données chargées, jamais avant (sinon on fige un marché vide).
@@ -4606,9 +4675,41 @@ function pnBoot(){
   if(pnPage.classList.contains('on') || pnDuel) openPronos(pnDuel ? 'carte' : pnTab);
 }
 
+/* Défilement horizontal à la souris : les barres de chips et le carrousel se
+   font glisser comme sur mobile. On ne bloque le clic que si le doigt a
+   vraiment traîné, sinon on casserait la sélection d'une division. */
+function dragScroll(el, opts){
+  if(!el || el.dataset.drag) return;
+  el.dataset.drag = '1';
+  let down = false, x0 = 0, left0 = 0, moved = 0;
+  el.addEventListener('pointerdown', e=>{
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    down = true; moved = 0; x0 = e.clientX; left0 = el.scrollLeft;
+    el.classList.add('dragging');
+  });
+  el.addEventListener('pointermove', e=>{
+    if(!down) return;
+    const d = e.clientX - x0;
+    if(Math.abs(d) > 3){ moved = Math.max(moved, Math.abs(d)); el.scrollLeft = left0 - d; }
+  });
+  const end = ()=>{ down = false; el.classList.remove('dragging'); };
+  el.addEventListener('pointerup', end);
+  el.addEventListener('pointerleave', end);
+  el.addEventListener('pointercancel', end);
+  el.addEventListener('click', e=>{ if(moved > 6){ e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
+  if(opts && opts.swipe){
+    // sur le carrousel, un glissement franc change de diapositive
+    el.addEventListener('pointerup', e=>{
+      const d = e.clientX - x0;
+      if(Math.abs(d) > 45) opts.swipe(d < 0 ? 1 : -1);
+    });
+  }
+}
+
 /* ═══════════ CHIPS ═══════════ */
 function buildChips(){
   const el = document.getElementById('chips');
+  dragScroll(el);
   el.innerHTML = `<button class="chip on" data-wc="">Toutes divisions</button>` +
     WCS.map(c=>`<button class="chip" data-wc="${c}">${c.replace("Women's","F.")}</button>`).join('') +
     // sans ELO ils tomberaient en derniere page du tri par defaut : un filtre les rend trouvables
