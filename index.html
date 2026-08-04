@@ -1187,6 +1187,113 @@ footer a:hover{color:var(--tx-2)}
   color:#fff;background:var(--red);border-radius:20px;padding:3px 10px;
 }
 .pn-event.next .pn-evt b{font-size:26px}
+/* ══ PRONOS — le calendrier ══ */
+.pn-nextcard{
+  display:flex;gap:16px;align-items:center;width:100%;text-align:left;cursor:pointer;
+  background:linear-gradient(100deg,rgba(224,26,43,.10),var(--bg-2) 55%);
+  border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;margin:18px 0 6px;color:inherit;
+  transition:transform .2s var(--ease),box-shadow .2s,border-color .2s;
+}
+.pn-nextcard:hover{transform:translateY(-2px);border-color:var(--red);box-shadow:0 12px 30px rgba(0,0,0,.4)}
+.pn-nextcard img{width:74px;border-radius:8px;flex-shrink:0}
+.pn-nextlbl2{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.6px;
+  text-transform:uppercase;color:var(--red-lt);margin-bottom:5px}
+.pn-nextcard b{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:23px;
+  line-height:1.05;text-transform:uppercase;color:var(--tx)}
+.pn-nextcard em{display:block;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3);font-style:normal}
+.pn-nextcard i{display:block;margin-top:7px;font-size:12.5px;font-style:normal;color:var(--red-lt)}
+
+.pn-filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0 10px}
+.pn-fchips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;flex:1;min-width:0}
+.pn-year,.pn-search{
+  background:var(--bg-3);border:1px solid var(--line-2);border-radius:7px;padding:6px 10px;
+  font-size:12.5px;color:var(--tx);
+}
+.pn-year{font-family:'JetBrains Mono',monospace;font-size:11px}
+.pn-search{min-width:190px}
+.pn-search:focus,.pn-year:focus{outline:none;border-color:var(--red)}
+.pn-ecount{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--tx-3);margin-bottom:12px}
+.pn-egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.pn-ecard{
+  position:relative;text-align:left;cursor:pointer;padding:0 0 11px;color:inherit;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  animation:pnRise .4s var(--ease) both;animation-delay:calc(min(var(--i,0),12) * 26ms);
+  transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;
+}
+.pn-ecard:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 12px 28px rgba(0,0,0,.42)}
+.pn-ecard.up{border-color:rgba(224,26,43,.28)}
+.pn-ethumb{position:relative;aspect-ratio:16/10;overflow:hidden;
+  background:linear-gradient(150deg,#1C1C24,#0F0F14);display:flex;align-items:center;justify-content:center}
+.pn-ethumb img{width:100%;height:100%;object-fit:cover}
+.pn-ethumb-txt{padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;
+  font-size:17px;line-height:1.05;text-transform:uppercase;color:var(--tx-3)}
+.pn-ebadge{position:absolute;top:8px;left:8px;font-family:'JetBrains Mono',monospace;font-size:8.5px;
+  letter-spacing:1.2px;text-transform:uppercase;color:#fff;background:var(--red);border-radius:20px;padding:3px 8px}
+.pn-estar{position:absolute;top:6px;right:8px;font-size:17px;line-height:1;color:var(--tx-3);cursor:pointer;
+  text-shadow:0 1px 4px rgba(0,0,0,.7);transition:color .15s,transform .15s}
+.pn-estar:hover{transform:scale(1.18);color:var(--gold)}
+.pn-estar.on{color:var(--gold)}
+.pn-estar.big{position:static;font-size:22px}
+.pn-ename{padding:10px 12px 0;font-size:13.5px;font-weight:600;line-height:1.3;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pn-edate{padding:5px 12px 0;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--tx-3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pn-efoot{padding:6px 12px 0;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--tx-3)}
+.pn-back{background:none;border:none;color:var(--tx-3);font-size:13px;cursor:pointer;padding:4px 0;margin-bottom:8px}
+.pn-back:hover{color:var(--red-lt)}
+
+/* ── combat passé : verdict, note, volets ── */
+.pn-bout.done .pn-verdictline{text-align:center;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+  color:var(--tx-2);margin:6px 0 4px}
+.pn-w{font-style:normal;font-family:'JetBrains Mono',monospace;font-size:9px;color:#3fd183;
+  border:1px solid rgba(37,160,92,.45);border-radius:3px;padding:1px 4px;margin-left:6px;vertical-align:middle}
+.pn-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 16px;border-top:1px solid var(--line)}
+.pn-rate{display:flex;align-items:center;gap:3px;margin-right:auto}
+.pn-rate em{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--tx-3);margin-right:6px;font-style:normal}
+.pn-rate i{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);margin-left:6px;font-style:normal}
+.pn-starb{background:none;border:none;cursor:pointer;color:var(--tx-3);font-size:16px;line-height:1;padding:0 1px;
+  transition:color .15s,transform .15s}
+.pn-starb:hover{transform:scale(1.2);color:var(--gold)}
+.pn-starb.on{color:var(--gold)}
+
+/* ── comparateur ── */
+.pn-cmp,.pn-fs{padding:14px 16px;border-top:1px solid var(--line);background:rgba(255,255,255,.018);
+  animation:pnFade .28s ease-out both}
+.pn-cmphead,.pn-fshead{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;
+  margin-bottom:10px;font-size:13.5px}
+.pn-cmphead b,.pn-fshead b{font-weight:600;color:var(--tx)}
+.pn-cmphead b:last-child,.pn-fshead b:last-child{text-align:right}
+.pn-cmphead em,.pn-fshead em{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--tx-3);font-style:normal;white-space:nowrap}
+.pn-cmpr{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:5px 0;
+  border-top:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12.5px;
+  font-variant-numeric:tabular-nums;color:var(--tx-2)}
+.pn-cmpr span:last-child{text-align:right}
+.pn-cmpr .win{color:#e9c877;font-weight:700}
+.pn-cmpr em{font-family:'Barlow',sans-serif;font-size:11px;color:var(--tx-3);font-style:normal;white-space:nowrap}
+.pn-axeshead{margin:14px 0 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--tx-3)}
+.pn-axis{display:grid;grid-template-columns:1fr 96px 1fr;gap:10px;align-items:center;margin-bottom:7px;position:relative}
+.pn-axisbar{height:7px;border-radius:4px;background:var(--bg-3);overflow:hidden}
+.pn-axisbar i{display:block;height:100%;border-radius:4px}
+.pn-axisbar i.l{background:linear-gradient(90deg,transparent,var(--red));margin-left:auto}
+.pn-axisbar i.r{background:linear-gradient(90deg,var(--blue),transparent)}
+.pn-axis em{text-align:center;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--tx-3);font-style:normal}
+.pn-axis b{position:absolute;top:-1px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx-2)}
+.pn-axis b.left{left:0}
+.pn-axis b.right{right:0}
+.pn-fsr{margin-bottom:14px}
+
+@media(max-width:560px){
+  .pn-egrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+  .pn-nextcard b{font-size:19px}
+  .pn-search{min-width:100%}
+  .pn-axis{grid-template-columns:1fr 70px 1fr}
+}
 </style>
 </head>
 <body>
@@ -2956,12 +3063,11 @@ function renderHeroEvents(){
 
   box.querySelector('#evCard').addEventListener('click', ()=>{
     const ev = evList()[evIdx];
+    // le calendrier ouvre la soirée elle-même : plus d'ancre à viser, on
+    // désigne la carte AVANT le rendu de la section
+    pnOpenEv = ev.name;
+    pnOpenPanel = null;
     navigate('#pronos');
-    // laisser le rendu se faire avant de viser le bloc de l'événement
-    requestAnimationFrame(()=>{
-      const el = document.getElementById('ev-' + evSlug(ev.name));
-      if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-    });
   });
   box.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click', e=>{
     e.stopPropagation(); evShow(+b.dataset.ev); evAuto(true);
@@ -3009,7 +3115,7 @@ const PN_MARKET_LIMIT = 40;         // au-delà on ne lit plus, on fait défiler
 let pnDuel = null;                  // ticket d'un pote, décodé depuis l'URL
 
 function pnBlank(){
-  return { v:1, bank:PN_START, name:'', bouts:[], tickets:[], positions:[], hist:{}, resolved:{} };
+  return { v:1, bank:PN_START, name:'', bouts:[], tickets:[], positions:[], hist:{}, resolved:{}, fav:[], notes:{} };
 }
 function pnLoad(){
   try{
@@ -3532,7 +3638,11 @@ function pnBoutHTML(b, i, opt){
       <div class="pn-fld"><label>Mise</label><input name="stake" type="number" min="1" step="1" value="50"></div>
       <div class="pn-quote" data-quote="${b.id}">Choisis un vainqueur</div>
       <button class="pn-btn" type="submit">Parier</button>
-    </form>`;
+    </form>
+    <div class="pn-actions">
+      <button class="pn-btn sm ghost" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer la comparaison':'Comparer les deux'}</button>
+    </div>
+    ${pnOpenPanel==='cmp:'+b.id ? pnComparHTML(b) : ''}`;
   }
 
   // l'état du combat colore la carte entière, pas seulement le pied
@@ -3623,46 +3733,28 @@ function pnViewCarte(){
   const actives = FIGHTERS.filter(f=>isActiveFighter(f)).map(f=>f.name).sort();
   const mine = PN.bouts.filter(b=>!b.event).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
   const today = new Date().toISOString().slice(0,10);
-  // seules les cartes à venir : une soirée jouée n'a plus rien à proposer
-  const events = (EVENTS || []).filter(e=>e.date >= today);
-  let n = 0;
+  const next = (EVENTS || []).filter(e=>e.date >= today)[0];
+  const ouvert = pnOpenEv ? pnEvByName(pnOpenEv) : null;
+  let n = 0;     // l'échelonnement repart de zéro : la grille a le sien
 
-  const cardBlock = (ev, first) => {
-    const bouts = pnAnnounced().filter(b=>b.event===ev.name);
-    const groups = ['main','prelim','early'].filter(g=>bouts.some(b=>b.card===g));
-    const jours = ev.date ? Math.ceil((Date.parse(ev.date) - Date.now())/PN_DAY) : null;
-    return `
-    <section class="pn-event${first?' next':''}" id="ev-${evSlug(ev.name)}">
-      <header class="pn-evt${ev.poster?' with-poster':''}">
-        ${ev.poster?`<img class="pn-poster" src="${esc(ev.poster)}" alt="Affiche ${esc(ev.name)}" loading="lazy" onerror="this.remove()">`:''}
-        <div class="pn-evt-txt">
-          ${first?'<span class="pn-nextlbl">Prochaine carte</span>':''}
-          <div class="pn-evt-h">
-            <b>${esc(ev.name)}</b>
-            ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
-          </div>
-          <span>${ev.date?pnDateFR(Date.parse(ev.date)):''}${ev.location?' · '+esc(ev.location):''}${bouts.length?' · '+bouts.length+' combat'+(bouts.length>1?'s':''):''}</span>
-        </div>
-      </header>
-      ${bouts.length ? groups.map(g=>`
-        ${groups.length>1?`<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>`:''}
-        ${bouts.filter(b=>b.card===g).map(b=>pnBoutHTML(b, n++, {hideEvent:true})).join('')}`).join('')
-        : `<div class="pn-soon">Carte pas encore annoncée — la date est posée, les combats suivront.
-             Tu peux déjà composer une affiche que tu attends sur cet événement.</div>`}
-    </section>`;
-  };
+  // la soirée ouverte prend toute la place : on ne mélange pas deux niveaux
+  if(ouvert) return pnEvDetailHTML(ouvert);
 
   return `
   <p class="pn-note">La cote ne vient d'aucun bookmaker : elle sort de l'ELO du site. Tu ne joues pas contre le hasard, tu joues <b>contre le modèle</b> — et le score en haut de page dit lequel de vous deux a raison.</p>
 
-  ${events.length
-    ? `<div class="pn-sec">À l'affiche <span>${events.length} carte${events.length>1?'s':''} à venir</span></div>`
-      + events.map((ev,i)=>cardBlock(ev, i===0)).join('')
-    : `<div class="pn-sec">À l'affiche</div>
-       <div class="rk-empty pn-noevt"><b>Aucune carte annoncée</b>
-        Les prochains combats officiels s'affichent ici dès que <code>events.json</code> existe :
-        lance la tâche <b>events</b> dans les GitHub Actions du dépôt.<br><br>
-        En attendant — et pour toute affiche que tu imagines — compose-la toi-même juste en dessous.</div>`}
+  ${next ? `<button class="pn-nextcard" data-open="${esc(next.name)}">
+      ${next.poster?`<img src="${esc(next.poster)}" alt="" loading="lazy" onerror="this.remove()">`:''}
+      <div>
+        <span class="pn-nextlbl2">Prochaine carte</span>
+        <b>${esc(next.name)}</b>
+        <em>${pnDateFR(Date.parse(next.date))}${next.location?' · '+esc(String(next.location).split(',').slice(0,2).join(',')):''}</em>
+        <i>Ouvrir la carte et pronostiquer →</i>
+      </div>
+    </button>` : ''}
+
+  <div class="pn-sec">Le calendrier</div>
+  ${pnGridHTML()}
 
   ${mine.length ? `<div class="pn-sec">Tes affiches <span>${mine.length}</span></div>`
     + mine.map(b=>pnBoutHTML(b, n++)).join('') : ''}
@@ -3688,6 +3780,290 @@ function pnViewCarte(){
   ${(mine.length || PN.tickets.some(t=>!t.settled)) ? `<div class="pn-share"><button class="pn-btn ghost" id="pnShare">Défier un pote</button>
      <span class="pn-hint">Ton ticket est encodé dans un lien. Ton pote l'ouvre, voit tes pronostics, fait les siens — sans compte et sans serveur.</span></div>` : ''}
   ${pnDuel ? pnDuelHTML() : ''}`;
+}
+
+/* ── LE CALENDRIER : toutes les cartes, passées et à venir ────────────────
+   Rien de neuf à charger : les 783 soirées passées et leurs combats sont déjà
+   dans les palmarès (f.history porte le nom de l'événement, la méthode, le
+   round). On les réindexe par soirée, et les cartes à venir d'events.json
+   viennent se ranger dans la même liste.
+*/
+let _evAll = null;
+function pnEvents(){
+  if(_evAll) return _evAll;
+  if(!fightsLoaded) return [];           // même garde que partout : rien ne se mémorise à vide
+  const by = new Map();
+
+  for(const f of FIGHTERS){
+    for(const h of f.history || []){
+      if(!h.event) continue;
+      let e = by.get(h.event);
+      if(!e) by.set(h.event, e = { name:h.event, date:h.date || eventDate.get(h.event) || 0, bouts:new Map(), upcoming:false });
+      if(h.date && !e.date) e.date = h.date;
+      // chaque combat apparaît deux fois (une par combattant) : on le range
+      // sous une clé stable, vainqueur en premier
+      const key = [slugKey(f.name), slugKey(h.opp)].sort().join('|');
+      if(e.bouts.has(key)) continue;
+      const won = h.out === 'W';
+      e.bouts.set(key, {
+        id: key + '|' + slugKey(h.event),
+        a: won ? f.name : h.opp,
+        b: won ? h.opp : f.name,
+        winner: h.out === 'W' ? f.name : h.out === 'L' ? h.opp : null,
+        out: h.out, method: h.method, round: +h.rnd || 0, time: h.tm,
+        wc: h.wc, title: !!h.title, date: h.date || 0,
+      });
+    }
+  }
+  const past = [...by.values()].map(e=>({ ...e, bouts:[...e.bouts.values()], iso: e.date ? new Date(e.date).toISOString().slice(0,10) : '' }));
+
+  const today = new Date().toISOString().slice(0,10);
+  const future = (EVENTS || []).filter(e=>e.date >= today).map(e=>({
+    name: e.name, iso: e.date, date: Date.parse(e.date), location: e.location || '',
+    poster: e.poster || '', upcoming: true,
+    bouts: pnAnnounced().filter(b=>b.event === e.name),
+  }));
+
+  _evAll = [...future, ...past].sort((x,y)=>(y.date||0) - (x.date||0));
+  return _evAll;
+}
+function pnEvByName(name){ return pnEvents().find(e=>e.name === name) || null; }
+
+/* ── favoris et notes ───────────────────────────────────────────────────── */
+function pnFav(name){ return (PN.fav || []).includes(name); }
+function pnToggleFav(name){
+  PN.fav = PN.fav || [];
+  const i = PN.fav.indexOf(name);
+  if(i > -1) PN.fav.splice(i, 1); else PN.fav.push(name);
+  pnSave();
+}
+function pnNote(id){ return (PN.notes || {})[id] || 0; }
+function pnSetNote(id, n){
+  PN.notes = PN.notes || {};
+  if(pnNote(id) === n) delete PN.notes[id];   // recliquer la même étoile retire la note
+  else PN.notes[id] = n;
+  pnSave();
+}
+
+/* ── comparateur : les cinq axes déjà calculés pour les fiches ──────────── */
+const PN_AXES = [
+  ['power','Puissance'], ['precision','Précision'], ['takedown','Takedowns'],
+  ['control','Contrôle'], ['finish','Finition'],
+];
+function pnComparHTML(bout){
+  const fa = BY_NAME.get(slugKey(bout.a)), fb = BY_NAME.get(slugKey(bout.b));
+  if(!fa || !fb) return `<div class="pn-cmp"><p class="pn-hint">Comparaison indisponible : un des deux combattants n'est pas dans la base.</p></div>`;
+  const pa = fighterProfile(fa.key), pb = fighterProfile(fb.key);
+  const line = (label, va, vb, fmt) => {
+    const a = fmt ? fmt(va) : va, b = fmt ? fmt(vb) : vb;
+    const better = va === vb ? 0 : va > vb ? -1 : 1;
+    return `<div class="pn-cmpr">
+      <span class="${better===-1?'win':''}">${a}</span>
+      <em>${label}</em>
+      <span class="${better===1?'win':''}">${b}</span>
+    </div>`;
+  };
+  const sa = statsDB.get(fa.key) || {}, sb = statsDB.get(fb.key) || {};
+  const axes = (pa && pb)
+    ? PN_AXES.map(([k, lbl])=>{
+        const va = pa.notes[k], vb = pb.notes[k];
+        return `<div class="pn-axis">
+          <div class="pn-axisbar"><i class="l" style="width:${va*10}%"></i></div>
+          <em>${lbl}</em>
+          <div class="pn-axisbar"><i class="r" style="width:${vb*10}%"></i></div>
+          <b class="left">${va.toFixed(1)}</b><b class="right">${vb.toFixed(1)}</b>
+        </div>`;
+      }).join('')
+    : `<p class="pn-hint">Profil détaillé indisponible : il faut au moins 3 combats UFC des deux côtés.</p>`;
+
+  return `<div class="pn-cmp">
+    <div class="pn-cmphead"><b>${esc(fa.name)}</b><em>face à face</em><b>${esc(fb.name)}</b></div>
+    ${line('Bilan UFC', fa.w, fb.w, v=>v)}
+    ${line('ELO', pnElo(fa.key), pnElo(fb.key), v=>v)}
+    ${line('KO / TKO', fa.ko||0, fb.ko||0, v=>v)}
+    ${line('Soumissions', fa.sub||0, fb.sub||0, v=>v)}
+    ${line('Frappes sig. / round', (sa.spr||0), (sb.spr||0), v=>v.toFixed(1))}
+    ${line('Précision frappes', (sa.sacc||0), (sb.sacc||0), v=>v+' %')}
+    ${line('Takedowns réussis', (sa.tdl||0), (sb.tdl||0), v=>v)}
+    ${line('Contrôle au sol', (sa.ctrl||0), (sb.ctrl||0), v=>Math.round(v/60)+' min')}
+    <div class="pn-axeshead">Profil de combattant</div>
+    ${axes}
+  </div>`;
+}
+
+/* ── statistiques d'un combat passé (chargées à la demande) ─────────────── */
+// 7,5 Mo : hors de question de les charger au démarrage pour tout le monde.
+// On ne va les chercher qu'au premier clic, et une seule fois par visite.
+let FSTATS = null, fstatsLoading = false;
+async function loadFightStats(){
+  if(FSTATS || fstatsLoading) return FSTATS;
+  fstatsLoading = true;
+  try{
+    const res = await fetch(RAW + 'ufc_fight_stats.csv');
+    if(!res.ok) throw new Error('fight stats ' + res.status);
+    const rows = parseCSV(await res.text()).filter(r=>r.length > 5);
+    const head = rows.shift();
+    const iE = col(head,'EVENT'), iB = col(head,'BOUT'), iR = col(head,'ROUND'), iF = col(head,'FIGHTER');
+    const cols = ['KD','SIG.STR.','SIG.STR. %','TOTAL STR.','TD','TD %','SUB.ATT','REV.','CTRL','HEAD','BODY','LEG','DISTANCE','CLINCH','GROUND'];
+    const idx = cols.map(c=>col(head, c));
+    FSTATS = new Map();
+    for(const r of rows){
+      const key = slugKey(clean(r[iE])) + '|' + slugKey(clean(r[iB]));
+      let e = FSTATS.get(key);
+      if(!e) FSTATS.set(key, e = []);
+      const o = { round: clean(r[iR]), fighter: clean(r[iF]) };
+      cols.forEach((c,k)=>{ o[c] = idx[k] > -1 ? clean(r[idx[k]]) : ''; });
+      e.push(o);
+    }
+  }catch(err){
+    console.warn('[stats combat] indisponibles :', err.message);
+    FSTATS = new Map();
+  }
+  fstatsLoading = false;
+  return FSTATS;
+}
+function pnFightStatsHTML(ev, bout){
+  if(!FSTATS) return `<div class="pn-fs"><p class="pn-hint">Chargement des statistiques du combat…</p></div>`;
+  const key = slugKey(ev.name) + '|' + slugKey(bout.a + ' vs. ' + bout.b);
+  const alt = slugKey(ev.name) + '|' + slugKey(bout.b + ' vs. ' + bout.a);
+  const rows = FSTATS.get(key) || FSTATS.get(alt);
+  if(!rows || !rows.length) return `<div class="pn-fs"><p class="pn-hint">Aucune statistique détaillée pour ce combat dans la base officielle.</p></div>`;
+  const names = [...new Set(rows.map(r=>r.fighter))];
+  const rounds = [...new Set(rows.map(r=>r.round))];
+  const cell = (rd, nm, c) => (rows.find(r=>r.round===rd && r.fighter===nm) || {})[c] || '—';
+  const LIGNES = [['SIG.STR.','Frappes significatives'],['TOTAL STR.','Frappes totales'],['TD','Takedowns'],
+                  ['KD','Knockdowns'],['SUB.ATT','Tentatives de soumission'],['CTRL','Temps de contrôle'],
+                  ['HEAD','Tête'],['BODY','Corps'],['LEG','Jambes']];
+  return `<div class="pn-fs">
+    ${rounds.map(rd=>`
+      <div class="pn-fsr">
+        <div class="pn-fshead"><b>${esc(names[0]||'')}</b><em>${esc(rd)}</em><b>${esc(names[1]||'')}</b></div>
+        ${LIGNES.map(([c,lbl])=>`<div class="pn-cmpr">
+          <span>${esc(cell(rd,names[0],c))}</span><em>${lbl}</em><span>${esc(cell(rd,names[1],c))}</span>
+        </div>`).join('')}
+      </div>`).join('')}
+  </div>`;
+}
+
+/* ── la vue calendrier : grille de cartes, puis le détail d'une soirée ──── */
+let pnFilter = 'a-venir';     // 'a-venir' | 'favoris' | '2026' | … | 'tout'
+let pnQuery = '';
+let pnOpenEv = null;          // nom de la soirée ouverte, sinon la grille
+let pnOpenPanel = null;       // 'cmp:<id>' ou 'fs:<id>' — un seul volet à la fois
+const PN_GRID_MAX = 24;
+
+function pnEvFiltered(){
+  const q = pnQuery.toLowerCase().trim();
+  let list = pnEvents();
+  if(pnFilter === 'a-venir')      list = list.filter(e=>e.upcoming);
+  else if(pnFilter === 'favoris') list = list.filter(e=>pnFav(e.name));
+  else if(/^\d{4}$/.test(pnFilter)) list = list.filter(e=>e.iso.startsWith(pnFilter));
+  if(q) list = list.filter(e=>e.name.toLowerCase().includes(q));
+  return list;
+}
+function pnYears(){
+  const set = new Set(pnEvents().map(e=>e.iso.slice(0,4)).filter(Boolean));
+  return [...set].sort((a,b)=>b.localeCompare(a));
+}
+
+function pnEvCardHTML(e, i){
+  const n = e.bouts.length;
+  const jours = e.upcoming ? Math.ceil((e.date - Date.now())/PN_DAY) : 0;
+  return `<button class="pn-ecard${e.upcoming?' up':''}" data-open="${esc(e.name)}" style="--i:${i}">
+    <div class="pn-ethumb">
+      ${e.poster ? `<img src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`
+                 : `<div class="pn-ethumb-txt">${esc(e.name.replace(/^UFC\s*/,'').slice(0,28))}</div>`}
+      ${e.upcoming ? `<span class="pn-ebadge">${jours<=0?'ce soir':jours===1?'demain':'J−'+jours}</span>` : ''}
+      <span class="pn-estar${pnFav(e.name)?' on':''}" data-fav="${esc(e.name)}" role="button" title="Mettre en favori">${pnFav(e.name)?'★':'☆'}</span>
+    </div>
+    <div class="pn-ename">${esc(e.name)}</div>
+    <div class="pn-edate">${e.iso ? pnDateFR(e.date) : '—'}${e.location?' · '+esc(String(e.location).split(',').slice(0,2).join(',')):''}</div>
+    <div class="pn-efoot">${n ? n+' combat'+(n>1?'s':'') : 'carte à venir'}${e.upcoming?'' : ' · terminé'}</div>
+  </button>`;
+}
+
+function pnGridHTML(){
+  const list = pnEvFiltered();
+  const shown = list.slice(0, PN_GRID_MAX);
+  const years = pnYears();
+  return `
+  <div class="pn-filters">
+    <div class="pn-fchips">
+      <button class="pn-cat${pnFilter==='a-venir'?' on':''}" data-filter="a-venir">À venir</button>
+      <button class="pn-cat${pnFilter==='favoris'?' on':''}" data-filter="favoris">★ Favoris${(PN.fav||[]).length?' · '+PN.fav.length:''}</button>
+      <button class="pn-cat${pnFilter==='tout'?' on':''}" data-filter="tout">Toutes</button>
+      <select class="pn-year" id="pnYearSel">
+        <option value="">Par année…</option>
+        ${years.map(y=>`<option value="${y}"${pnFilter===y?' selected':''}>${y}</option>`).join('')}
+      </select>
+    </div>
+    <input class="pn-search" id="pnEvSearch" type="text" placeholder="Chercher une soirée…" value="${esc(pnQuery)}" autocomplete="off">
+  </div>
+  <div class="pn-ecount">${fmtInt(list.length)} soirée${list.length>1?'s':''}${list.length>shown.length?` · ${shown.length} affichées`:''}</div>
+  ${shown.length
+    ? `<div class="pn-egrid">${shown.map((e,i)=>pnEvCardHTML(e,i)).join('')}</div>`
+    : `<div class="rk-empty"><b>Aucune soirée</b>${pnFilter==='favoris'?'Mets une carte en favori avec l\'étoile.':'Change de filtre ou d\'année.'}</div>`}`;
+}
+
+function pnEvDetailHTML(e){
+  let n = 0;
+  const jours = e.upcoming ? Math.ceil((e.date - Date.now())/PN_DAY) : null;
+  const groups = e.upcoming
+    ? ['main','prelim','early'].filter(g=>e.bouts.some(b=>(b.card||'main')===g))
+    : [null];
+  return `
+  <button class="pn-back" id="pnBack">← Toutes les soirées</button>
+  <header class="pn-evt${e.poster?' with-poster':''}">
+    ${e.poster?`<img class="pn-poster" src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`:''}
+    <div class="pn-evt-txt">
+      <div class="pn-evt-h">
+        <b>${esc(e.name)}</b>
+        ${jours!==null && jours>=0 ? `<span class="pn-countdown">${jours===0?"c'est ce soir":jours===1?'demain':'dans '+jours+' jours'}</span>` : ''}
+        <span class="pn-estar big${pnFav(e.name)?' on':''}" data-fav="${esc(e.name)}" role="button">${pnFav(e.name)?'★':'☆'}</span>
+      </div>
+      <span>${e.iso?pnDateFR(e.date):''}${e.location?' · '+esc(e.location):''} · ${e.bouts.length} combat${e.bouts.length>1?'s':''}</span>
+    </div>
+  </header>
+  ${!e.bouts.length ? `<div class="pn-soon">Carte pas encore annoncée — la date est posée, les combats suivront.</div>` : ''}
+  ${groups.map(g=>`
+    ${g && groups.length>1 ? `<div class="pn-cardlbl">${PN_CARD_FR[g]}</div>` : ''}
+    ${e.bouts.filter(b=>!g || (b.card||'main')===g).map(b=>
+       e.upcoming ? pnBoutHTML(b, n++, {hideEvent:true}) : pnPastBoutHTML(e, b, n++)).join('')}
+  `).join('')}`;
+}
+
+// un combat déjà disputé : le verdict, une note personnelle, et ses stats
+function pnPastBoutHTML(ev, b, i){
+  const fa = BY_NAME.get(slugKey(b.a)), fb = BY_NAME.get(slugKey(b.b));
+  const note = pnNote(b.id);
+  const nul = !b.winner;
+  return `<div class="pn-bout done" style="--i:${i}">
+    <div class="pn-head">
+      <div class="pn-side${!nul?' fav':''}">${pnFace(fa)}<div>
+        <div class="pn-name">${esc(b.a)}${!nul?' <i class="pn-w">V</i>':''}</div>
+        <div class="pn-st">${fa?`${fa.w}–${fa.l} · ELO ${pnElo(fa.key)}`:''}</div></div></div>
+      <div class="pn-mid">
+        <span class="pn-vsmark">VS</span>
+        <div class="pn-verdictline">${nul ? esc(b.method||'sans vainqueur')
+          : `${esc(pnMethLabel(pnClassify(b.method)))}${b.round?' · R'+b.round:''}${b.time?' · '+esc(b.time):''}`}</div>
+        <div class="pn-when">${esc(b.wc||'')}${b.title?' · ceinture':''}</div>
+      </div>
+      <div class="pn-side right">${' '}<div>
+        <div class="pn-name">${esc(b.b)}</div>
+        <div class="pn-st">${fb?`${fb.w}–${fb.l} · ELO ${pnElo(fb.key)}`:''}</div></div>${pnFace(fb)}</div>
+    </div>
+    <div class="pn-actions">
+      <span class="pn-rate" data-rate="${esc(b.id)}">
+        <em>Ta note</em>
+        ${[1,2,3,4,5].map(k=>`<button class="pn-starb${note>=k?' on':''}" data-star="${k}" aria-label="${k} sur 5">${note>=k?'★':'☆'}</button>`).join('')}
+        ${note?`<i>${note}/5</i>`:''}
+      </span>
+      <button class="pn-btn sm ghost" data-fs="${esc(b.id)}">${pnOpenPanel==='fs:'+b.id?'Masquer les stats':'Stats du combat'}</button>
+      <button class="pn-btn sm ghost" data-cmp="${esc(b.id)}">${pnOpenPanel==='cmp:'+b.id?'Masquer':'Comparer'}</button>
+    </div>
+    ${pnOpenPanel==='cmp:'+b.id ? pnComparHTML(b) : ''}
+    ${pnOpenPanel==='fs:'+b.id  ? pnFightStatsHTML(ev, b) : ''}
+  </div>`;
 }
 
 /* ── LE MARCHÉ ───────────────────────────────────────────────────────────── */
@@ -4046,6 +4422,59 @@ function pnWire(view){
   }));
 
   // filtre de catégorie du marché
+  // ── calendrier : ouvrir une soirée, filtrer, chercher, mettre en favori ──
+  view.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click', e=>{
+    if(e.target.closest('[data-fav]')) return;      // l'étoile ne doit pas ouvrir la carte
+    pnOpenEv = b.dataset.open; pnOpenPanel = null;
+    pnRender();
+    document.getElementById('pnPage').scrollTo({top:0, behavior:'smooth'});
+  }));
+  const back = view.querySelector('#pnBack');
+  if(back) back.addEventListener('click', ()=>{
+    pnOpenEv = null; pnOpenPanel = null; pnRender();
+    document.getElementById('pnPage').scrollTo({top:0});
+  });
+  view.querySelectorAll('[data-fav]').forEach(b=>b.addEventListener('click', e=>{
+    e.stopPropagation(); pnToggleFav(b.dataset.fav); pnRender();
+  }));
+  view.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click', ()=>{
+    pnFilter = b.dataset.filter; pnRender();
+  }));
+  const ysel = view.querySelector('#pnYearSel');
+  if(ysel) ysel.addEventListener('change', ()=>{ if(ysel.value){ pnFilter = ysel.value; pnRender(); } });
+  const esearch = view.querySelector('#pnEvSearch');
+  if(esearch){
+    let deb;
+    esearch.addEventListener('input', ()=>{
+      clearTimeout(deb);
+      deb = setTimeout(()=>{
+        pnQuery = esearch.value;
+        // chercher dans « à venir » ne trouverait presque rien : on élargit
+        if(pnQuery && pnFilter === 'a-venir') pnFilter = 'tout';
+        pnRender();
+        const el = document.getElementById('pnEvSearch');
+        if(el){ el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+      }, 200);
+    });
+  }
+
+  // ── notes, comparaison, statistiques d'un combat ──
+  view.querySelectorAll('[data-rate]').forEach(box=>box.querySelectorAll('[data-star]').forEach(b=>
+    b.addEventListener('click', ()=>{ pnSetNote(box.dataset.rate, +b.dataset.star); pnRender(); })));
+  view.querySelectorAll('[data-cmp]').forEach(b=>b.addEventListener('click', ()=>{
+    const k = 'cmp:' + b.dataset.cmp;
+    pnOpenPanel = pnOpenPanel === k ? null : k;     // un seul volet ouvert à la fois
+    pnRender();
+  }));
+  view.querySelectorAll('[data-fs]').forEach(b=>b.addEventListener('click', async ()=>{
+    const k = 'fs:' + b.dataset.fs;
+    if(pnOpenPanel === k){ pnOpenPanel = null; pnRender(); return; }
+    pnOpenPanel = k;
+    // 7,5 Mo : on le dit, on le charge une fois, et on réaffiche quand c'est prêt
+    if(!FSTATS){ b.textContent = 'Chargement…'; pnRender(); await loadFightStats(); }
+    pnRender();
+  }));
+
   // un visage ouvre la fiche : on parie souvent sans se souvenir du palmarès
   view.querySelectorAll('.pn-face[data-photo]').forEach(el=>el.addEventListener('click', e=>{
     e.stopPropagation();
@@ -4168,7 +4597,7 @@ document.getElementById('pnTabs').querySelectorAll('.pn-tab')
 // fois les données chargées, jamais avant (sinon on fige un marché vide).
 function pnBoot(){
   pnLoad();
-  _champCache = _medCache = _propCache = null;
+  _champCache = _medCache = _propCache = _evAll = null;
   const duel = location.hash.startsWith('#duel-') ? pnDecode(location.hash.slice(6)) : null;
   if(duel){ pnDuel = duel; pnAdoptDuel(); }
   pnSettle();
