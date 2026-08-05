@@ -52,7 +52,14 @@
     "height": "5' 9\"", "dob": "Sep 16, 2000",
     "note": "Champion ARES des welters. Né à Sainte-Marie (Martinique). Série de 7 victoires.",
     "history": [
+      {"out":"W","opp":"Karim Ghajji","method":"Décision","event":"20 mai. 2022"},
+      {"out":"W","opp":"Caleb Nascimento","method":"Décision","event":"20 jan. 2023"},
+      {"out":"W","opp":"Mickael Marie Sardi","method":"KO/TKO","event":"11 mai. 2023","rnd":"3"},
       {"out":"L","opp":"Cédric Doumbé","method":"KO/TKO","event":"PFL Paris — 30 sept. 2023","rnd":"1","tm":"0:09"},
+      {"out":"W","opp":"Carlos Graca","method":"Décision","event":"08 mar. 2024"},
+      {"out":"W","opp":"Phruethikorn Chaichongcharoen","method":"Décision","event":"14 jui. 2024"},
+      {"out":"W","opp":"Vincent Del Guerra","method":"Décision","event":"23 Nov. 2024"},
+      {"out":"W","opp":"Wissame Akhmouch","method":"Décision","event":"16 mai. 2025"},
       {"out":"W","opp":"Baysangur Chamsoudinov","method":"KO/TKO","event":"ARES 35, Strasbourg — 18 oct. 2025","rnd":"4","tm":"2:08"},
       {"out":"W","opp":"Ramazan Mustafaev","method":"","event":"ARES 38","rnd":"","tm":""},
       {"out":"W","opp":"Andre Fialho","method":"Soumission (étranglement arrière)","event":"ARES 42, Lyon — 3 juil. 2026","rnd":"4","tm":"4:50"}
