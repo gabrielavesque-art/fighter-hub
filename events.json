@@ -1,13 +1,22 @@
 {
- "built": "2026-08-04T18:55:30.183Z",
+ "built": "2026-08-05T07:58:06.680Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
    "name": "UFC Fight Night: Gamrot vs. Salkilld",
    "date": "2026-08-08",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [],
-   "src": "",
+   "bouts": [
+    {
+     "a": "Carol Foro",
+     "b": "Giovanna Canuto",
+     "wc": "Women's Strawweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia",
    "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
@@ -118,22 +127,6 @@
      "card": "main"
     },
     {
-     "a": "Nathaniel Wood",
-     "b": "Mairon Santos",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Felipe Lima",
-     "b": "Morgan Charrière",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Punahele Soriano",
      "b": "Daniil Donchenko",
      "wc": "Welterweight",
@@ -145,10 +138,20 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night : Rodriguez vs Silva",
+   "name": "UFC Fight Night: Rodríguez vs Silva",
    "date": "2026-09-12",
    "location": "Desert Diamond Arena, Glendale, Arizona, U.S.",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Drakkar Klose",
+     "b": "Thomas Gantt",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC 331",
