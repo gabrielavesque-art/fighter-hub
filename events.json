@@ -1,5 +1,5 @@
 {
- "built": "2026-08-05T07:58:06.680Z",
+ "built": "2026-08-05T18:55:19.466Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -79,7 +79,8 @@
      "card": "main"
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia",
+   "poster": "https://upload.wikimedia.org/wikipedia/en/c/c7/UFC_Fight_Night_286_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
    "name": "UFC Fight Night: Hooker vs. Parnasse",
@@ -138,7 +139,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night: Rodríguez vs Silva",
+   "name": "UFC Fight Night: Rodríguez vs. Silva",
    "date": "2026-09-12",
    "location": "Desert Diamond Arena, Glendale, Arizona, U.S.",
    "bouts": [
@@ -160,7 +161,7 @@
    "bouts": [
     {
      "a": "Joshua Van",
-     "b": "Alexandre Pantoja",
+     "b": "Alexandre Pantoja (not official yet)",
      "wc": "Flyweight",
      "title": true,
      "rounds": 5,
@@ -168,10 +169,10 @@
     },
     {
      "a": "Arman Tsarukyan",
-     "b": "Charles Oliveira",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
+     "b": "Charles Oliveira (not official yet)",
+     "wc": "",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
@@ -229,6 +230,22 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Gable Steveson",
+     "b": "Sean Sharaf",
+     "wc": "Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Tai Tuivasa",
+     "b": "Robelis Despaigne",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -279,9 +296,33 @@
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
     {
-     "a": "Medić",
-     "b": "Rodriguez]]",
-     "wc": "",
+     "a": "Malcolm Wellmaker",
+     "b": "Otari Tanzilovi",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jai Herbert",
+     "b": "Matheus Camilo",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Francisco Prado",
+     "b": "Artur Minev",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Darya Zheleznyakova",
+     "b": "Alice Pereira",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
