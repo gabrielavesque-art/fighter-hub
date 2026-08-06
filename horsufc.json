@@ -77,14 +77,14 @@
     "height": "6' 1\"", "reach": "75\"", "dob": "Mar 26, 2001",
     "note": "Invaincu, 8 victoires sur 9 avant la limite. Originaire de Namur.",
     "history": [
-      {"out":"W","opp":"Ognjen Zivanovic","method":"KO/TKO","event":"AEF 5 - 13 jan. 2024","rnd":"1"}
+      {"out":"W","opp":"Ognjen Zivanovic","method":"KO/TKO","event":"AEF 5 - 13 jan. 2024","rnd":"1"},
       {"out":"W","opp":"Claudio Pacella","method":"Décision","event":"PFL Paris 2 - 7 mar. 2024"},
-      {"out":"W","opp":"Giovanny Giraldo","method":"KO/TKO","event":"AEF 6 - 17 mai. 2024","rnd":"1"}
-      {"out":"W","opp":"Axel Aston","method":"KO/TKO","event":"ARES 22 - 14 jui. 2024","rnd":"1"}
-      {"out":"W","opp":"Catalin Safta","method":"KO/TKO","event":"ARES 22 - 14 dec. 2024","rnd":"3"}
-      {"out":"W","opp":"Dima Glevka","method":"KO/TKO","event":"FAF IN OCTOGON 2 - 07 fev. 2025","rnd":"1"}
-      {"out":"W","opp":"Danny Roberts","method":"KO/TKO","event":"PFL BRUXELLES - 05 jui. 2025","rnd":"1"}
-      {"out":"W","opp":"Kevin Jousset","method":"KO/TKO","event":"PFL LYON 2 - 13 dec. 2025","rnd":"1"}
+      {"out":"W","opp":"Giovanny Giraldo","method":"KO/TKO","event":"AEF 6 - 17 mai. 2024","rnd":"1"},
+      {"out":"W","opp":"Axel Aston","method":"KO/TKO","event":"ARES 22 - 14 jui. 2024","rnd":"1"},
+      {"out":"W","opp":"Catalin Safta","method":"KO/TKO","event":"ARES 22 - 14 dec. 2024","rnd":"3"},
+      {"out":"W","opp":"Dima Glevka","method":"KO/TKO","event":"FAF IN OCTOGON 2 - 07 fev. 2025","rnd":"1"},
+      {"out":"W","opp":"Danny Roberts","method":"KO/TKO","event":"PFL BRUXELLES - 05 jui. 2025","rnd":"1"},
+      {"out":"W","opp":"Kevin Jousset","method":"KO/TKO","event":"PFL LYON 2 - 13 dec. 2025","rnd":"1"},
       {"out":"W","opp":"Benson Henderson","method":"KO/TKO","event":"PFL BRUXELLES - 23 mai. 2026","rnd":"1","tm":"0:20"}
     ]
   },
