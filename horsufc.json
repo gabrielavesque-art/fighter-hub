@@ -113,7 +113,29 @@
     "height": "5' 11\"", "reach": "72\"", "stance": "Orthodox", "dob": "Apr 17, 1998",
     "note": "Champion des légers du PFL, invaincu, n°1 pound-for-pound de l'organisation. Cousin de Khabib.",
     "history": [
-      {"out":"W","opp":"Alfie Davis","method":"Soumission","event":"PFL Road to Dubai — févr. 2026","rnd":"4","tm":""}
+      {"out":"W","opp":"Imran Abdiev","method":"Soumission (Armbar)","event":"26 mar. 2017"},
+      {"out":"W","opp":"Dmitriy Berestovskiy","method":"TKO","event":"14 dec. 2018"},
+      {"out":"W","opp":"Issei Moriyama","method":"TKO","event":"28 dec. 2018"},
+      {"out":"W","opp":"Romeo Njia","method":"Soumission (Rear-Naked Choke)","event":"17 fev. 2019"},
+      {"out":"W","opp":"Gabriel Baino","method":"TKO","event":"03 mai. 2019"},
+      {"out":"W","opp":"Ruslan Hisamutdinov","method":"Decision","event":"28 jui. 2019"},
+      {"out":"W","opp":"Kazim Zhakhangirov","method":"Soumission (Guillotine Choke)","event":"27 sep. 2019"},
+      {"out":"W","opp":"Roman Golovinov","method":"TKO","event":"29 nov. 2019"},
+      {"out":"W","opp":"Ruslan Tuyakov","method":"TKO","event":"09 fev. 2020"},
+      {"out":"W","opp":"Jerry Kvarnstrom","method":"TKO","event":"31 jui. 2020"},
+      {"out":"W","opp":"Svyatoslav Shabanov","method":"TKO","event":"09 sep. 2020"},
+      {"out":"W","opp":"Mike Hamel","method":"Decision","event":"02 avr. 2021"},
+      {"out":"W","opp":"Luis Muro","method":"TKO","event":"31 jui. 2021"},
+      {"out":"W","opp":"Patrik Pietila","method":"Soumission (Rear-Naked Choke)","event":"23 oct. 2021"},
+      {"out":"W","opp":"Christopher Gonzalez","method":"Soumission (Guillotine Choke)","event":"BELLATOR 283 - 22 jui. 2022"},
+      {"out":"W","opp":"Patricky Freire","method":"Soumission (Armbar)","event":"18 nov. 2022"},
+      {"out":"W","opp":"Benson Henderson","method":"Soumission (Armbar)","event":"BELLATOR 292 - 10 mar. 2023"},
+      {"out":"W","opp":"Brent Primus","method":"Soumission (Armbar)","event":"BELLATOR 300 - 07 oct. 2013"},
+      {"out":"W","opp":"Alexandr Shabliy","method":"Soumission (Armbar)","event":"07 sep. 2024"},
+      {"out":"W","opp":"Paul Hughes","method":"Soumission (Armbar)","event":"BELLATOR - 25 jan. 2025"},
+      {"out":"W","opp":"Paul Hughes","method":"Soumission (Armbar)","event":"PFL DUBAI - 03 oct. 2025"},
+      {"out":"W","opp":"Alfie Davis","method":"Soumission (Reverse Arm-Triangle Choke)","event":"PFL Road to Dubai — févr. 2026","rnd":"4","tm":""}
+      {"out":"W","opp":"Archie Colgan","method":"TKO","event":"PFL NEW YORK - 31 jui. 2026"},
     ]
   },
   "ajmckee": {
