@@ -150,7 +150,34 @@
     "height": "5' 10\"", "reach": "73\"", "stance": "Southpaw", "dob": "Apr 7, 1995",
     "note": "Dernier champion des plumes du Bellator.",
     "history": [
-      {"out":"W","opp":"Adam Borics","method":"Décision unanime","event":"PFL — 20 mars 2026","rnd":"3","tm":""}
+      {"out":"W","opp":"Marcos Bonilla","method":"Soumission (Rear Naked)","event":"10 mars 2015","rnd":"1","tm":"02:08"}
+      {"out":"W","opp":"James Barnes","method":"TKO","event":"28 mars 2015","rnd":"1","tm":"01:42"}
+      {"out":"W","opp":"JT Donaldson","method":"TKO","event":"04 mars 2015","rnd":"1","tm":"03:19"}
+      {"out":"W","opp":"Danilo Belluardo","method":"TKO","event":"16 mars 2016","rnd":"1","tm":"02:44"}
+      {"out":"W","opp":"Cody Walker","method":"Soumission (Guillotine)","event":"26 mars 2016","rnd":"2","tm":"00:32"}
+      {"out":"W","opp":"Ray Wood","method":"Décision unanime","event":"02 mars 2016","rnd":"3","tm":""}
+      {"out":"W","opp":"Brandon Phillips","method":"Décision unanime","event":"27 mars 2017","rnd":"3","tm":""}
+      {"out":"W","opp":"Dominic Mazzotta","method":"TKO (Head Kick)","event":"21 mars 2017","rnd":"1","tm":"01::15"}
+      {"out":"W","opp":"Blair Tugman","method":"Décision unanime","event":"25 mars 2017","rnd":"3","tm":""}
+      {"out":"W","opp":"Brian Moore","method":"Décision unanime","event":"10 mars 2017","rnd":"3","tm":""}
+      {"out":"W","opp":"Justin Lawrence","method":"Décision unanime","event":"13 mars 2018","rnd":"3","tm":""}
+      {"out":"W","opp":"John Teixeira","method":"Décision unanime","event":"21 mars 2018","rnd":"3","tm":""}
+      {"out":"W","opp":"Daniel Crawford","method":"Décision unanime","event":"14 mars 2018","rnd":"3","tm":""}
+      {"out":"W","opp":"Pat Curran","method":"Décision unanime","event":"11 mars 2019","rnd":"3","tm":""}
+      {"out":"W","opp":"Georgi Karakhanyan","method":"Décision unanime","event":"28 mars 2019","rnd":"3","tm":""}
+      {"out":"W","opp":"Derek Campos","method":"Décision unanime","event":"21 mars 2019","rnd":"3","tm":""}
+      {"out":"W","opp":"Darrion Caldwell","method":"Décision unanime","event":"19 mars 2020","rnd":"3","tm":""}
+      {"out":"W","opp":"Patricio Pitbull","method":"Décision unanime","event":"31 mars 2021","rnd":"3","tm":""}
+      {"out":"W","opp":"Patricio Pitbull","method":"Décision unanime","event":"15 mars 2022","rnd":"3","tm":""}
+      {"out":"W","opp":"Spike Carlyle","method":"Décision unanime","event":"01 mars 2022","rnd":"3","tm":""}
+      {"out":"W","opp":"Roberto de Souza","method":"Décision unanime","event":"31 mars 2023","rnd":"3","tm":""}
+      {"out":"W","opp":"Sidney Outlaw","method":"Décision unanime","event":"17 mars 2023","rnd":"3","tm":""}
+      {"out":"W","opp":"Clay Collard","method":"Décision unanime","event":"24 mars 2024","rnd":"3","tm":""}
+      {"out":"L","opp":"Paul Hughes","method":"Décision unanime","event":"19 oct. 2024","rnd":"3","tm":""}
+      {"out":"W","opp":"Akhmed Magomedov","method":"Décision unanime","event":"19 juil. 2025","rnd":"3","tm":""}
+      {"out":"W","opp":"Ádám Borics","method":"Décision unanime","event":"20 mars 2026","rnd":"3","tm":""}
+      {"out":"W","opp":"Salamat Isbulaev","method":"Décision unanime","event":"27 jui. 2026","rnd":"3","tm":""}
+      {"out":"W","opp":"Razhabali Shaydullaev","method":"Décision unanime","event":"10 sep. 2026","rnd":"","tm":""}
     ]
   },
   "johnnyeblen": {
