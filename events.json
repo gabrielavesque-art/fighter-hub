@@ -1,22 +1,13 @@
 {
- "built": "2026-08-05T18:55:19.466Z",
+ "built": "2026-08-06T07:57:41.180Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
    "name": "UFC Fight Night: Gamrot vs. Salkilld",
    "date": "2026-08-08",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Carol Foro",
-     "b": "Giovanna Canuto",
-     "wc": "Women's Strawweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia",
+   "bouts": [],
+   "src": "",
    "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
@@ -155,100 +146,10 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC 331",
+   "name": "UFC 331: Van vs. Pantoja 2",
    "date": "2026-09-19",
    "location": "Crypto.com Arena, Los Angeles, California, U.S.",
-   "bouts": [
-    {
-     "a": "Joshua Van",
-     "b": "Alexandre Pantoja (not official yet)",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Arman Tsarukyan",
-     "b": "Charles Oliveira (not official yet)",
-     "wc": "",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Marlon Vera",
-     "b": "Charles Jourdain",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Osman Diaz",
-     "b": "Ryan Gandra",
-     "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Casey O'Neill",
-     "b": "Eduarda Moura",
-     "wc": "Women's Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Renato Moicano",
-     "b": "Brian Ortega",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Patrício Pitbull",
-     "b": "Choi Doo-ho",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Iwo Baraniewski",
-     "b": "Alonzo Menifield",
-     "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Edmen Shahbazyan",
-     "b": "Brunno Ferreira",
-     "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Gable Steveson",
-     "b": "Sean Sharaf",
-     "wc": "Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Tai Tuivasa",
-     "b": "Robelis Despaigne",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
+   "bouts": []
   },
   {
    "name": "UFC Fight Night 289",
