@@ -31,6 +31,11 @@ on:
           - events-selftest
           - events
           - events-dump
+          - posters-selftest
+          - posters-test
+          - posters
+          - posters-retry
+          - posters-rebuild
 
 permissions:
   contents: write
@@ -71,6 +76,11 @@ jobs:
             events-selftest) node build-events.js --selftest ;;
             events)         node build-events.js ;;
             events-dump)    node build-events.js --dump ;;
+            posters-selftest) node build-posters.js --selftest ;;
+            posters-test)     node build-posters.js --test ;;
+            posters)          node build-posters.js ;;
+            posters-retry)    node build-posters.js --retry ;;
+            posters-rebuild)  node build-posters.js --force ;;
           esac
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
@@ -78,12 +88,12 @@ jobs:
           MMA_API_KEY: ${{ secrets.MMA_API_KEY }}
 
       - name: Committer le résultat
-        if: ${{ !contains(fromJSON('["photos-test","descriptions-test","videos-test","events-selftest","events-dump"]'), env.TACHE) }}
+        if: ${{ !contains(fromJSON('["photos-test","descriptions-test","videos-test","events-selftest","events-dump","posters-selftest","posters-test"]'), env.TACHE) }}
         run: |
           if [ -n "$(git status --porcelain '*.json')" ]; then
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add photos.json stats.json elo.json descriptions.json videos.json events.json 2>/dev/null || true
+            git add photos.json stats.json elo.json descriptions.json videos.json events.json posters.json 2>/dev/null || true
             git commit -m "Mise à jour des données ($TACHE)"
             git push
           else
