@@ -1339,6 +1339,23 @@ footer a:hover{color:var(--tx-2)}
 
 /* la carte des événements respire un peu plus à gauche du bord */
 .hero-side{margin-right:clamp(0px,3.5vw,54px)}
+/* ══ Vignette d'affiche : l'entière, sur son propre flou ══ */
+/* Les affiches vont du portrait au carré ; un simple object-fit:cover dans un
+   cadre 16/10 rognait les visages et le titre. Le flou en fond remplit le
+   cadre, l'affiche par-dessus reste complète. */
+/* `.pn-ethumb img` (0,1,1) l'emporterait sur `.pn-shot-fg` (0,1,0) et
+   remettrait un object-fit:cover : on descend donc d'un cran dans l'arbre. */
+.pn-ethumb .pn-shot{position:absolute;inset:0;display:block}
+.pn-ethumb .pn-shot-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(18px) saturate(1.25) brightness(.5);transform:scale(1.2);
+}
+.pn-ethumb .pn-shot-fg{
+  position:relative;width:100%;height:100%;object-fit:contain;z-index:1;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));
+  transition:transform .3s var(--ease);
+}
+.pn-ecard:hover .pn-ethumb .pn-shot-fg{transform:scale(1.03)}
 </style>
 </head>
 <body>
@@ -3554,6 +3571,33 @@ function evISO(d){
   const ms = Date.parse(t);
   return isNaN(ms) ? '' : new Date(ms).toISOString().slice(0,10);
 }
+// Les affiches de TOUTES les soirées, y compris les 783 déjà disputées
+// (build-posters.js). Optionnel : sans le fichier, on retombe sur les deux
+// visages du combat vedette, comme avant.
+let POSTERS = null;
+// Doit rester le jumeau exact de posterKey() dans build-posters.js. Ce n'est
+// pas slugKey() : on replie les accents, car Wikipedia écrit « Medić » là où
+// ufcstats écrit « Medic », et slugKey() donnerait deux clés différentes.
+function evPosterKey(n){
+  return String(n || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+async function loadPostersDB(){
+  try{
+    const r = await fetch('posters.json', {cache:'no-cache'});
+    if(!r.ok) throw new Error('posters.json '+r.status);
+    const j = await r.json();
+    POSTERS = j.posters && typeof j.posters === 'object' ? j.posters : null;
+  }catch(e){
+    POSTERS = null;
+  }
+}
+function evPoster(name){
+  if(!POSTERS) return '';
+  return POSTERS[evPosterKey(name)] || '';
+}
+
 async function loadEventsDB(){
   try{
     const r = await fetch('events.json', {cache:'no-cache'});
@@ -3861,12 +3905,16 @@ function pnEvents(){
       });
     }
   }
-  const past = [...by.values()].map(e=>({ ...e, bouts:[...e.bouts.values()], iso: e.date ? new Date(e.date).toISOString().slice(0,10) : '' }));
+  const past = [...by.values()].map(e=>({
+    ...e, bouts:[...e.bouts.values()],
+    iso: e.date ? new Date(e.date).toISOString().slice(0,10) : '',
+    poster: evPoster(e.name),
+  }));
 
   const today = new Date().toISOString().slice(0,10);
   const future = (EVENTS || []).filter(e=>e.date >= today).map(e=>({
     name: e.name, iso: e.date, date: Date.parse(e.date), location: e.location || '',
-    poster: e.poster || '', upcoming: true,
+    poster: e.poster || evPoster(e.name), upcoming: true,
     bouts: pnAnnounced().filter(b=>b.event === e.name),
   }));
 
@@ -4025,7 +4073,15 @@ function pnDuoHTML(bouts){
   return `<div class="pn-duo">${face(pa,'l')}${face(pb,'r')}</div>`;
 }
 function pnEvThumbHTML(e){
-  if(e.poster) return `<img src="${esc(e.poster)}" alt="" loading="lazy" onerror="this.remove()">`;
+  // Une affiche UFC est en portrait, la vignette en paysage : la recadrer
+  // couperait les visages et le titre. On la pose donc entière par-dessus une
+  // copie floutée d'elle-même, qui remplit le cadre — l'affiche reste lisible
+  // quel que soit son format.
+  if(e.poster) return `<span class="pn-shot">
+      <img class="pn-shot-bg" src="${esc(e.poster)}" alt="" loading="lazy" aria-hidden="true">
+      <img class="pn-shot-fg" src="${esc(e.poster)}" alt="" loading="lazy"
+           onerror="this.closest('.pn-shot').remove()">
+    </span>`;
   const duo = pnDuoHTML(e.bouts);
   return duo || `<div class="pn-ethumb-txt">${esc(e.name.replace(/^UFC\s*/,'').slice(0,28))}</div>`;
 }
@@ -4771,6 +4827,7 @@ function skeleton(){
     // events.json fait quelques kilo-octets et porte le carrousel de la hero :
     // on ne le fait pas attendre derrière les photos et les combats
     await loadEventsDB();
+    await loadPostersDB();       // affiches de toutes les soirées, si disponibles
     renderHeroEvents();
     await loadPhotoDB();          // photos pre-calculees si disponibles
     await loadDescDB();           // descriptions Wikipedia pre-calculees si disponibles
