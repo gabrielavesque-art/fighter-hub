@@ -19,7 +19,8 @@ Avant toute modification :
 - `resolve-photos.js` → `photos.json` | `build-stats.js` → `stats.json` | `build-elo.js` → `elo.json`
 - `build-descriptions.js` → `descriptions.json` (descriptions humaines, Wikipedia FR puis EN)
 - `build-videos.js` → `videos.json` (combat ⇄ vidéo YouTube, chaînes UFC + RMC)
-- `build-events.js` → `events.json` (cartes UFC à venir, Wikipedia EN) — **optionnel** :
+- `build-events.js` → `events.json` (cartes UFC à venir : Wikipedia EN, puis
+  l'API MMA en secours si `MMA_API_KEY` existe) — **optionnel** :
   sans lui la section Pronos marche, on compose ses affiches à la main
 - Scripts lancés via **GitHub Actions uniquement** (jamais en local) — Vercel auto-déploie sur push main
 - Section **Pronos** (`#pronos`) : bankroll fictive en `localStorage`, cotes dérivées
@@ -73,9 +74,79 @@ Avant toute modification :
   rendu ce qui est à l'intérieur.
 - `openPronos()` ne réécrit pas l'URL quand le hash est un `#duel-…` : c'est lui
   qui porte le ticket du pote, `pnBoot()` le relit après le chargement des données.
+- `build-events.js` récupère aussi l'affiche de l'événement (`| image =` de
+  l'infobox) et résout les URL en **un seul appel groupé**, 50 fichiers max.
+- `build-posters.js` → `posters.json` : les affiches des **783 soirées passées**,
+  que build-events.js ne voit pas (il ne regarde que l'avenir). Il ne devine
+  jamais un titre de page : « List of UFC events » porte déjà le lien exact de
+  chacune (`[[UFC 3|UFC 3: The American Dream]]`). Incrémental, ~15 min au
+  premier run.
+- `posterKey()` (script) et `evPosterKey()` (site) doivent rester **jumeaux** :
+  ils replient les accents (NFD) avant de filtrer, contrairement à `slugKey()`.
+  Wikipedia écrit « Medić », ufcstats « Medic » — `slugKey()` donnerait « medi »
+  d'un côté et « medic » de l'autre, et posters.json ne se raccrocherait à rien.
+- Une affiche UFC est en portrait, la vignette en paysage : `object-fit:cover`
+  rognait les visages. On pose l'affiche **entière** (`contain`) sur une copie
+  floutée d'elle-même. Attention à la spécificité : `.pn-ethumb img` (0,1,1)
+  écrase `.pn-shot-fg` (0,1,0) — d'où `.pn-ethumb .pn-shot-fg`.
+- Quand une source rend zéro, `--dump` (tâche `events-dump`) recrache le
+  wikitext brut **et** la réponse de l'API : une exécution suffit à corriger un
+  parseur, au lieu de deviner. Wikipedia n'est pas joignable depuis toutes les
+  machines de développement.
 - `build-events.js --selftest` teste les parseurs **sans réseau ni Wikipedia**.
   Dans la liste `DIVISIONS`, « Light Heavyweight » doit rester **avant**
   « Heavyweight » : le motif du second est contenu dans le premier.
+- Les pages d'événement récentes remplacent le tableau de carte par le modèle
+  `{{MMAevent bout|Division|[[A]]|vs.|[[B]]|...}}` (un champ par ligne, fermé
+  par `}}`). `parseBouts()` lit les deux formes : ignorer la seconde revient à
+  voir une carte publiée comme vide.
+- Le plan gratuit de l'API MMA (source 2) **ne couvre qu'une fenêtre de ~3
+  jours** autour d'aujourd'hui (`"Free plans do not have access to this
+  date"`) : elle ne comblera jamais un trou à plusieurs semaines. Elle reste
+  branchée pour le jour où le plan change, pas comme filet pour les cartes
+  lointaines — c'est Wikipedia qui doit rester exhaustif.
+- `{{dts}}` de Wikipedia accepte le mois **en toutes lettres** (`{{dts|2026|Apr|04}}`).
+  Le compléter par des zéros donnait `2026-Apr-04` : tri alphabétique, comparaison
+  fausse, et des soirées déjà jouées annoncées comme à venir — donc pariables.
+  Toute date passe par `iso()` côté script et par `evISO()` côté site, qui rattrape
+  aussi les anciens fichiers.
+- Quand une page d'événement n'a pas encore de carte, `pnMainFromName()` déduit
+  l'affiche principale du **nom** (« UFC 330: Makhachev vs. Machado Garry ») en
+  cherchant le combattant actif le mieux classé pour chaque patronyme. Le combat
+  est marqué `derived` et le signale à l'écran : on infère, on ne l'invente pas.
+- Deux fonctions lisent le nom d'une soirée, **ne pas les confondre** :
+  `pnMainFromName()` cherche dans `FIGHTERS` et n'accepte que les **actifs** —
+  pour les cartes à venir. `pnMainIndex(nom, bouts)` cherche dans les combats de
+  la soirée **elle-même** — pour les cartes passées, où « Khabib » a pris sa
+  retraite et n'existe plus dans la liste. Sans ce tri la vignette d'UFC 254
+  montrait deux préliminaires, l'ordre venant de l'itération des palmarès.
+  Il reconnaît un prénom (« Khabib »), un patronyme composé (« Machado Garry »),
+  et retombe sur un seul camp reconnu quand l'autre est un surnom (« Cowboy »,
+  « The Korean Zombie ») : un combattant ne figure qu'une fois par carte, donc
+  un seul combat le contient. 646 des 669 soirées nommées « A vs B » retrouvent
+  leur vedette ; les 23 restantes sont des `TUF: Team X vs Team Y`, où les noms
+  sont ceux des **coachs** — l'échec est le bon comportement.
+- Une carte lointaine n'a pas de tableau, mais ses combats sont annoncés **en
+  prose** (« A Lightweight bout between [[A]] and [[B]] is expected… »). Aucun
+  « vs. » dans ces phrases : `parseProse()` les lit, en dernier recours
+  seulement, quand `parseBouts()` n'a rien trouvé. Il raisonne **par paragraphe
+  et jamais par phrase** : le démenti arrive à la phrase d'après (« However, X
+  withdrew »), et découper sur le point ferait entrer un combat annulé dans la
+  carte. Un paragraphe qui annonce un remplaçant est donc écarté avec le reste —
+  mieux vaut manquer une affiche que d'en promettre une morte. Ces combats
+  portent `announced:true` et le disent à l'écran.
+- Le carrousel de la hero (`renderHeroEvents`) vit sur `events.json` : sans le
+  fichier, `#heroEvents` reste `hidden` et la hero reprend toute sa largeur
+  (`:has()` en CSS). Une seule horloge tourne, pour la diapo visible.
+- Le workflow tourne **deux fois par jour** sur les cartes (`cron`) : un
+  déclenchement planifié ne fournit aucune entrée, d'où `TACHE: inputs.tache ||
+  'events'` en `env` — ne pas relire `inputs.tache` ailleurs.
+- Un pronostic se pose **avant** le combat : dès que `pnResult()` trouve un
+  résultat, le formulaire de pari disparaît au profit du verdict, et le handler
+  refuse aussi de son côté. Le composeur n'accepte que des dates à venir.
+  Surtout : c'est la **date** qui ferme les paris (`pnPast`), pas la présence
+  d'un résultat — le CSV amont a un jour de retard, et cette fenêtre laissait
+  parier sur une soirée déjà jouée.
 - `.ph` est en `position:absolute` : **tout** conteneur de photo doit porter
   `position:relative`, sinon l'image se cale sur le premier ancêtre positionné
   et déborde par-dessus la carte entière (le cas s'est produit sur `.pn-face`).
@@ -91,10 +162,31 @@ Avant toute modification :
   d'écran) : elle défile, et `applyRoute()` recentre l'onglet actif. Une 4ᵉ entrée
   demandera de repenser le header.
 
+- `pnEvents()` réindexe les **822 soirées** (passées via `f.history`, à venir via
+  `events.json`) sans rien charger de plus : chaque combat y figure deux fois,
+  d'où la clé triée `slugKey(a)|slugKey(b)`.
+- `ufc_fight_stats.csv` pèse **7,5 Mo** : jamais au démarrage. `loadFightStats()`
+  ne part qu'au premier clic sur « Stats du combat », et une seule fois par visite.
+- Le comparateur réutilise `fighterProfile()` (les 5 axes des fiches) : ne pas
+  recalculer un second modèle à côté.
+- Un seul volet ouvert à la fois (`pnOpenPanel`), sinon deux comparateurs
+  déroulés poussent la page de plusieurs écrans.
+- Les six listes de « Mes tickets » (et le duel) passent toutes par
+  `pnLineHTML()` : y ajouter une colonne se fait **là**, pas dans un des appels,
+  sinon une liste sur six diverge. Les anciennes classes `.pn-what` / `.pn-res` /
+  `.pn-gain` n'existent plus.
+- L'affiche d'une soirée est en portrait, la vignette en paysage : on recadre en
+  `cover` avec `object-position:center 14%` — le haut d'une affiche UFC porte le
+  logo et les visages, le bas n'est que la liste des sponsors. Le fond flouté
+  (`.pn-shot-bg`) reste dessous pour les images déjà en paysage.
+- `profileAvg()` est la moyenne **arithmétique** des cinq axes, pas un indice
+  pondéré : un 5,0 veut dire « complet », pas « moyen partout ».
+
 ## Roadmap
 
 1. ~~Pages de classement P4P + par catégorie~~ — fait
 2. ~~Description courte des combattants (intro Wikipedia)~~ — fait
 3. ~~Vidéos de combat rattachées au palmarès (YouTube UFC + RMC)~~ — fait
 4. ~~Pronostics : carte du week-end + marché des convictions~~ — fait
-5. (Plus tard) Comparateur, URLs SEO, notes communautaires
+5. ~~Calendrier complet, comparateur, notes de combat, favoris~~ — fait
+6. (Plus tard) Journal d'événement, actualités (RSS), URLs SEO
