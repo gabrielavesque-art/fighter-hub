@@ -328,6 +328,67 @@ function parseBouts(wt){
   return out;
 }
 
+/* ─────────── source 1 bis : les annonces écrites en toutes lettres ───────────
+
+   Une soirée lointaine n'a presque jamais de tableau de carte. Ses combats sont
+   pourtant déjà annoncés, en prose, dans la section « Background » :
+
+     A [[Lightweight]] bout between [[Islam Makhachev]] and [[Ian Machado Garry]]
+     is expected to take place at this event.
+
+   Aucun « vs. » dans cette phrase : parseBouts() la sautait, et le site
+   affichait « carte à venir » sur des affiches connues de tous depuis des
+   semaines. On lit donc ces phrases-là — mais seulement en dernier recours,
+   quand aucune forme structurée n'a rien donné : un tableau, quand il existe,
+   reste plus fiable qu'un paragraphe.
+
+   Deux garde-fous, parce que la prose dit aussi le contraire de ce qu'on
+   cherche : on écarte toute phrase qui parle d'un retrait ou d'un report, et on
+   ne retient que les liens vers des personnes (les divisions et les ceintures
+   sont des liens aussi). */
+const PROSE_HIT = /(?:bout|fight|matchup)\s+between\b|\b(?:is|are|was|were)\s+expected\s+to\s+(?:face|meet)\b|\bwill\s+(?:face|meet)\b|\b(?:is|was)\s+(?:scheduled|set|booked)\s+(?:to\s+face|for)\b/i;
+const PROSE_OUT = /\b(?:withdrew|withdrawn|withdraw|pulled out|was removed|removed from|cancell?ed|scrapped|postponed|called off|left vacant|failed|injur|briefly linked|rescheduled|moved to|replaced by|stepped in)\b/i;
+// un lien qui décrit la catégorie, la ceinture ou la soirée n'est pas un nom
+const PROSE_SKIP = /weight|championship|title|\bUFC\b|tournament|\bbout\b|\bcard\b|debut|promotion/i;
+
+function proseNames(seg){
+  const out = [];
+  const re = /\[\[([^\]|[]+?)(?:\|([^\]]+?))?\]\]/g;
+  let m;
+  while((m = re.exec(seg)) !== null){
+    const cible = m[1].trim();                   // la page visée, pas le libellé
+    if(PROSE_SKIP.test(cible)) continue;
+    const nom = cleanName(m[2] || m[1]);
+    if(nom && !out.includes(nom)) out.push(nom);
+  }
+  return out;
+}
+
+function parseProse(wt){
+  const seen = new Set(), out = [];
+  // On raisonne par PARAGRAPHE, pas par phrase : Wikipedia consacre un
+  // paragraphe à chaque affiche, et le démenti arrive à la phrase suivante —
+  // « A bout between X and Y was scheduled. However, X withdrew. » Découper sur
+  // le point ferait donc entrer un combat annulé dans la carte.
+  // Conséquence assumée : un paragraphe qui annonce un remplaçant est écarté
+  // avec le reste. Mieux vaut manquer une affiche que d'en promettre une morte.
+  for(const para of String(wt || '').split(/\n\s*\n/)){
+    const p = para.replace(/\n/g, ' ');           // une phrase peut tenir sur 3 lignes
+    if(!PROSE_HIT.test(p) || PROSE_OUT.test(p)) continue;
+    const noms = proseNames(p);
+    if(noms.length < 2) continue;
+    const [a, b] = noms;
+    if(a.length > 42 || b.length > 42) continue;
+    if(!/[a-zA-Z]{2}/.test(a) || !/[a-zA-Z]{2}/.test(b)) continue;
+    const key = [a.toLowerCase(), b.toLowerCase()].sort().join('|');
+    if(seen.has(key)) continue;
+    seen.add(key);
+    const title = isTitle(p);
+    out.push({ a, b, wc: divOf(p), title, rounds: title ? 5 : 3, card: 'main', announced: true });
+  }
+  return out;
+}
+
 /* ─────────────── source 2 : l'API MMA ─────────────── */
 async function apiFights(dateISO){
   if(!API_KEY) return null;
@@ -461,6 +522,22 @@ const FIXTURES = {
 }}
 {{MMAevent end|notes=yes}}
 `,
+  // une soirée lointaine : pas de tableau, mais tout est dit dans « Background »
+  prose: `
+==Background==
+A [[UFC Lightweight Championship]] bout between current champion [[Islam Makhachev]]
+and [[Ian Machado Garry]] is expected to headline this event.
+
+A [[Women's flyweight|women's flyweight]] bout between [[Valentina Shevchenko]] and
+[[Natália Silva]] is expected to take place at this event.
+
+A [[Light Heavyweight]] bout between [[Alex Pereira]] and [[Magomed Ankalaev]] was
+scheduled for this event. However, Pereira withdrew due to injury.
+
+[[Sean O'Malley]] will face [[Merab Dvalishvili]] in a [[bantamweight]] bout.
+
+The event was expected to take place at the [[T-Mobile Arena]] in [[Las Vegas]].
+`,
 };
 function selftest(){
   let ko = 0;
@@ -493,6 +570,18 @@ function selftest(){
   check('carte préliminaire repérée', bouts[2].card, 'prelim');
   check('liste à puces lue', [bouts[3].a, bouts[3].b, bouts[3].wc], ['Islam Makhachev','Justin Gaethje','Lightweight']);
   check('doublon liste/tableau ignoré', bouts.filter(b=>b.a==='Tom Aspinall').length, 1);
+
+  // les annonces en prose : c'est tout ce qu'on a sur les soirées lointaines
+  const pr = parseProse(FIXTURES.prose);
+  check('prose : rien de structuré à lire', parseBouts(FIXTURES.prose).length, 0);
+  check('prose : trois annonces retenues', pr.length, 3);
+  check('prose : « bout between A and B »', [pr[0].a, pr[0].b], ['Islam Makhachev','Ian Machado Garry']);
+  check('prose : la ceinture n\'est pas un combattant', pr[0].title, true);
+  check('prose : division féminine', pr[1].wc, "Women's Flyweight");
+  check('prose : un retrait annule l\'annonce', pr.some(b=>b.a==='Alex Pereira'), false);
+  check('prose : « X will face Y »', [pr[2].a, pr[2].b], ['Sean O\'Malley','Merab Dvalishvili']);
+  check('prose : le lieu n\'est pas une affiche', pr.some(b=>/Arena|Vegas/.test(b.a + b.b)), false);
+  check('prose : marquée comme annonce', pr[0].announced, true);
 
   const tplBouts = parseBouts(FIXTURES.boutsTemplate);
   check('{{MMAevent bout}} : trois combats lus', tplBouts.length, 3);
@@ -566,10 +655,16 @@ function mergeManual(events){
     try{
       const wt = await wikitext(ev.name);
       ev.bouts = parseBouts(wt);
-      ev.posterFile = posterFile(wt);
       ev.src = ev.bouts.length ? 'wikipedia' : '';
-      console.log(`  ${ev.date}  ${ev.name} — ${ev.bouts.length} affiche(s)`);
-      if(DUMP && !ev.bouts.length) console.log('    (page lue, aucun « vs. » reconnu)');
+      // rien de structuré : la carte est peut-être annoncée en toutes lettres
+      if(!ev.bouts.length){
+        ev.bouts = parseProse(wt);
+        if(ev.bouts.length) ev.src = 'wikipedia-prose';
+      }
+      ev.posterFile = posterFile(wt);
+      console.log(`  ${ev.date}  ${ev.name} — ${ev.bouts.length} affiche(s)`
+        + (ev.src === 'wikipedia-prose' ? ' (annonces en prose)' : ''));
+      if(DUMP && !ev.bouts.length) console.log('    (page lue, aucune affiche reconnue)');
     }catch(e){
       // page pas encore créée : l'événement existe quand même, sa carte viendra
       ev.bouts = [];
