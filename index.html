@@ -524,6 +524,15 @@ main{padding:0 clamp(14px,3.5vw,44px) 70px;max-width:1400px;margin:0 auto}
 .pf-track{height:9px;background:var(--bg-3);border-radius:5px;overflow:hidden}
 .pf-fill{height:100%;border-radius:5px;transition:width .6s cubic-bezier(.2,.7,.3,1)}
 .pf-val{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-align:right;color:var(--tx)}
+/* le récapitulatif : un seul chiffre, et les deux bouts du profil */
+.pf-avg{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:2px 14px;
+  margin-top:5px;padding-top:13px;border-top:1px solid var(--line)}
+.pf-avg b{grid-row:1/3;align-self:center;font-family:'JetBrains Mono',monospace;font-weight:700;
+  font-size:27px;line-height:1;color:var(--tx);font-variant-numeric:tabular-nums}
+.pf-avg span{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1.1px;
+  text-transform:uppercase;color:var(--tx-3)}
+.pf-avg em{font-style:normal;font-size:12px;color:var(--tx-2);line-height:1.45}
+.pf-avg i{font-style:normal;font-weight:600}
 /* drapeaux en image (remplacent les emojis, invisibles sur Windows) */
 .flag{height:12px;width:auto;display:inline-block;border-radius:2px;vertical-align:middle;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
 .m-tags .flag{height:11px;margin-right:2px;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
@@ -853,26 +862,60 @@ footer a:hover{color:var(--tx-2)}
 .pn-verdictbox b{display:block;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;
   color:var(--tx);margin-bottom:5px}
 .pn-verdictbox span{display:block;margin-top:8px;font-size:12.5px;color:var(--tx-3)}
-.pn-line{display:grid;grid-template-columns:96px minmax(0,1fr) auto auto;gap:14px;align-items:center;
-  background:var(--bg-2);border:1px solid var(--line);border-radius:9px;padding:10px 14px;margin-bottom:7px;font-size:13.5px}
-.pn-line.win{border-left:3px solid var(--green)}
-.pn-line.lose{border-left:3px solid var(--red)}
+/* Une ligne de ticket est le compte rendu d'un pari : elle mérite la même
+   largeur et la même épaisseur qu'une affiche. D'où deux blocs seulement —
+   le sujet à gauche, le montant à droite, en gros — et un liseré de couleur
+   qui donne le verdict avant même la lecture. */
+.pn-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
+  padding:16px 22px 16px 24px;margin-bottom:10px;position:relative;overflow:hidden;
+  transition:border-color .18s var(--ease),transform .18s var(--ease)}
+.pn-line:hover{border-color:var(--line-2)}
+.pn-line::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--line-2)}
+.pn-line.win::before{background:linear-gradient(180deg,#3fd183,var(--green))}
+.pn-line.lose::before{background:linear-gradient(180deg,var(--red-lt),var(--red))}
+.pn-line.win{background:linear-gradient(90deg,rgba(63,209,131,.075),transparent 45%),var(--bg-2)}
+.pn-line.lose{background:linear-gradient(90deg,rgba(255,59,77,.075),transparent 45%),var(--bg-2)}
+
+.pn-lmain{min-width:0}
+.pn-ltop{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap}
+.pn-ltitle{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:21px;line-height:1.14;
+  letter-spacing:.2px;color:var(--tx);overflow:hidden;text-overflow:ellipsis}
+.pn-ltitle em{font-style:normal;font-weight:600;color:var(--tx-3);font-size:.82em;
+  letter-spacing:1.4px;text-transform:uppercase;padding:0 3px}
+.pn-lsub{margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--tx-2)}
+.pn-lsub b{color:var(--tx);font-weight:600}
+.pn-lsub em{font-style:normal;color:var(--tx-3)}
+.pn-lside{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right}
+.pn-lamount{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;
+  letter-spacing:-.6px;line-height:1;white-space:nowrap;color:var(--tx)}
+.pn-lamount.win{color:#3fd183}
+.pn-lamount.lose{color:#ff6b78}
+.pn-lamsub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx-3);white-space:nowrap}
+/* couper une position depuis la liste : un vrai bouton, pas un lien perdu */
+.pn-lside .pn-mini{margin-top:4px;padding:5px 13px;border:1px solid var(--line-2);border-radius:999px;
+  text-decoration:none;font-size:11.5px;letter-spacing:.4px;transition:all .15s var(--ease)}
+.pn-lside .pn-mini:hover{border-color:var(--red-lt);background:var(--red-dim);color:var(--red-lt)}
+
+/* le petit chapeau : date, statut, camp d'une conviction */
 .pn-when2{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3);white-space:nowrap}
-.pn-what{min-width:0;overflow:hidden;text-overflow:ellipsis;color:var(--tx-2)}
-.pn-what b{color:var(--tx);font-weight:600}
-.pn-what em{font-style:normal;color:var(--tx-3)}
-.pn-res{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--tx-3);white-space:nowrap}
-.pn-gain{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;white-space:nowrap;color:var(--tx-2)}
-.pn-gain.win{color:#3fd183}
-.pn-gain.lose{color:#ff6b78}
+.pn-lbadge{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;text-transform:uppercase;
+  letter-spacing:1px;padding:3px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--tx-3)}
+.pn-lbadge.win{color:#3fd183;border-color:rgba(63,209,131,.42);background:rgba(63,209,131,.11)}
+.pn-lbadge.lose{color:#ff6b78;border-color:rgba(255,59,77,.42);background:rgba(255,59,77,.11)}
+.pn-lbadge.live{color:var(--gold);border-color:rgba(211,162,74,.42);background:rgba(211,162,74,.1)}
 
 @media(max-width:880px){
   .pn-bankrow{grid-template-columns:repeat(2,1fr)}
   .pn-head{grid-template-columns:1fr;gap:10px}
   .pn-side.right{flex-direction:row-reverse;justify-content:flex-start;text-align:left}
   .pn-when{text-align:left}
-  .pn-line{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}
-  .pn-when2{grid-column:1/-1}
+  /* en dessous de 880 px la colonne du montant étrangle le titre : on la passe
+     sous le sujet, alignée à gauche, et la ligne garde toute sa largeur */
+  .pn-line{grid-template-columns:1fr;gap:12px;padding:15px 18px 15px 20px}
+  .pn-lside{align-items:flex-start;text-align:left;flex-flow:row wrap;gap:6px 12px}
+  .pn-lamount{font-size:20px}
+  .pn-ltitle{font-size:19px}
   .pn-ptop{flex-direction:column;gap:10px}
   .pn-pprice{align-self:flex-start}
 }
@@ -1059,8 +1102,6 @@ footer a:hover{color:var(--tx-2)}
 .pn-bout.title-bout{border-color:rgba(211,162,74,.32)}
 .pn-bout.title-bout .pn-oddsrow em{color:var(--gold)}
 
-/* la ligne d'un ticket accueille maintenant un bouton : on lui fait de la place */
-.pn-line{grid-template-columns:96px minmax(0,1fr) auto auto auto}
 
 @media(max-width:760px){
   .pn-tabs{grid-template-columns:1fr;gap:6px}
@@ -1343,19 +1384,26 @@ footer a:hover{color:var(--tx-2)}
 /* Les affiches vont du portrait au carré ; un simple object-fit:cover dans un
    cadre 16/10 rognait les visages et le titre. Le flou en fond remplit le
    cadre, l'affiche par-dessus reste complète. */
-/* `.pn-ethumb img` (0,1,1) l'emporterait sur `.pn-shot-fg` (0,1,0) et
-   remettrait un object-fit:cover : on descend donc d'un cran dans l'arbre. */
+/* Une affiche UFC est en portrait : la poser entière laissait deux bandes
+   floues et l'image flottait au milieu. On remplit donc le cadre, cadré sur le
+   HAUT — c'est là que sont les visages et le nom de l'affiche, jamais en bas.
+   Le fond flou ne se voit plus mais reste : il rattrape les rares affiches
+   plus larges que hautes. */
 .pn-ethumb .pn-shot{position:absolute;inset:0;display:block}
 .pn-ethumb .pn-shot-bg{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:blur(18px) saturate(1.25) brightness(.5);transform:scale(1.2);
+  filter:blur(20px) saturate(1.3) brightness(.45);transform:scale(1.25);
 }
 .pn-ethumb .pn-shot-fg{
-  position:relative;width:100%;height:100%;object-fit:contain;z-index:1;
-  filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));
-  transition:transform .3s var(--ease);
+  position:relative;width:100%;height:100%;object-fit:cover;object-position:center 14%;
+  z-index:1;transition:transform .35s var(--ease);
 }
-.pn-ecard:hover .pn-ethumb .pn-shot-fg{transform:scale(1.03)}
+.pn-ecard:hover .pn-ethumb .pn-shot-fg{transform:scale(1.05)}
+/* un dégradé en pied pour que le texte de la carte ne colle pas à l'image */
+.pn-ethumb::after{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,11,13,.35) 0%,transparent 30%,transparent 62%,rgba(11,11,13,.75) 100%);
+}
 </style>
 </head>
 <body>
@@ -2611,6 +2659,15 @@ function advancedStatsBlock(f){
 }
 
 // bloc "Profil du combattant" : radar interactif + barres (séparé pour être placé avant "Comment il gagne")
+// La moyenne des cinq axes : un seul chiffre pour situer un combattant avant
+// d'entrer dans le détail. C'est bien une moyenne arithmétique, pas un indice
+// pondéré — un 5,0 veut dire « complet », pas « moyen partout ».
+function profileAvg(prof){
+  if(!prof) return null;
+  const n = prof.dims.reduce((s,d)=>s + d.v, 0) / prof.dims.length;
+  return +n.toFixed(1);
+}
+
 function profileBlock(f){
   const prof = fighterProfile(f.key);
   if(!prof) return '';
@@ -2627,10 +2684,20 @@ function profileBlock(f){
       <div class="pf-track"><div class="pf-fill" style="width:${d.v*10}%;background:${d.c}"></div></div>
       <span class="pf-val">${d.v.toFixed(1)}</span>
     </div>`).join('');
+  // prof.dims est trié du plus fort au plus faible : les deux bouts suffisent
+  const moy = profileAvg(prof);
+  const haut = prof.dims[0], bas = prof.dims[prof.dims.length - 1];
   return `<div class="sec">Profil du combattant <span>10 = top 3% du roster</span></div>
     <div class="pf-wrap">
       <div class="pf-radar">${radarSVG(dims)}</div>
-      <div class="pf-box">${rows}</div>
+      <div class="pf-box">
+        ${rows}
+        <div class="pf-avg">
+          <b>${moy.toFixed(1)}</b>
+          <span>Moyenne des cinq axes</span>
+          <em>Point fort <i style="color:${haut.c}">${haut.label}</i> ${haut.v.toFixed(1)} · point faible <i style="color:${bas.c}">${bas.label}</i> ${bas.v.toFixed(1)}</em>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -3748,7 +3815,7 @@ function pnBoutHTML(b, i, opt){
           <em>${b.title?'<i class="pn-belt">ceinture</i>':''}${esc(wcShort(b.wc)||'')}</em>
           <span>${pnPct(1-pa)} · ${q.b.toFixed(2)}</span>
         </div>
-        <div class="pn-when">${b.event && !(opt&&opt.hideEvent) ? esc(b.event)+' · ' : ''}${b.date?pnDateFR(Date.parse(b.date)):''}${b.derived?' · affiche principale (déduite)':''}</div>
+        <div class="pn-when">${b.event && !(opt&&opt.hideEvent) ? esc(b.event)+' · ' : ''}${b.date?pnDateFR(Date.parse(b.date)):''}${b.derived?' · affiche principale (déduite)':b.announced?' · annoncé, place sur la carte à confirmer':''}</div>
       </div>
       <div class="pn-side right${pa<.5?' fav':''}"><div><div class="pn-name">${esc(nameB)}</div><div class="pn-st">${st(fb, slugKey(b.b))}</div></div>${blind?'':pnFace(fb)}</div>
     </div>
@@ -3787,6 +3854,48 @@ function pnMainFromName(name){
   return { a: a.name, b: b.name, wc: a.wc || b.wc || '' };
 }
 
+/* Retrouver la vedette d'une soirée DÉJÀ disputée est un autre problème : on ne
+   peut pas passer par pnFindFighter(), qui n'accepte que des combattants encore
+   actifs — sur une carte de 2020 il n'en reste presque aucun, et « Khabib »
+   n'existe plus dans la liste. On compare donc les deux camps annoncés par le
+   nom aux combats de la soirée elle-même : la réponse est forcément dedans. */
+function pnNameSides(name){
+  const after = String(name||'').split(/:\s*/).slice(1).join(': ');
+  if(!after) return null;
+  const parts = after.split(/\s+vs\.?\s+/i);
+  if(parts.length !== 2) return null;
+  const k = s => evPosterKey(String(s).replace(/\s*\d+\s*$/, ''));   // « Lopes 2 » → « Lopes »
+  const ka = k(parts[0]), kb = k(parts[1]);
+  return (ka.length >= 3 && kb.length >= 3 && ka !== kb) ? [ka, kb] : null;
+}
+// Le nom d'une carte désigne un combattant par son prénom (« Khabib »), son
+// patronyme (« Gaethje ») ou un patronyme composé (« Machado Garry ») : on teste
+// chaque mot du nom complet, puis chacun de ses suffixes. Le trait d'union
+// compte comme une espace — l'UFC a écrit « Waterson » longtemps après que la
+// combattante soit devenue « Waterson-Gomez ».
+function pnSideMatches(full, key){
+  const toks = String(full||'').split(/[\s\-']+/).map(t=>evPosterKey(t)).filter(Boolean);
+  for(let i = 0; i < toks.length; i++){
+    if(toks[i] === key || toks.slice(i).join('') === key) return true;
+  }
+  return false;
+}
+function pnMainIndex(name, bouts){
+  const sides = pnNameSides(name);
+  if(!sides) return -1;
+  const [ka, kb] = sides;
+  const side = b => (pnSideMatches(b.a, ka) || pnSideMatches(b.b, ka) ? 1 : 0)
+                  + (pnSideMatches(b.a, kb) || pnSideMatches(b.b, kb) ? 1 : 0);
+  const deux = bouts.findIndex(b => side(b) === 2);
+  if(deux >= 0) return deux;
+  // Une bonne part des affiches porte un surnom (« Cowboy », « The Korean
+  // Zombie », « Joanna ») qu'aucun nom d'état civil ne contient. Un seul camp
+  // reconnu suffit alors : un combattant ne figure qu'une fois sur une carte,
+  // donc si un seul combat le contient, c'est forcément la vedette.
+  const un = bouts.map((b,i)=>[i, side(b)]).filter(([,s])=>s === 1);
+  return un.length === 1 ? un[0][0] : -1;
+}
+
 // Les combats des cartes annoncées ne sont PAS stockés : ils vivent dans
 // events.json et deviennent une affiche à toi au moment où tu paries dessus.
 function pnAnnounced(){
@@ -3808,6 +3917,9 @@ function pnAnnounced(){
         id: `${slugKey(bt.a)}-${slugKey(bt.b)}-${ev.date}`,
         a: bt.a, b: bt.b, date: ev.date, rounds: bt.rounds || (bt.title ? 5 : 3),
         wc: bt.wc || '', event: ev.name, title: !!bt.title, card: bt.card || 'main',
+        // affiche lue dans un paragraphe d'annonce et non dans un tableau de
+        // carte : c'est officiel, mais l'ordre de la soirée n'est pas encore fixé
+        announced: !!bt.announced,
       });
     }
   }
@@ -3905,11 +4017,19 @@ function pnEvents(){
       });
     }
   }
-  const past = [...by.values()].map(e=>({
-    ...e, bouts:[...e.bouts.values()],
-    iso: e.date ? new Date(e.date).toISOString().slice(0,10) : '',
-    poster: evPoster(e.name),
-  }));
+  const past = [...by.values()].map(e=>{
+    const bouts = [...e.bouts.values()];
+    // « UFC 254: Khabib vs. Gaethje » dit qui est en vedette. Sans ce tri, le
+    // premier combat de la liste sortait de l'ordre d'itération des palmarès —
+    // donc au hasard — et la vignette montrait deux préliminaires inconnus.
+    const i = pnMainIndex(e.name, bouts);
+    if(i > 0) bouts.unshift(bouts.splice(i, 1)[0]);
+    return {
+      ...e, bouts,
+      iso: e.date ? new Date(e.date).toISOString().slice(0,10) : '',
+      poster: evPoster(e.name),
+    };
+  });
 
   const today = new Date().toISOString().slice(0,10);
   const future = (EVENTS || []).filter(e=>e.date >= today).map(e=>({
@@ -4268,6 +4388,29 @@ function pnViewMarche(){
 }
 
 /* ── MES TICKETS ─────────────────────────────────────────────────────────── */
+/* Les cinq listes de cette page (paris en attente, réglés, convictions ouvertes,
+   tranchées, positions closes) disaient la même chose de cinq façons. Elles
+   passent maintenant toutes par ce gabarit : même stature, même hiérarchie —
+   le sujet en gros à gauche, le montant en gros à droite. */
+function pnLineHTML(o){
+  const t = o.tone ? ' ' + o.tone : '';
+  return `<div class="pn-line${t}" style="--i:${o.i||0}">
+    <div class="pn-lmain">
+      ${(o.when || o.badge) ? `<div class="pn-ltop">
+        ${o.when ? `<span class="pn-when2">${o.when}</span>` : ''}
+        ${o.badge ? `<span class="pn-lbadge ${o.badgeTone || o.tone || ''}">${o.badge}</span>` : ''}
+      </div>` : ''}
+      <div class="pn-ltitle">${o.title}</div>
+      ${o.sub ? `<div class="pn-lsub">${o.sub}</div>` : ''}
+    </div>
+    <div class="pn-lside">
+      ${o.amount ? `<div class="pn-lamount${t}">${o.amount}</div>` : ''}
+      ${o.amountSub ? `<div class="pn-lamsub">${o.amountSub}</div>` : ''}
+      ${o.action || ''}
+    </div>
+  </div>`;
+}
+
 function pnViewTickets(){
   const done = PN.tickets.filter(t=>t.settled).sort((a,b)=>b.settled.when-a.settled.when);
   const live = PN.tickets.filter(t=>!t.settled);
@@ -4286,12 +4429,15 @@ function pnViewTickets(){
 
   ${live.length ? `<div class="pn-sec">Combats en attente <span>${live.length}</span></div>` + live.map((t,i)=>{
     const b = pnBoutById(t.boutId) || {a:'?', b:'?'};
-    return `<div class="pn-line" style="--i:${i}">
-      <span class="pn-when2">${b.date?pnDateFR(Date.parse(b.date)):''}</span>
-      <span class="pn-what"><b>${esc(b.a)} vs ${esc(b.b)}</b> — tu dis ${esc(t.win)}${t.method?' par '+pnMethLabel(t.method):''}${t.round?' R'+t.round:''}</span>
-      <span class="pn-res">${fmtInt(t.stake)} cr à ${t.odds.toFixed(2)}</span>
-      <span class="pn-gain">${fmtInt(Math.round(t.stake*t.odds))} cr</span>
-    </div>`;
+    const det = [t.method ? 'par ' + pnMethLabel(t.method) : '', t.round ? 'au round ' + t.round : ''].filter(Boolean).join(' ');
+    return pnLineHTML({
+      i, tone:'', badge:'En attente', badgeTone:'live',
+      when: b.date ? pnDateFR(Date.parse(b.date)) : '',
+      title: `${esc(b.a)} <em>vs</em> ${esc(b.b)}`,
+      sub: `Tu dis <b>${esc(t.win)}</b>${det?' '+det:''} — mise de ${fmtInt(t.stake)} cr à la cote ${t.odds.toFixed(2)}`,
+      amount: `${fmtInt(Math.round(t.stake*t.odds))} cr`,
+      amountSub: 'si tu as raison',
+    });
   }).join('') : ''}
 
   ${openPos.length ? `<div class="pn-sec">Convictions en cours <span>${openPos.length}</span></div>` + openPos.map((m,i)=>{
@@ -4300,44 +4446,61 @@ function pnViewTickets(){
     // retiré) garde sa position : on l'affiche au prix d'entrée, sans mouvement
     const now = p ? pnSide(p, m.side) : m.price;
     const val = m.shares * now, pl = val - m.stake;
-    return `<div class="pn-line ${pnTone(pl)}" style="--i:${i}">
-      <span class="pn-when2">${pnDateFR(m.at)}</span>
-      <span class="pn-what"><span class="pn-tag ${m.side}">${m.side==='oui'?'OUI':'NON'}</span> ${esc(p?p.titre:m.propId)}</span>
-      <span class="pn-res">${fmtInt(m.stake)} cr à ${pnPct(m.price)} → ${pnPct(now)}</span>
-      <span class="pn-gain ${pnTone(pl)}">${pnCr(pl)}</span>
-      <button class="pn-mini" data-cut="${m.id}">couper</button>
-    </div>`;
+    return pnLineHTML({
+      i, tone: pnTone(pl),
+      when: pnDateFR(m.at),
+      badge: m.side === 'oui' ? 'Oui' : 'Non',
+      title: esc(p ? p.titre : m.propId),
+      sub: `${fmtInt(m.stake)} cr engagés à ${pnPct(m.price)} — le marché est à <b>${pnPct(now)}</b>, ta position vaut ${fmtInt(Math.round(val))} cr`,
+      amount: pnCr(pl),
+      amountSub: `${m.shares.toFixed(1)} parts`,
+      action: `<button class="pn-mini" data-cut="${m.id}">couper</button>`,
+    });
   }).join('') : ''}
 
   <div class="pn-sec">Pronostics réglés ${done.length?`<span>${done.length}</span>`:''}</div>
   ${done.length ? done.map((t,i)=>{
     const b = pnBoutById(t.boutId) || {a:'?',b:'?'};
     const cls = t.settled.ok===null ? '' : t.settled.ok ? 'win' : 'lose';
-    return `<div class="pn-line ${cls}" style="--i:${i}">
-      <span class="pn-when2">${pnDateFR(t.settled.when)}</span>
-      <span class="pn-what"><b>${esc(b.a)} vs ${esc(b.b)}</b> — tu disais ${esc(t.win)}${t.method?' par '+pnMethLabel(t.method):''}${t.round?' R'+t.round:''}</span>
-      <span class="pn-res">${esc(t.settled.res)}</span>
-      <span class="pn-gain ${cls}">${t.settled.ok===null?'rendu':pnCr((t.settled.gain||0)-t.stake)}</span>
-    </div>`;
+    const det = [t.method ? 'par ' + pnMethLabel(t.method) : '', t.round ? 'au round ' + t.round : ''].filter(Boolean).join(' ');
+    return pnLineHTML({
+      i, tone: cls,
+      when: pnDateFR(t.settled.when),
+      badge: t.settled.ok===null ? 'Annulé' : t.settled.ok ? 'Gagné' : 'Perdu',
+      title: `${esc(b.a)} <em>vs</em> ${esc(b.b)}`,
+      // sur un pronostic gagné, le verdict répète mot pour mot ce que tu avais
+      // annoncé : on ne l'affiche que quand il te contredit
+      sub: `Tu disais <b>${esc(t.win)}</b>${det?' '+det:''}`
+         + (t.settled.ok ? '' : ` — <em>${esc(t.settled.res)}</em>`),
+      amount: t.settled.ok===null ? 'rendu' : pnCr((t.settled.gain||0)-t.stake),
+      amountSub: `mise ${fmtInt(t.stake)} cr`,
+    });
   }).join('') : `<div class="rk-empty"><b>Rien de réglé</b>Tes paris se règlent tout seuls dès que le résultat entre dans la base officielle.</div>`}
 
   ${archive.length ? `<div class="pn-sec">Convictions tranchées <span>${archive.length}</span></div>` + archive.map((p,i)=>{
     const st = pnStatus(p), when = PN.resolved[p.id]?.when;
-    return `<div class="pn-line ${st==='gagne'?'win':'lose'}" style="--i:${i}">
-      <span class="pn-when2">${pnDateFR(when)}</span>
-      <span class="pn-what">${esc(p.titre)}</span>
-      <span class="pn-res">${st==='gagne'?'vérifiée':'démentie'}</span>
-    </div>`;
+    return pnLineHTML({
+      i, tone: st==='gagne' ? 'win' : 'lose',
+      when: when ? pnDateFR(when) : '',
+      badge: st==='gagne' ? 'Vérifiée' : 'Démentie',
+      title: esc(p.titre),
+      sub: st==='gagne' ? 'Le terrain t\'a donné raison.' : 'Le terrain t\'a donné tort.',
+    });
   }).join('') : ''}
 
   ${cut.length ? `<div class="pn-sec">Positions closes <span>${cut.length}</span></div>` + cut.map((p,i)=>{
     const prop = props.find(x=>x.id===p.propId);
-    return `<div class="pn-line ${p.closed.gain>=p.stake?'win':'lose'}" style="--i:${i}">
-      <span class="pn-when2">${pnDateFR(p.closed.at)}</span>
-      <span class="pn-what">${esc(prop?prop.titre:p.propId)} <em>(${p.side})</em></span>
-      <span class="pn-res">${p.closed.resolved?'échéance atteinte':'sortie à '+pnPct(p.closed.price)}</span>
-      <span class="pn-gain ${p.closed.gain>=p.stake?'win':'lose'}">${pnCr(p.closed.gain - p.stake)}</span>
-    </div>`;
+    const gagne = p.closed.gain >= p.stake;
+    return pnLineHTML({
+      i, tone: gagne ? 'win' : 'lose',
+      when: pnDateFR(p.closed.at),
+      badge: p.side === 'oui' ? 'Oui' : 'Non',
+      title: esc(prop ? prop.titre : p.propId),
+      sub: p.closed.resolved ? 'Échéance atteinte, la position s\'est réglée d\'elle-même.'
+                             : `Sortie anticipée à <b>${pnPct(p.closed.price)}</b> pour ${fmtInt(Math.round(p.closed.gain))} cr`,
+      amount: pnCr(p.closed.gain - p.stake),
+      amountSub: `mise ${fmtInt(p.stake)} cr`,
+    });
   }).join('') : ''}
 
   <div class="pn-sec">Remise à zéro</div>
@@ -4350,12 +4513,14 @@ function pnDuelHTML(){
     const b = PN.bouts.find(o=>o.id===x.i);
     const mine = b ? pnPick(b) : null;
     const same = mine && slugKey(mine.win)===slugKey(x.w);
-    return `<div class="pn-line ${mine?(same?'':'lose'):''}">
-      <span class="pn-what"><b>${b?esc(b.a)+' vs '+esc(b.b):esc(x.i)}</b></span>
-      <span class="pn-res">lui : ${esc(x.w)}${x.m?' · '+pnMethLabel(x.m):''}</span>
-      <span class="pn-res">${mine?'toi : '+esc(mine.win):'tu n\'as pas joué'}</span>
-      <span class="pn-gain">${mine?(same?'d\'accord':'désaccord'):''}</span>
-    </div>`;
+    return pnLineHTML({
+      tone: mine ? (same ? 'win' : 'lose') : '',
+      badge: mine ? (same ? 'D\'accord' : 'Désaccord') : 'Pas joué',
+      title: b ? `${esc(b.a)} <em>vs</em> ${esc(b.b)}` : esc(x.i),
+      sub: `Lui : <b>${esc(x.w)}</b>${x.m?' par '+pnMethLabel(x.m):''}${x.r?' au round '+x.r:''}<br>`
+         + (mine ? `Toi : <b>${esc(mine.win)}</b>${mine.method?' par '+pnMethLabel(mine.method):''}`
+                 : '<em>Tu n\'as pas encore pronostiqué ce combat.</em>'),
+    });
   }).join('');
   return `<div class="pn-sec">Le défi de ${esc(pnDuel.n||'ton pote')}</div>${rows}
     <p class="pn-hint">Ses combats ont été ajoutés à tes affiches : fais tes propres pronostics ci-dessus, ils se régleront en même temps.</p>`;
