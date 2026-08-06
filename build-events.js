@@ -58,9 +58,13 @@ const TEST     = process.argv.includes('--test');
 // rend zéro, --dump recrache ce que le script a réellement vu. Une exécution en
 // CI suffit alors à comprendre, au lieu de deviner.
 const DUMP     = process.argv.includes('--dump');
-// Deuxième source, quand Wikipedia n'a pas encore publié la carte : l'API MMA
-// (celle que api/fighters.js interroge déjà). Structurée, donc bien plus stable
-// qu'un scraping de page. Sans clé, on s'en passe simplement.
+// Deuxième source, quand Wikipedia n'a pas encore publié la carte : l'API MMA.
+// Structurée, donc plus stable qu'un scraping de page — mais le plan gratuit
+// ne donne accès qu'à une fenêtre de ~3 jours autour d'aujourd'hui
+// ("Free plans do not have access to this date"). Elle ne comblera donc
+// jamais un trou à plusieurs semaines ; elle reste branchée pour le jour où
+// le plan change, et pour les tout derniers jours avant une carte. Sans clé,
+// on s'en passe simplement.
 const API_KEY  = process.env.MMA_API_KEY || '';
 const API_HOST = 'v1.mma.api-sports.io';
 const MAX_EVENTS = 24;       // tout ce que Wikipedia annonce, jusqu'au plus lointain
@@ -254,6 +258,14 @@ async function posterUrls(files){
 //   · le tableau de carte «| Heavyweight || [[A]] || vs. || [[B]] ||»
 // On lit les deux et on dédoublonne : une même affiche peut figurer aux deux
 // endroits quand la page est en cours de mise à jour.
+// Trois formes cohabitent sur les pages d'événements à venir :
+//   · le tableau de carte «| Heavyweight || [[A]] || vs. || [[B]] ||»
+//   · le modèle dédié {{MMAevent bout|Division|[[A]]|vs.|[[B]]|...}}, qui a
+//     remplacé le tableau sur les pages les plus récentes — le repérer est ce
+//     qui manquait pour lire les cartes déjà publiées mais encore vides
+//   · la liste à puces  «*Heavyweight bout: [[A]] vs. [[B]]»
+// On les lit toutes, dans un même passage, et on dédoublonne : une même
+// affiche peut apparaître deux fois quand la page est en cours de mise à jour.
 function parseBouts(wt){
   const seen = new Set(), out = [];
   const push = (a, b, line, card) => {
@@ -268,19 +280,42 @@ function parseBouts(wt){
   };
 
   let card = '';
-  for(const raw of wt.split('\n')){
-    const line = raw.trim();
+  const lines = wt.split('\n');
+  for(let i = 0; i < lines.length; i++){
+    const line = lines[i].trim();
+
+    // {{MMAevent card|Main card}} / {{MMAevent card|Preliminary card|header=no}}
+    const meCard = line.match(/^\{\{\s*MMAevent card\s*\|([^}]*)\}\}/i);
+    if(meCard){
+      card = /early/i.test(meCard[1]) ? 'early' : /prelim/i.test(meCard[1]) ? 'prelim' : 'main';
+      continue;
+    }
     if(/^==+\s*(main card|preliminary|early prelim|announced bouts|fight card)/i.test(line)
        || /^!\s*colspan.*\|\s*(main card|preliminary|early prelim)/i.test(line)){
       card = /early/i.test(line) ? 'early' : /prelim/i.test(line) ? 'prelim' : 'main';
+      continue;
     }
+
+    // {{MMAevent bout|Division|[[A]]|vs.|[[B]]|méthode|round|temps|notes}} —
+    // un champ par ligne « | valeur », le bloc se referme sur une ligne « }} »
+    if(/^\{\{\s*MMAevent bout\b/i.test(line)){
+      let block = line, j = i + 1;
+      while(j < lines.length && !/^\}\}/.test(lines[j].trim())){ block += '\n' + lines[j]; j++; }
+      const fields = block.split('\n').map(x=>x.trim())
+        .filter(x=>x.startsWith('|')).map(x=>x.slice(1).trim());
+      const [wc, a, vs, b] = fields;
+      if(a && b && /^vs\.?$/i.test(vs || '')) push(a, b, block, card || 'main');
+      i = j;
+      continue;
+    }
+
     if(!/\bvs\.?\b/i.test(line)) continue;
 
     // forme tableau : les cellules sont séparées par ||
     if(/^\|/.test(line) && line.includes('||')){
       const cells = line.replace(/^\|/, '').split('||').map(c=>c.trim());
-      const i = cells.findIndex(c=>/^vs\.?$/i.test(plain(c)));
-      if(i > 0 && cells[i+1]){ push(cells[i-1], cells[i+1], line, card); continue; }
+      const k = cells.findIndex(c=>/^vs\.?$/i.test(plain(c)));
+      if(k > 0 && cells[k+1]){ push(cells[k-1], cells[k+1], line, card); continue; }
     }
     // forme liste à puces : « Division bout: A vs. B »
     if(/^\*/.test(line)){
@@ -387,6 +422,45 @@ const FIXTURES = {
 *Women's Bantamweight bout: [[Kayla Harrison]] vs. [[Amanda Nunes]]
 *Heavyweight bout: [[Tom Aspinall]] vs. [[Jon Jones]]
 `,
+  // forme récente, {{MMAevent bout}} : un champ par ligne, le bloc se referme
+  // sur « }} ». A remplacé le tableau sur les pages les plus fraîches.
+  boutsTemplate: `
+==Fight card==
+{{MMAevent}}
+{{MMAevent card|Fight card (Paramount+)}}
+{{MMAevent bout
+|Lightweight
+|[[Mateusz Gamrot]]
+|vs.
+|[[Quillan Salkilld]]
+|
+|
+|
+|
+}}
+{{MMAevent bout
+|Heavyweight
+|[[Tom Aspinall]] (c)
+|vs.
+|[[Jon Jones]]
+|For the [[UFC Heavyweight Championship]]
+|
+|
+|
+}}
+{{MMAevent card|Preliminary card (Paramount+)|header=no}}
+{{MMAevent bout
+|Light Heavyweight
+|Diyar Nurgozhay
+|vs.
+|Bruno Lopes
+|
+|
+|
+|
+}}
+{{MMAevent end|notes=yes}}
+`,
 };
 function selftest(){
   let ko = 0;
@@ -419,6 +493,13 @@ function selftest(){
   check('carte préliminaire repérée', bouts[2].card, 'prelim');
   check('liste à puces lue', [bouts[3].a, bouts[3].b, bouts[3].wc], ['Islam Makhachev','Justin Gaethje','Lightweight']);
   check('doublon liste/tableau ignoré', bouts.filter(b=>b.a==='Tom Aspinall').length, 1);
+
+  const tplBouts = parseBouts(FIXTURES.boutsTemplate);
+  check('{{MMAevent bout}} : trois combats lus', tplBouts.length, 3);
+  check('{{MMAevent bout}} : noms sans (c)', [tplBouts[0].a, tplBouts[0].b], ['Mateusz Gamrot','Quillan Salkilld']);
+  check('{{MMAevent bout}} : division lue', tplBouts[0].wc, 'Lightweight');
+  check('{{MMAevent bout}} : combat de titre détecté', [tplBouts[1].title, tplBouts[1].rounds], [true, 5]);
+  check('{{MMAevent card}} : carte préliminaire repérée', tplBouts[2].card, 'prelim');
 
   check('affiche lue dans l\'infobox', posterFile(FIXTURES.poster), 'UFC 321 poster.jpg');
   check('affiche en lien [[File:...]]', posterFile(FIXTURES.posterLink), 'UFC Fight Night 999.png');
