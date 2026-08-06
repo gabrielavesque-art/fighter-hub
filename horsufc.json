@@ -98,8 +98,10 @@
     "height": "5' 11\"", "reach": "78\"", "stance": "Orthodox", "dob": "Jan 11, 1988",
     "note": "Premier triple champion de l'histoire du ONE (moyens, mi-lourds, lourds), deux fois vainqueur de Reinier de Ridder. Toutes ses victoires avant la limite. Retraité en mai 2026.",
     "history": [
-      {"out":"L","opp":"Oumar « Reug Reug » Kane","method":"Décision partagée","event":"ONE 169 — nov. 2024","rnd":"","tm":""},
-      {"out":"W","opp":"Oumar « Reug Reug » Kane","method":"KO/TKO","event":"ONE Inner Circle, Lumpinee — mai 2026","rnd":"4","tm":""}
+      {"out":"L","opp":"Reiner De Ridder","method":"KO","event":"ONE ON PRIME VIDEO 5 — 02 dec. 2022","rnd":"1"},
+      {"out":"L","opp":"Reiner De Ridder","method":"TKO","event":"ONE 166 : QATAR — 01 mar. 2024","rnd":"3"},
+      {"out":"L","opp":"Oumar « Reug Reug » Kane","method":"Décision partagée","event":"ONE 169 — nov. 2024"},
+      {"out":"W","opp":"Oumar « Reug Reug » Kane","method":"KO/TKO","event":"ONE Inner Circle, Lumpinee — mai 2026","rnd":"4"}
     ]
   },
   "usmannurmagomedov": {
