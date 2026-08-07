@@ -1,4 +1,3 @@
-[CLAUDE.md](https://github.com/user-attachments/files/30822698/CLAUDE.md)
 # Fighter Hub
 
 Site MMA statique, fan project. En ligne : fighter-hub.vercel.app
