@@ -1545,6 +1545,7 @@ footer a:hover{color:var(--tx-2)}
 }
 .ac-sdot.on{background:rgba(211,162,74,.22);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(211,162,74,.45)}
 .ac-sdot.next{background:none;box-shadow:inset 0 0 0 1px var(--line-2)}
+.ac-dbank{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--gold);margin-left:8px}
 
 .ac-sec{
   display:flex;align-items:baseline;justify-content:space-between;gap:12px;
@@ -1591,9 +1592,19 @@ footer a:hover{color:var(--tx-2)}
   transition:border-color .15s,color .15s;
 }
 .ac-reset:hover{border-color:var(--red);color:var(--red-lt)}
-/* la prime, réclamable depuis le bandeau bankroll des pronostics */
+/* classement des crédits vérifiés : pas de .ac-erow (elle a un curseur pointeur
+   qui promet un clic) — ces lignes-là ne mènent nulle part */
+.ac-lbrow{display:flex;align-items:center;gap:11px;padding:9px 13px;border-radius:10px}
+.ac-lbrow.me{background:rgba(211,162,74,.10);border:1px solid rgba(211,162,74,.35)}
+.ac-brank{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx-3);width:26px;flex-shrink:0}
+.ac-lbname{flex:1;min-width:0;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-lbname em{color:var(--gold);font-style:normal;font-weight:700}
+.ac-lbbank{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--tx-2);flex-shrink:0}
+/* la prime, réclamable depuis le bandeau bankroll des pronostics — un lien, pas
+   un bouton : il ne fait bouger AUCUN chiffre de cette ligne (les crédits
+   vérifiés vivent ailleurs), donc pas question de laisser croire le contraire */
 .pn-claim{
-  display:block;width:100%;margin-bottom:10px;
+  display:block;width:100%;margin-bottom:10px;text-align:center;text-decoration:none;
   background:linear-gradient(120deg,rgba(211,162,74,.16),rgba(211,162,74,.06));
   border:1px solid rgba(211,162,74,.42);border-radius:11px;
   padding:12px 16px;color:var(--gold);cursor:pointer;
@@ -1794,6 +1805,10 @@ footer a:hover{color:var(--tx-2)}
 
 <script>
 /* ═══════════ CONFIG ═══════════ */
+// Clé "publishable" : faite pour être publique, elle ne donne accès qu'à ce que
+// les policies de la base autorisent. Ne JAMAIS mettre la clé "secret" ici.
+const SB_URL = 'https://xqrgpwcssdueemctugak.supabase.co';
+const SB_KEY = 'sb_publishable_0yKP2cS8dMUmKJ0MIzmdpA_t7gk6qhO';
 const RAW = 'https://raw.githubusercontent.com/Greco1899/scrape_ufc_stats/main/';
 const F_TOTT = RAW + 'ufc_fighter_tott.csv';
 const F_RESULTS = RAW + 'ufc_fight_results.csv';
@@ -3977,11 +3992,13 @@ function pnBankHTML(){
     // rien de réglé, donc rien à comparer : une barre vide qui répète l'évidence
     // vaut moins que le silence — la jauge apparaît au premier combat tranché
     : '';
-  // La prime se réclame là où elle sert : contre la bankroll, pas au fond d'une
-  // page de profil. Le bouton est branché par pnRender() — #pnBank vit hors de
-  // #pnView, donc pnWire() ne le voit pas.
+  // Un LIEN, pas un bouton : cliquer ici ne doit PAS faire bouger le solde de
+  // CETTE ligne (la bankroll de paris, encore locale) — la prime crédite les
+  // crédits vérifiés, un nombre différent, affiché sur la page compte. Mélanger
+  // les deux dans le même bandeau ferait croire que ce KPI a bougé alors que
+  // c'est un autre qui a changé, ailleurs.
   const claimLine = fhCanClaim()
-    ? `<button class="pn-claim" id="pnClaim">★ Prime du jour · récupérer +${fhNextAmount()} crédits</button>`
+    ? `<a class="pn-claim" href="#compte">★ Ta prime du jour t'attend · voir mon compte</a>`
     : '';
   return `
     <div class="pn-bankrow">
@@ -4842,12 +4859,8 @@ function pnRender(){
   pnPayout();
   const bankBox = document.getElementById('pnBank');
   bankBox.innerHTML = pnBankHTML();
-  const claim = bankBox.querySelector('#pnClaim');
-  if(claim) claim.addEventListener('click', ()=>{
-    if(!fhClaim()) return;
-    if(acctPage.classList.contains('on')) acctRender();
-    pnRender();                       // le compteur de bankroll monte tout seul
-  });
+  // pnBankHTML() rend un lien <a href="#compte"> pour la prime, pas un bouton :
+  // le hashchange déjà écouté par applyRoute() suffit, rien à câbler ici.
   // le premier KPI est le solde : on le fait défiler depuis ce qui était affiché
   const kpi = bankBox.querySelector('.pn-kpi');
   const shown = Math.round(PN.bank);
@@ -5172,75 +5185,131 @@ function pnBoot(){
 }
 
 /* ═══════════ MON COMPTE ═══════════
-   Un profil sans serveur : pseudo, combattants suivis, soirées suivies et une
-   prime quotidienne, tous rangés dans le même objet PN que les pronostics.
-   Rien de nouveau n'est stocké, rien n'est envoyé nulle part.
+   Pseudo, combattants suivis et soirées suivies restent un profil sans
+   serveur : tout ça vit dans PN, comme les pronostics, rien de nouveau n'est
+   stocké pour ça, rien n'est envoyé nulle part.
 
-   HORLOGE — la prime ne peut pas croire l'horloge du visiteur : avancer la date
-   de sa machine suffirait à la réclamer en boucle. Chaque réponse HTTP porte un
-   en-tête `Date` posé par le serveur ; on mesure l'écart une fois au chargement
-   et tout ce qui touche à la prime passe par fhNow(). Sans cette mesure, la
-   prime est refusée plutôt qu'accordée sur une base invérifiable.
+   CRÉDITS VÉRIFIÉS — la prime quotidienne, elle, ne vit plus dans PN. Avant,
+   n'importe qui pouvait éditer son localStorage pour se créditer à volonté ;
+   même la version qui vérifiait l'horloge du serveur ne faisait que DÉTECTER
+   la triche, jamais l'empêcher. Maintenant le solde et la série vivent dans
+   Supabase, derrière une connexion anonyme (aucun mail demandé) : la table
+   `profiles` n'a AUCUNE policy d'update pour le client, seule la fonction
+   Postgres `claim_daily()` peut faire bouger `bank`, et elle calcule tout
+   avec `now()` — l'horloge du SERVEUR, jamais celle du visiteur.
 
-   Ce que ça n'arrête PAS : éditer soi-même son localStorage. Aucun code côté
-   navigateur ne peut l'empêcher — il faudrait de vrais comptes et un serveur
-   qui tienne le solde. D'où la séparation nette : tout passe par fhClaim() et
-   pnSave(), les deux seuls points à rebrancher le jour venu. */
-let FH_SKEW = 0;                 // ms à ajouter à l'horloge locale pour retomber sur celle du serveur
-let FH_SYNCED = false;
-async function fhSyncClock(){
-  try{
-    // no-store + paramètre unique : une réponse servie par le cache porterait
-    // la date de sa mise en cache, pas celle de maintenant
-    const r = await fetch('?_h=' + Date.now(), { method:'HEAD', cache:'no-store' });
-    const t = Date.parse(r.headers.get('date') || '');
-    if(!isNaN(t)){ FH_SKEW = t - Date.now(); FH_SYNCED = true; }
-  }catch(e){ console.warn('[compte] horloge serveur injoignable :', e.message); }
+   Ce que ça ne couvre PAS : les paris (PN.bank, tickets, marché) restent en
+   localStorage exactement comme avant, donc toujours éditables en local.
+   Sécuriser les paris aussi est un chantier séparé, plus gros — d'où deux
+   nombres désormais affichés sur le compte : les crédits vérifiés (fiables,
+   classement public) et la bankroll de paris (comme avant, propre à cet
+   appareil, non vérifiable). */
+let sb = null;
+let SBProfile = null;   // { username, bank, daily_last, daily_streak } une fois chargé
+let SBReady   = false;  // session + profil chargés avec succès
+let SBFailed  = false;  // tentative faite et définitivement ratée (CDN ou connexion) — distinct
+                         // de "pas encore essayé" : sans ça l'écran affiche "Indisponible"
+                         // une fraction de seconde avant même d'avoir tenté quoi que ce soit.
+let SBBusy    = false;  // connexion en cours, évite les doubles tentatives
+let _sbBoard  = null;   // classement mis en cache, invalidé après un gain ou un pseudo
+
+// La librairie Supabase se charge en tâche de fond, JAMAIS en bloquant : un
+// <script src> classique aurait retardé TOUT le site (grille, recherche)
+// derrière un aller-retour vers jsdelivr avant même le premier affichage. Si
+// le CDN est lent ou injoignable, seul le compte reste en "connexion…" — le
+// reste du site s'affiche sans l'attendre.
+function sbLoadLib(){
+  return new Promise(resolve=>{
+    if(window.supabase){ resolve(window.supabase); return; }
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = ()=>resolve(window.supabase || null);
+    s.onerror = ()=>resolve(null);
+    document.head.appendChild(s);
+  });
 }
-function fhNow(){ return Date.now() + FH_SKEW; }
-// Jour civil UTC : un repère unique pour tout le monde. En jour local, changer
-// de fuseau déclaré rejouerait la prime sans même toucher à la date.
-function fhDay(ts){ return new Date(ts === undefined ? fhNow() : ts).toISOString().slice(0,10); }
-function fhDayDiff(a, b){ return Math.round((Date.parse(b+'T00:00:00Z') - Date.parse(a+'T00:00:00Z')) / PN_DAY); }
+// Connexion anonyme : un identifiant créé côté Supabase au premier chargement,
+// sans mail ni mot de passe. boot() l'appelle tout de suite pour que la
+// pastille de prime soit juste dès l'affichage — pas seulement quand on ouvre
+// le compte.
+async function sbEnsureAuth(){
+  if(SBReady) return true;
+  if(SBBusy) return false;
+  SBBusy = true;
+  try{
+    if(!sb){
+      const lib = await sbLoadLib();
+      if(!lib){ SBFailed = true; return false; }  // CDN injoignable : compte indisponible, reste du site intact
+      sb = lib.createClient(SB_URL, SB_KEY);
+    }
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session){
+      const { error } = await sb.auth.signInAnonymously();
+      if(error) throw error;
+    }
+    await sbLoadProfile();
+    SBReady = !!SBProfile;
+    if(!SBReady) SBFailed = true;
+  }catch(e){
+    console.warn('[compte] connexion impossible :', e.message);
+    SBFailed = true;
+  }finally{
+    SBBusy = false;
+  }
+  return SBReady;
+}
+async function sbLoadProfile(){
+  const { data:{ user } } = await sb.auth.getUser();
+  if(!user) return;
+  const { data, error } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  if(error){ console.warn('[compte] profil introuvable :', error.message); return; }
+  SBProfile = data;
+}
+async function sbLoadBoard(){
+  if(!sb) return [];
+  try{
+    const { data, error } = await sb.from('leaderboard').select('*').limit(50);
+    if(error) throw error;
+    return data || [];
+  }catch(e){ console.warn('[compte] classement indisponible :', e.message); return []; }
+}
 
 /* ── prime quotidienne : 50 crédits, +5 par jour consécutif ──────────────── */
 const FH_CLAIM_BASE = 50;    // le premier jour
 const FH_CLAIM_STEP = 5;     // chaque jour d'affilée en plus
 // Plafond : sans lui la série devient la principale source de revenus (J60 =
 // 345 cr/jour) et la bankroll ne veut plus rien dire. À J11 la prime double
-// déjà la mise de départ — c'est assez pour récompenser l'assiduité.
-const FH_CLAIM_CAP  = 100;
+// déjà la mise de départ — c'est assez pour récompenser l'assiduité. La même
+// règle est appliquée une seconde fois côté serveur, dans claim_daily() : ce
+// calcul-ci ne sert qu'à l'affichage (bouton, points de série).
+const FH_CLAIM_CAP = 100;
 function fhAmountFor(streak){
   return Math.min(FH_CLAIM_CAP, FH_CLAIM_BASE + FH_CLAIM_STEP * Math.max(0, streak - 1));
 }
-function fhDaily(){
-  if(!PN) return { last:'', streak:0, ts:0 };
-  return PN.daily || (PN.daily = { last:'', streak:0, ts:0 });
-}
-// Série qui court encore aujourd'hui : réclamée hier elle continue, avant-hier
-// elle est retombée. Le compteur stocké n'est donc jamais lu tel quel.
-function fhStreak(){
-  const d = fhDaily();
-  if(!d.last) return 0;
-  const gap = fhDayDiff(d.last, fhDay());
-  return gap >= 0 && gap <= 1 ? d.streak : 0;
-}
+function fhStreak(){ return SBProfile ? SBProfile.daily_streak : 0; }
 function fhNextAmount(){ return fhAmountFor(fhStreak() + 1); }
+// Indication d'affichage seulement — new Date() suffit ici, contrairement à
+// avant : le vrai verrou est dans claim_daily(), avec l'horloge du serveur.
+// Au pire ce calcul se trompe et affiche un bouton actif que le clic refusera.
 function fhCanClaim(){
-  if(!PN || !FH_SYNCED) return false;      // pas d'horloge de référence, pas de prime
-  const d = fhDaily();
-  if(d.ts && fhNow() < d.ts) return false; // horloge reculée : on refuse au lieu de recréditer
-  return d.last !== fhDay();
+  if(!SBProfile) return false;
+  return SBProfile.daily_last !== new Date().toISOString().slice(0,10);
 }
-function fhClaim(){
-  if(!fhCanClaim()) return null;
-  const d = fhDaily();
-  const streak = fhStreak() + 1;
-  const gain = fhAmountFor(streak);
-  PN.bank += gain;
-  d.last = fhDay(); d.streak = streak; d.ts = fhNow();
-  pnSave();
-  return { gain, streak };
+async function fhClaim(){
+  if(!sb) return null;
+  try{
+    const { data, error } = await sb.rpc('claim_daily');
+    if(error) throw error;
+    const row = Array.isArray(data) ? data[0] : data;
+    if(!row) return null;
+    SBProfile = { ...SBProfile, bank:row.bank, daily_streak:row.streak,
+                  daily_last:new Date().toISOString().slice(0,10) };
+    _sbBoard = null;          // le classement doit refléter le nouveau solde
+    return { gain:row.gain, streak:row.streak };
+  }catch(e){
+    console.warn('[compte] prime refusée :', e.message);
+    return null;
+  }
 }
 
 /* ── combattants suivis ──────────────────────────────────────────────────── */
@@ -5343,6 +5412,13 @@ function acctStats(){
   return { ...s, staked, best, roi: staked > 0 ? (s.me.pl / staked) * 100 : null };
 }
 function acctDailyHTML(){
+  if(!SBProfile){
+    const failed = SBFailed;
+    return `<div class="ac-daily spent"><div class="ac-dmain">
+      <div class="ac-dtitle">Crédits vérifiés</div>
+      <div class="ac-dtxt">${failed ? "Indisponibles pour l'instant — réessaie plus tard." : 'Connexion…'}</div>
+    </div><button class="ac-claim" disabled>${failed ? 'Indisponible' : 'Un instant…'}</button></div>`;
+  }
   const streak = fhStreak();
   const can = fhCanClaim();
   const amount = fhNextAmount();
@@ -5355,11 +5431,8 @@ function acctDailyHTML(){
   }
   let txt, btn;
   if(can){
-    txt = `Ta prime du jour : <b>+${amount} crédits</b>.${streak ? ` ${streak+1}<sup>e</sup> jour d'affilée.` : ''}`;
+    txt = `Ta prime du jour : <b>+${amount} crédits vérifiés</b>.${streak ? ` ${streak+1}<sup>e</sup> jour d'affilée.` : ''}`;
     btn = `<button class="ac-claim" id="acClaim">Récupérer +${amount}</button>`;
-  } else if(!FH_SYNCED){
-    txt = `Impossible de joindre le serveur pour vérifier la date. La prime se débloque au prochain chargement de la page.`;
-    btn = `<button class="ac-claim" disabled>Indisponible</button>`;
   } else {
     txt = `Déjà récupérée aujourd'hui. Reviens demain pour <b>+${fhAmountFor(streak+1)} crédits</b>${streak?` et prolonger ta série de ${streak} jours`:''}.`;
     btn = `<button class="ac-claim" disabled>À demain</button>`;
@@ -5367,12 +5440,27 @@ function acctDailyHTML(){
   return `
     <div class="ac-daily${can?'':' spent'}">
       <div class="ac-dmain">
-        <div class="ac-dtitle">Prime quotidienne</div>
+        <div class="ac-dtitle">Crédits vérifiés<span class="ac-dbank">${fmtInt(SBProfile.bank)}</span></div>
         <div class="ac-dtxt">${txt}</div>
         <div class="ac-streak">${dots.join('')}${streak>7?`<span class="ac-sdot on">+${streak-7}</span>`:''}</div>
       </div>
       ${btn}
     </div>`;
+}
+// Pseudo + solde seulement (RLS ne montre jamais ceux des autres) : le classement.
+function acctBoardHTML(){
+  if(SBFailed) return `<div class="rk-empty"><b>Classement indisponible</b>Réessaie plus tard.</div>`;
+  if(_sbBoard === null) return `<div class="rk-empty"><b>Chargement du classement…</b></div>`;
+  if(!_sbBoard.length) return `<div class="rk-empty"><b>Classement indisponible</b>Réessaie plus tard.</div>`;
+  const mine = SBProfile && SBProfile.username ? SBProfile.username : null;
+  return `<div class="ac-elist">${_sbBoard.map(r=>{
+    const isMe = mine && r.username === mine;
+    return `<div class="ac-lbrow${isMe?' me':''}">
+      <span class="ac-brank">#${r.rank}</span>
+      <span class="ac-lbname">${esc(r.username)}${isMe?' <em>· toi</em>':''}</span>
+      <span class="ac-lbbank">${fmtInt(r.bank)} cr</span>
+    </div>`;
+  }).join('')}</div>`;
 }
 function acctRender(){
   const view = document.getElementById('acctView');
@@ -5394,12 +5482,16 @@ function acctRender(){
           <input class="ac-name" id="acName" type="text" maxlength="24" spellcheck="false"
                  placeholder="Ton pseudo…" value="${esc(nm)}">
         </div>
-        <div class="ac-sub">Ton profil vit dans ce navigateur — aucun compte, aucune donnée envoyée.</div>
+        <div class="ac-sub">Le pseudo et les combattants suivis restent dans ce navigateur.
+          Seuls les crédits vérifiés ci-dessous sont enregistrés sur un serveur, pour le classement.</div>
       </div>
     </div>
 
     ${acctDailyHTML()}
+    <div class="ac-sec">Classement <span>crédits vérifiés</span></div>
+    ${acctBoardHTML()}
 
+    <div class="ac-sec">Ma bankroll de paris <span>locale, non vérifiable</span></div>
     <div class="pn-bankrow">
       <div class="pn-kpi"><b>${fmtInt(Math.round(PN.bank))}</b><span>crédits</span></div>
       <div class="pn-kpi"><b>${st.me.n ? st.me.ok+'/'+st.me.n : '—'}</b><span>pronos gagnés</span></div>
@@ -5436,11 +5528,18 @@ function acctRender(){
       : `<div class="rk-empty"><b>Aucune soirée suivie</b>L'étoile sur une affiche, dans les cartes, la range ici.</div>`}
 
     <p class="ac-note">
-      Tout tient dans ce navigateur : vider les données du site efface le profil,
-      et il ne suit pas d'un appareil à l'autre. La prime du jour se cale sur
-      l'horloge du serveur, pas sur celle de ta machine.
+      Le pseudo, les combattants suivis et la bankroll de paris vivent dans ce
+      navigateur : vider les données du site les efface, et ils ne suivent pas
+      d'un appareil à l'autre. Les crédits vérifiés, eux, restent sur le
+      serveur — mais rien ne les relie encore à un nouvel appareil, faute
+      d'une vraie connexion par e-mail (à venir).
     </p>
     <button class="ac-reset" id="acReset">Réinitialiser mon compte</button>`;
+
+  if(!SBProfile && !SBFailed) sbEnsureAuth().then(()=>{ if(acctPage.classList.contains('on')) acctRender(); });
+  // le classement attend un profil confirmé : sans ça sbLoadBoard() partirait
+  // avant que sb existe et figerait une liste vide pour toute la session
+  if(SBReady && _sbBoard === null) sbLoadBoard().then(b=>{ _sbBoard = b; if(acctPage.classList.contains('on')) acctRender(); });
 
   // photos : uniquement ce qui est déjà en cache, aucune requête réseau
   favs.forEach(paintPhoto);
@@ -5449,21 +5548,37 @@ function acctRender(){
 }
 function acctWire(view){
   const claim = view.querySelector('#acClaim');
-  if(claim) claim.addEventListener('click', ()=>{
-    const got = fhClaim();
-    if(!got) return acctRender();       // course rare : minuit passé entre le rendu et le clic
+  if(claim) claim.addEventListener('click', async ()=>{
+    claim.disabled = true;
+    claim.textContent = 'Un instant…';
+    await fhClaim();                    // fhClaim() invalide déjà _sbBoard en cas de succès
     acctRender();
-    if(pnPage.classList.contains('on')) pnRender();
+    if(pnPage.classList.contains('on')) pnRender();  // le lien "prime dispo" doit s'éteindre
   });
 
-  // le pseudo se garde à la frappe : pas de bouton « enregistrer » pour un champ
+  // le pseudo se garde à la frappe localement ; pas de bouton « enregistrer »
   const name = view.querySelector('#acName');
-  if(name) name.addEventListener('input', ()=>{
-    PN.name = name.value.slice(0, 24);
-    pnSave();
-    fhSyncChrome();
-    view.querySelector('.ac-avatar').textContent = PN.name.trim() ? PN.name.trim().slice(0,2).toUpperCase() : '??';
-  });
+  if(name){
+    let sbNameT = null;
+    name.addEventListener('input', ()=>{
+      PN.name = name.value.slice(0, 24);
+      pnSave();
+      fhSyncChrome();
+      view.querySelector('.ac-avatar').textContent = PN.name.trim() ? PN.name.trim().slice(0,2).toUpperCase() : '??';
+      // synchronisé avec le classement en arrière-plan, SANS re-rendre la vue :
+      // un acctRender() pendant la frappe ferait sauter le focus hors du champ
+      clearTimeout(sbNameT);
+      sbNameT = setTimeout(async ()=>{
+        await sbEnsureAuth();          // charge la librairie + se connecte si besoin
+        if(!sb || !SBProfile) return;
+        try{
+          await sb.rpc('set_username', { new_name: PN.name });
+          SBProfile.username = PN.name.trim() || null;
+          _sbBoard = null;             // se reflètera au prochain rendu naturel
+        }catch(e){ console.warn('[compte] pseudo non synchronisé :', e.message); }
+      }, 700);
+    });
+  }
 
   // fhStarClick repeint les étoiles restées dans la grille derrière et relance
   // acctRender : la ligne disparaît d'elle-même
@@ -5484,7 +5599,7 @@ function acctWire(view){
 
   const reset = view.querySelector('#acReset');
   if(reset) reset.addEventListener('click', ()=>{
-    if(!confirm('Effacer le pseudo, les suivis, la bankroll et tous les tickets ? Rien ne pourra être récupéré.')) return;
+    if(!confirm("Effacer le pseudo, les suivis et la bankroll de paris sur CET APPAREIL ? Tes crédits vérifiés, côté serveur, ne seront pas touchés. Rien de ce qui est local ne pourra être récupéré.")) return;
     PN = pnBlank();
     pnSave();
     acctRender();
@@ -5601,9 +5716,11 @@ function skeleton(){
   buildChips();
   buildRankDivs();
   fhSyncChrome();
-  // L'horloge du serveur ne bloque pas le démarrage : quand elle arrive, tout ce
-  // qui dépend de la prime se redessine.
-  fhSyncClock().then(()=>{
+  // La connexion Supabase ne bloque pas le démarrage : quand elle arrive, tout
+  // ce qui dépend des crédits vérifiés se redessine. Éveillée tout de suite
+  // (pas seulement à l'ouverture du compte) pour que la pastille de prime soit
+  // juste dès l'affichage — coût : un utilisateur anonyme créé par visiteur.
+  sbEnsureAuth().then(()=>{
     fhSyncChrome();
     if(acctPage.classList.contains('on')) acctRender();
     if(pnPage.classList.contains('on'))   pnRender();
