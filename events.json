@@ -1,5 +1,5 @@
 {
- "built": "2026-08-06T13:22:05.431Z",
+ "built": "2026-08-07T06:35:28.922Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -80,14 +80,6 @@
      "card": "prelim"
     },
     {
-     "a": "Miles Johns",
-     "b": "Jessie Rosas",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "Juliana Miller",
      "b": "Ravena Oliveira",
      "wc": "Women's Flyweight",
@@ -102,6 +94,14 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
+    },
+    {
+     "a": "Miles Johns",
+     "b": "Gianni Vázquez",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
    "src": "wikipedia",
@@ -231,6 +231,14 @@
      "card": "main"
     },
     {
+     "a": "Jack Jenkins",
+     "b": "Sean Woodson",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Aori Qileng",
      "b": "Kai Asakura",
      "wc": "Bantamweight",
@@ -241,6 +249,14 @@
     {
      "a": "Su Mudaerji",
      "b": "Alex Perez",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Namsrai Batbayar",
+     "b": "André Lima",
      "wc": "Flyweight",
      "title": false,
      "rounds": 3,
@@ -263,19 +279,11 @@
      "card": "main"
     },
     {
-     "a": "André Lima",
-     "b": "Namsrai Batbayar",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Sean Woodson",
-     "b": "Jack Jenkins",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Xiong Jingnan",
+     "b": "Julia Polastri",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -328,19 +336,19 @@
      "card": "main"
     },
     {
-     "a": "Mário Pinto",
-     "b": "Ryan Spann",
-     "wc": "Heavyweight",
+     "a": "Matthieu Letho Duclos",
+     "b": "Luis Felipe Dias",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Matthieu Letho Duclos",
-     "b": "Luis Felipe Dias",
-     "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Mário Pinto",
+     "b": "Ryan Spann",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
