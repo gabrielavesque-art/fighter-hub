@@ -868,29 +868,33 @@ footer a:hover{color:var(--tx-2)}
    qui donne le verdict avant même la lecture. */
 .pn-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:center;
   background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
-  padding:16px 22px 16px 24px;margin-bottom:10px;position:relative;overflow:hidden;
+  padding:14px 20px 14px 22px;margin-bottom:8px;position:relative;overflow:hidden;
   transition:border-color .18s var(--ease),transform .18s var(--ease)}
 .pn-line:hover{border-color:var(--line-2)}
-.pn-line::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--line-2)}
+.pn-line::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--line-2)}
 .pn-line.win::before{background:linear-gradient(180deg,#3fd183,var(--green))}
 .pn-line.lose::before{background:linear-gradient(180deg,var(--red-lt),var(--red))}
 .pn-line.win{background:linear-gradient(90deg,rgba(63,209,131,.075),transparent 45%),var(--bg-2)}
 .pn-line.lose{background:linear-gradient(90deg,rgba(255,59,77,.075),transparent 45%),var(--bg-2)}
 
 .pn-lmain{min-width:0}
-.pn-ltop{display:flex;align-items:center;gap:9px;margin-bottom:7px;flex-wrap:wrap}
-.pn-ltitle{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:21px;line-height:1.14;
-  letter-spacing:.2px;color:var(--tx);overflow:hidden;text-overflow:ellipsis}
-.pn-ltitle em{font-style:normal;font-weight:600;color:var(--tx-3);font-size:.82em;
-  letter-spacing:1.4px;text-transform:uppercase;padding:0 3px}
-.pn-lsub{margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--tx-2)}
-.pn-lsub b{color:var(--tx);font-weight:600}
+.pn-ltop{display:flex;align-items:center;gap:9px;margin-bottom:6px;flex-wrap:wrap}
+/* Le titre était en condensé 800 : sur six lignes d'affilée ça hurlait. Police
+   de texte, graisse moyenne — la ligne se lit, elle ne s'impose plus. */
+.pn-ltitle{font-family:'Barlow',system-ui,sans-serif;font-weight:600;font-size:16.5px;line-height:1.3;
+  color:var(--tx);overflow:hidden;text-overflow:ellipsis}
+.pn-ltitle em{font-style:normal;font-weight:500;color:var(--tx-3);font-size:11px;
+  letter-spacing:1.2px;text-transform:uppercase;padding:0 5px;vertical-align:1px}
+.pn-lsub{margin-top:5px;font-size:13px;line-height:1.5;color:var(--tx-3)}
+.pn-lsub b{color:var(--tx-2);font-weight:600}
 .pn-lsub em{font-style:normal;color:var(--tx-3)}
-.pn-lside{display:flex;flex-direction:column;align-items:flex-end;gap:5px;text-align:right}
-.pn-lamount{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;
-  letter-spacing:-.6px;line-height:1;white-space:nowrap;color:var(--tx)}
-.pn-lamount.win{color:#3fd183}
-.pn-lamount.lose{color:#ff6b78}
+.pn-lside{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+/* le montant reste le point d'accroche, mais en gris tant que rien n'est joué :
+   seul un pronostic tranché mérite de la couleur */
+.pn-lamount{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;
+  letter-spacing:-.3px;line-height:1;white-space:nowrap;color:var(--tx-2)}
+.pn-lamount.win{color:#3fd183;font-weight:700}
+.pn-lamount.lose{color:#ff6b78;font-weight:700}
 .pn-lamsub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx-3);white-space:nowrap}
 /* couper une position depuis la liste : un vrai bouton, pas un lien perdu */
 .pn-lside .pn-mini{margin-top:4px;padding:5px 13px;border:1px solid var(--line-2);border-radius:999px;
@@ -899,11 +903,11 @@ footer a:hover{color:var(--tx-2)}
 
 /* le petit chapeau : date, statut, camp d'une conviction */
 .pn-when2{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--tx-3);white-space:nowrap}
-.pn-lbadge{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;text-transform:uppercase;
-  letter-spacing:1px;padding:3px 10px;border-radius:999px;border:1px solid var(--line-2);color:var(--tx-3)}
-.pn-lbadge.win{color:#3fd183;border-color:rgba(63,209,131,.42);background:rgba(63,209,131,.11)}
-.pn-lbadge.lose{color:#ff6b78;border-color:rgba(255,59,77,.42);background:rgba(255,59,77,.11)}
-.pn-lbadge.live{color:var(--gold);border-color:rgba(211,162,74,.42);background:rgba(211,162,74,.1)}
+.pn-lbadge{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:8.5px;text-transform:uppercase;
+  letter-spacing:1.1px;padding:3px 8px;border-radius:4px;border:1px solid var(--line-2);color:var(--tx-3)}
+.pn-lbadge.win{color:#3fd183;border-color:rgba(63,209,131,.32);background:rgba(63,209,131,.09)}
+.pn-lbadge.lose{color:#ff6b78;border-color:rgba(255,59,77,.32);background:rgba(255,59,77,.09)}
+.pn-lbadge.live{color:var(--gold);border-color:rgba(211,162,74,.32);background:rgba(211,162,74,.08)}
 
 @media(max-width:880px){
   .pn-bankrow{grid-template-columns:repeat(2,1fr)}
@@ -1264,7 +1268,11 @@ footer a:hover{color:var(--tx-2)}
 }
 .pn-ecard:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 12px 28px rgba(0,0,0,.42)}
 .pn-ecard.up{border-color:rgba(224,26,43,.28)}
-.pn-ethumb{position:relative;aspect-ratio:16/10;overflow:hidden;
+/* Cadre carré, et non plus 16/10 : une affiche UFC est en portrait (2/3). Dans
+   un cadre paysage, « cover » en jetait 56 % et coupait les noms — c'est ça,
+   les affiches « buguées ». En carré il n'en perd qu'un tiers, pris en bas, là
+   où il n'y a que les logos des sponsors. */
+.pn-ethumb{position:relative;aspect-ratio:1/1;overflow:hidden;
   background:linear-gradient(150deg,#1C1C24,#0F0F14);display:flex;align-items:center;justify-content:center}
 .pn-ethumb img{width:100%;height:100%;object-fit:cover}
 .pn-ethumb-txt{padding:12px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:900;
@@ -1327,6 +1335,16 @@ footer a:hover{color:var(--tx-2)}
 .pn-axis b{position:absolute;top:-1px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx-2)}
 .pn-axis b.left{left:0}
 .pn-axis b.right{right:0}
+/* la moyenne des cinq axes, en pied de profil : même gabarit qu'une ligne
+   d'axe pour rester aligné, mais discret — c'est un repère, pas un verdict */
+.pn-axmoy{display:grid;grid-template-columns:1fr 96px 1fr;gap:10px;align-items:center;
+  margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+/* alignés sur les bords, comme les valeurs d'axe juste au-dessus */
+.pn-axmoy b{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--tx-2)}
+.pn-axmoy b:first-child{text-align:left}
+.pn-axmoy b:last-child{text-align:right}
+.pn-axmoy em{text-align:center;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--tx-3);font-style:normal;line-height:1.3}
 .pn-fsr{margin-bottom:14px}
 
 @media(max-width:560px){
@@ -1395,9 +1413,15 @@ footer a:hover{color:var(--tx-2)}
   filter:blur(20px) saturate(1.3) brightness(.45);transform:scale(1.25);
 }
 .pn-ethumb .pn-shot-fg{
-  position:relative;width:100%;height:100%;object-fit:cover;object-position:center 14%;
+  position:relative;width:100%;height:100%;object-fit:cover;object-position:center 5%;
   z-index:1;transition:transform .35s var(--ease);
 }
+/* Filet de sécurité : une affiche vraiment très haute (ou un scan de flyer)
+   perdrait encore trop en recadrage. pnFitShot() la mesure au chargement et la
+   pose alors ENTIÈRE sur sa copie floutée — le cadre reste rempli, rien n'est
+   coupé. On ne peut pas le décider avant : seul le navigateur connaît la
+   taille réelle du fichier. */
+.pn-ethumb .pn-shot-fg.tall{object-fit:contain;object-position:center}
 .pn-ecard:hover .pn-ethumb .pn-shot-fg{transform:scale(1.05)}
 /* un dégradé en pied pour que le texte de la carte ne colle pas à l'image */
 .pn-ethumb::after{
@@ -3112,7 +3136,12 @@ function evList(){
   return (EVENTS || [])
     .filter(e=>e.date && e.date >= today)
     .sort((a,b)=>a.date.localeCompare(b.date))
-    .slice(0, 8);
+    .slice(0, 8)
+    // events.json ne porte l'affiche que si build-events.js l'a trouvée dans
+    // l'infobox au moment du run ; posters.json, lui, balaie « List of UFC
+    // events » et en a souvent une de plus. Le calendrier fait déjà ce repli —
+    // sans lui ici, le carrousel restait en retard sur la grille.
+    .map(e=>({ ...e, poster: e.poster || evPoster(e.name) }));
 }
 // ancre stable vers la carte correspondante dans la section Pronos
 function evSlug(name){ return slugKey(name).slice(0, 40); }
@@ -3731,7 +3760,9 @@ function pnBankHTML(){
          <span class="pn-duelbar"><i style="width:${share.toFixed(1)}%"></i></span>
          <span class="pn-duelside right">L'algo <b>${s.algo.ok}/${s.algo.n}</b> <em>${pnCr(s.algo.pl)}</em></span>
        </div>`
-    : `<div class="pn-duel"><span class="pn-vs">L'algo t'attend : place ton premier pronostic.</span></div>`;
+    // rien de réglé, donc rien à comparer : une barre vide qui répète l'évidence
+    // vaut moins que le silence — la jauge apparaît au premier combat tranché
+    : '';
   return `
     <div class="pn-bankrow">
       <div class="pn-kpi"><b>${fmtInt(Math.round(PN.bank))}</b><span>crédits</span></div>
@@ -4102,6 +4133,9 @@ function pnComparHTML(bout){
     ${line('Contrôle au sol', (sa.ctrl||0), (sb.ctrl||0), v=>Math.round(v/60)+' min')}
     <div class="pn-axeshead">Profil de combattant</div>
     ${axes}
+    ${(pa && pb) ? `<div class="pn-axmoy">
+      <b>${profileAvg(pa).toFixed(1)}</b><em>moyenne</em><b>${profileAvg(pb).toFixed(1)}</b>
+    </div>` : ''}
   </div>`;
 }
 
@@ -4192,14 +4226,18 @@ function pnDuoHTML(bouts){
     : `<span class="pn-duo-f ${side}"></span>`;
   return `<div class="pn-duo">${face(pa,'l')}${face(pb,'r')}</div>`;
 }
+// Le cadre est carré, les affiches vont du 2/3 au panoramique. On mesure donc
+// chaque image une fois chargée : au-delà d'un certain élancement, la recadrer
+// couperait les noms, alors on la pose entière sur sa copie floutée.
+function pnFitShot(img){
+  const r = img.naturalWidth / img.naturalHeight;
+  if(r && r < 0.62) img.classList.add('tall');
+}
 function pnEvThumbHTML(e){
-  // Une affiche UFC est en portrait, la vignette en paysage : la recadrer
-  // couperait les visages et le titre. On la pose donc entière par-dessus une
-  // copie floutée d'elle-même, qui remplit le cadre — l'affiche reste lisible
-  // quel que soit son format.
   if(e.poster) return `<span class="pn-shot">
       <img class="pn-shot-bg" src="${esc(e.poster)}" alt="" loading="lazy" aria-hidden="true">
       <img class="pn-shot-fg" src="${esc(e.poster)}" alt="" loading="lazy"
+           onload="pnFitShot(this)"
            onerror="this.closest('.pn-shot').remove()">
     </span>`;
   const duo = pnDuoHTML(e.bouts);
@@ -5025,6 +5063,13 @@ function skeleton(){
     // les pronostics arrivent en dernier : ils ont besoin des combats (règlement,
     // champions) ET de l'ELO (cotes). Avant ça le marché serait vide.
     pnBoot();
+
+    // Second rendu du carrousel. Le premier a lieu très tôt, exprès : la hero ne
+    // doit pas attendre la base pour s'afficher. Mais à ce moment-là les photos
+    // et les combats manquent encore, donc pnDuoHTML() ne rend rien — les
+    // soirées sans affiche officielle restaient sur un rectangle de texte,
+    // pendant que le calendrier, lui, montrait les deux visages.
+    renderHeroEvents();
   }catch(err){
     console.error(err);
     setProgress(100);
