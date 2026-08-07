@@ -182,21 +182,65 @@ Avant toute modification :
 - `profileAvg()` est la moyenne **arithmétique** des cinq axes, pas un indice
   pondéré : un 5,0 veut dire « complet », pas « moyen partout ».
 
-- La prime quotidienne ne lit **jamais** `Date.now()` directement : `fhNow()` y
-  ajoute l'écart mesuré une fois sur l'en-tête HTTP `Date` du serveur. Avancer
-  l'horloge de sa machine ne donne donc rien. Si la mesure échoue (hors ligne,
-  requête bloquée), `FH_SYNCED` reste faux et la prime est **refusée** — jamais
-  accordée sur une base invérifiable. Ce que ça n'arrête pas : éditer son
-  `localStorage`. Il faudrait un serveur qui tienne le solde ; `fhClaim()` et
-  `pnSave()` sont les deux seuls points à rebrancher ce jour-là.
-- Le jour de la prime est un jour **UTC** (`fhDay()`). En jour local, changer le
-  fuseau déclaré rejouerait la prime sans même toucher à la date.
-- `fhStreak()` recalcule la série depuis `daily.last` : le compteur stocké n'est
-  **jamais** lu tel quel, sinon une absence de trois jours garderait la série.
-- Barème : `FH_CLAIM_BASE` 50, `+FH_CLAIM_STEP` 5 par jour d'affilée,
-  **plafonné** à `FH_CLAIM_CAP` (100). Sans plafond la série devient la
-  principale source de revenus (J60 = 345 cr/jour) et la bankroll ne veut plus
-  rien dire.
+- **Deux bankrolls distinctes, jamais confondues.** `PN.bank` (paris, marché) est
+  toujours en `localStorage`, éditable en local comme avant — sécuriser les
+  paris est un chantier à part, plus gros, pas fait. Les **crédits vérifiés**
+  (prime quotidienne, classement) vivent dans Supabase : `SBProfile.bank`. Le
+  bandeau des pronos (`pnBankHTML()`) affiche la première ; la page compte
+  affiche les deux, dans des sections séparées et étiquetées (« locale, non
+  vérifiable » vs le classement). Ne jamais faire bouger l'une en affichant un
+  bouton dans le bandeau de l'autre — d'où le lien `<a href="#compte">`
+  (`.pn-claim`) plutôt qu'un bouton qui créditerait un nombre différent de
+  celui sous les yeux.
+- La prime quotidienne ne peut plus être trafiquée en éditant le
+  `localStorage` : `bank`/`daily_*` vivent dans la table `profiles` de
+  Supabase, dont la policy RLS n'autorise **aucun** `UPDATE` client — la seule
+  porte est la fonction Postgres `claim_daily()` (SECURITY DEFINER, bypasse la
+  RLS), qui calcule tout avec `now()`, l'horloge du **serveur**. Avancer celle
+  du visiteur ne donne donc plus rien (testé : horloge locale avancée d'un an,
+  `fhCanClaim()` reste `false`). Ce que ça n'arrête toujours pas : un vrai
+  compte piraté côté Supabase — hors de portée d'un fan project.
+- Connexion **anonyme** (`sb.auth.signInAnonymously()`), pas de mail : un
+  identifiant par navigateur, créé au premier `sbEnsureAuth()`. Perdre le
+  `localStorage` (ou changer d'appareil) perd l'accès à ce compte-là — la vraie
+  connexion par e-mail (roadmap, étape 7) réglera ça.
+- `sb` démarre à `null` et **le chargement de la librairie Supabase ne bloque
+  jamais rien** : elle arrive par un `<script>` injecté en tâche de fond
+  (`sbLoadLib()`), pas un `<script src>` statique dans le HTML. Un `<script
+  src>` classique aurait retardé TOUT le site (grille, recherche) derrière un
+  aller-retour vers jsdelivr avant le premier affichage — bug réel trouvé en
+  testant un CDN bloqué, pas juste un artefact de sandbox.
+- Trois états à distinguer pour l'UI du compte, jamais deux : `SBReady`
+  (connecté, tout s'affiche), `SBFailed` (a essayé et définitivement échoué —
+  « Indisponible »), ni l'un ni l'autre (en cours — « Connexion… »). Confondre
+  « pas encore essayé » et « a échoué » fait clignoter « Indisponible » une
+  fraction de seconde à chaque chargement, avant que la vraie tentative parte.
+- `sbLoadBoard()` ne part que si `SBReady` est vrai, jamais juste parce que
+  `_sbBoard` est `null` : le lancer plus tôt (avant que `sb` existe) le ferait
+  échouer silencieusement et figer un classement vide pour toute la session —
+  même piège que `p4pOrder()` avec `eloDB`.
+- Le pseudo se tape dans `PN.name` (local, immédiat) ET se synchronise vers
+  `SBProfile.username` via `set_username()` (RPC, débattu 700 ms). Le
+  callback du debounce ne doit **jamais** appeler `acctRender()` : un
+  re-rendu de `#acctView` pendant la frappe recrée l'`<input>` et le focus
+  saute hors du champ. Il invalide juste `_sbBoard`, qui se rafraîchira au
+  prochain rendu naturel de la page.
+- La table `profiles` n'a **aucune** policy d'`UPDATE` cliente : même le
+  pseudo passe par une fonction (`set_username()`), pas par un `.update()`
+  direct — sinon n'importe quel champ, `bank` compris, deviendrait modifiable
+  par la même porte.
+- La vue `public.leaderboard` ne montre que `username` + `bank` + `rank`,
+  jamais `id` — une policy RLS qui laisserait fuiter les `id` d'autres
+  utilisateurs permettrait de deviner qui a quel solde en croisant avec
+  `auth.users`. Elle tourne avec les privilèges de son **propriétaire**
+  (`security_invoker` non posé), donc elle voit toutes les lignes de
+  `profiles` malgré la RLS qui, elle, bloque un `SELECT` direct sur la table.
+- La clé `sb_publishable_…` est faite pour être publique (elle est dans
+  `index.html`, donc dans le dépôt Git, donc visible de tout le monde) — la
+  RLS et les policies sont la seule protection, pas le secret de la clé. La
+  clé `sb_secret_…`, elle, ne doit **jamais** apparaître dans ce fichier ni
+  dans `index.html` : ce projet n'en a besoin nulle part, tout passe par la
+  clé publique + les fonctions `SECURITY DEFINER`.
 - Deux listes de favoris, **jamais mélangées** : `PN.fav` garde des **noms de
   soirées**, `PN.favF` des **clés de combattants** (`slugKey`). Les fonctions
   aussi sont jumelles et distinctes : `pnFav()` / `fhFav()`.
@@ -229,8 +273,11 @@ Avant toute modification :
 4. ~~Pronostics : carte du week-end + marché des convictions~~ — fait
 5. ~~Calendrier complet, comparateur, notes de combat, favoris~~ — fait
 6. ~~Compte local : pseudo, combattants suivis, prime quotidienne~~ — fait
-7. (Plus tard) Vraie connexion par e-mail (lien magique) + synchro entre
-   appareils. Tout est prêt côté client : `pnLoad()` / `pnSave()` sont les deux
-   seuls points à rebrancher, et `fhClaim()` devra passer côté serveur pour que
-   la prime résiste à l'édition du `localStorage`.
-8. (Plus tard) Journal d'événement, actualités (RSS), URLs SEO
+7. ~~Crédits vérifiés (Supabase, connexion anonyme) + classement~~ — fait.
+   Reste local : la bankroll de paris (`PN.bank`, tickets, marché) — sécuriser
+   les paris aussi est un chantier séparé, plus gros, pas commencé.
+8. (Plus tard) Vraie connexion par e-mail (lien magique), pour que le compte
+   Supabase survive à un changement d'appareil — aujourd'hui la connexion est
+   anonyme, liée au navigateur. `sb.auth.signInAnonymously()` est le seul
+   appel à remplacer dans `sbEnsureAuth()`.
+9. (Plus tard) Journal d'événement, actualités (RSS), URLs SEO
