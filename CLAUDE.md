@@ -1,3 +1,4 @@
+[CLAUDE.md](https://github.com/user-attachments/files/30822698/CLAUDE.md)
 # Fighter Hub
 
 Site MMA statique, fan project. En ligne : fighter-hub.vercel.app
@@ -182,6 +183,45 @@ Avant toute modification :
 - `profileAvg()` est la moyenne **arithmétique** des cinq axes, pas un indice
   pondéré : un 5,0 veut dire « complet », pas « moyen partout ».
 
+- La prime quotidienne ne lit **jamais** `Date.now()` directement : `fhNow()` y
+  ajoute l'écart mesuré une fois sur l'en-tête HTTP `Date` du serveur. Avancer
+  l'horloge de sa machine ne donne donc rien. Si la mesure échoue (hors ligne,
+  requête bloquée), `FH_SYNCED` reste faux et la prime est **refusée** — jamais
+  accordée sur une base invérifiable. Ce que ça n'arrête pas : éditer son
+  `localStorage`. Il faudrait un serveur qui tienne le solde ; `fhClaim()` et
+  `pnSave()` sont les deux seuls points à rebrancher ce jour-là.
+- Le jour de la prime est un jour **UTC** (`fhDay()`). En jour local, changer le
+  fuseau déclaré rejouerait la prime sans même toucher à la date.
+- `fhStreak()` recalcule la série depuis `daily.last` : le compteur stocké n'est
+  **jamais** lu tel quel, sinon une absence de trois jours garderait la série.
+- Barème : `FH_CLAIM_BASE` 50, `+FH_CLAIM_STEP` 5 par jour d'affilée,
+  **plafonné** à `FH_CLAIM_CAP` (100). Sans plafond la série devient la
+  principale source de revenus (J60 = 345 cr/jour) et la bankroll ne veut plus
+  rien dire.
+- Deux listes de favoris, **jamais mélangées** : `PN.fav` garde des **noms de
+  soirées**, `PN.favF` des **clés de combattants** (`slugKey`). Les fonctions
+  aussi sont jumelles et distinctes : `pnFav()` / `fhFav()`.
+- L'étoile de suivi vit **dans** `.card`, qui ouvre la fiche au clic : les deux
+  gestionnaires filtrent sur `closest('[data-star]')`, sinon suivre quelqu'un
+  ouvrirait sa fiche. Même piège qu'avec `[data-fav]` sur les affiches.
+- Un combattant porte plusieurs étoiles à l'écran en même temps (sa carte, sa
+  fiche par-dessus, le profil) : `fhPaintStar()` les repeint **par la clé**.
+  Ne pas re-rendre la grille pour ça — `render()` relance l'hydratation des photos.
+- `fhUpcomingIndex()` s'appuie sur l'ordre de `pnEvents()` (du plus lointain au
+  plus proche) pour que la **dernière** écriture par clé soit la soirée la plus
+  proche. Balayer les soirées et garder la première match donnerait le combat le
+  plus **lointain**. `acctRender()` remet l'index à zéro à chaque rendu.
+- `pnLoad()` est appelé **deux fois** au démarrage : très tôt, pour que les
+  étoiles soient dessinées avec les cartes et que le header montre le solde ;
+  puis par `pnBoot()` une fois les combats là. C'est sans effet — le stockage est
+  la seule source, et tout ce qui écrit passe par `pnSave()`.
+- Le bouton du compte est dans le header, **pas** dans `NAV` : la barre débordait
+  déjà à trois entrées. Il coûte 36 px, repris sur le logo et les marges en
+  dessous de 760 px. Il ne reste plus rien à prendre — une entrée de plus
+  demandera de repenser le header pour de bon.
+- `#pnBank` vit **hors** de `#pnView` : le bouton de prime qu'il contient est
+  branché par `pnRender()`, pas par `pnWire()` — même piège que `#pnTabs`.
+
 ## Roadmap
 
 1. ~~Pages de classement P4P + par catégorie~~ — fait
@@ -189,4 +229,9 @@ Avant toute modification :
 3. ~~Vidéos de combat rattachées au palmarès (YouTube UFC + RMC)~~ — fait
 4. ~~Pronostics : carte du week-end + marché des convictions~~ — fait
 5. ~~Calendrier complet, comparateur, notes de combat, favoris~~ — fait
-6. (Plus tard) Journal d'événement, actualités (RSS), URLs SEO
+6. ~~Compte local : pseudo, combattants suivis, prime quotidienne~~ — fait
+7. (Plus tard) Vraie connexion par e-mail (lien magique) + synchro entre
+   appareils. Tout est prêt côté client : `pnLoad()` / `pnSave()` sont les deux
+   seuls points à rebrancher, et `fhClaim()` devra passer côté serveur pour que
+   la prime résiste à l'édition du `localStorage`.
+8. (Plus tard) Journal d'événement, actualités (RSS), URLs SEO
