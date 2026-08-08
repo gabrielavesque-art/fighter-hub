@@ -1,5 +1,5 @@
 {
- "built": "2026-08-07T18:04:32.599Z",
+ "built": "2026-08-08T05:59:46.458Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -563,6 +563,14 @@
      "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Melissa Gatto",
+     "b": "Ernesta Kareckaitė",
+     "wc": "Women's Flyweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
