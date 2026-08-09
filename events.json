@@ -1,112 +1,7 @@
 {
- "built": "2026-08-08T17:47:23.938Z",
+ "built": "2026-08-09T06:01:54.398Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Gamrot vs. Salkilld",
-   "date": "2026-08-08",
-   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Mateusz Gamrot",
-     "b": "Quillan Salkilld",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Carlos Diego Ferreira",
-     "b": "Billy Quarantillo",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Darren Elkins",
-     "b": "Yadier del Valle",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Amanda Lemos",
-     "b": "Alexia Thainara",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Billy Ray Goff",
-     "b": "Ty Miller",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Steven Asplund",
-     "b": "Guilherme Pat",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Diyar Nurgozhay",
-     "b": "Bruno Lopes",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Louie Sutherland",
-     "b": "José Luiz",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Manoel Sousa",
-     "b": "Richie Miranda",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Miles Johns",
-     "b": "Gianni Vázquez",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Juliana Miller",
-     "b": "Ravena Oliveira",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Giovanna Canuto",
-     "b": "Carol Foro",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia",
-   "poster": "https://upload.wikimedia.org/wikipedia/en/1/17/UFC_Fight_Night_284_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
-  },
   {
    "name": "UFC 330: Makhachev vs. Machado Garry",
    "date": "2026-08-15",
@@ -390,6 +285,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Farès Ziam",
+     "b": "Axel Sola",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -478,6 +381,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Tommy McMillen",
+     "b": "Marwan Rahiki",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -505,6 +416,14 @@
      "a": "Rodolfo Bellato",
      "b": "Christian Edwards",
      "wc": "Light Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Raoni Barcelos",
+     "b": "Raul Rosas Jr.",
+     "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -572,6 +491,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Felipe Franco",
+     "b": "Alexander Poppeck",
+     "wc": "Light Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -625,14 +552,6 @@
      "a": "Alexander Volkanovski",
      "b": "Movsar Evloev",
      "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Petr Yan",
-     "b": "Sean O’Malley",
-     "wc": "",
      "title": true,
      "rounds": 5,
      "card": "main"
