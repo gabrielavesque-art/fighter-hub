@@ -1,5 +1,5 @@
 {
- "built": "2026-08-10T06:44:52.331Z",
+ "built": "2026-08-10T18:05:26.164Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -319,6 +319,14 @@
      "card": "main"
     },
     {
+     "a": "Tommy McMillen",
+     "b": "Marwan Rahiki",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Manon Fiorot",
      "b": "Alexa Grasso",
      "wc": "Women's Flyweight",
@@ -378,14 +386,6 @@
      "a": "Drakkar Klose",
      "b": "Thomas Gantt",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Tommy McMillen",
-     "b": "Marwan Rahiki",
-     "wc": "Featherweight",
      "title": true,
      "rounds": 5,
      "card": "main"
