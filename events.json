@@ -1,5 +1,5 @@
 {
- "built": "2026-08-09T17:49:04.145Z",
+ "built": "2026-08-10T06:44:52.331Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -443,6 +443,22 @@
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Roman Kopylov",
+     "b": "Ateba Gautier",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Imanol Rodríguez",
+     "b": "Alden Coria",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -552,6 +568,14 @@
      "a": "Alexander Volkanovski",
      "b": "Movsar Evloev",
      "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Petr Yan",
+     "b": "Merab Dvalishvili",
+     "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
      "card": "main"
