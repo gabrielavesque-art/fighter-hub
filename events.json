@@ -1,5 +1,5 @@
 {
- "built": "2026-08-11T18:08:25.968Z",
+ "built": "2026-08-12T06:46:28.448Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -459,6 +459,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Deiveson Figueiredo",
+     "b": "Payton Talbott",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -533,14 +541,6 @@
      "card": "main"
     },
     {
-     "a": "Mandel Nallo",
-     "b": "Nate Landwehr",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Erin Blanchfield",
      "b": "Jasmine Jasudavicius",
      "wc": "Women's Flyweight",
@@ -549,25 +549,9 @@
      "card": "main"
     },
     {
-     "a": "Timothy Cuamba",
-     "b": "Louis Jourdain",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Marc-André Barriault",
      "b": "Kyle Daukaus",
      "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Tanner Boser",
-     "b": "Jhonata Diniz",
-     "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -581,9 +565,33 @@
      "card": "main"
     },
     {
+     "a": "Tanner Boser",
+     "b": "Jhonata Diniz",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Mandel Nallo",
+     "b": "Nate Landwehr",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Melissa Croden",
      "b": "Chelsea Chandler",
      "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Louis Jourdain",
+     "b": "Timothy Cuamba",
+     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
