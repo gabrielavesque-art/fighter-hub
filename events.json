@@ -1,5 +1,5 @@
 {
- "built": "2026-08-13T06:50:19.168Z",
+ "built": "2026-08-13T18:09:14.594Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -182,7 +182,7 @@
      "card": "prelim"
     },
     {
-     "a": "Nilson Rojas",
+     "a": "Bilal Hasan",
      "b": "Nilson Rojas",
      "wc": "Flyweight",
      "title": true,
@@ -630,6 +630,12 @@
     }
    ],
    "src": "wikipedia"
+  },
+  {
+   "name": "UFC 334",
+   "date": "2026-11-14",
+   "location": "Madison Square Garden, New York City,NY, U.S.",
+   "bouts": []
   }
  ]
 }
