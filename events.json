@@ -1,5 +1,5 @@
 {
- "built": "2026-08-12T18:08:37.982Z",
+ "built": "2026-08-13T06:50:19.168Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -180,6 +180,14 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
+    },
+    {
+     "a": "Nilson Rojas",
+     "b": "Nilson Rojas",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia",
