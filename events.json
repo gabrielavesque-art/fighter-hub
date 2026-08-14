@@ -1,5 +1,5 @@
 {
- "built": "2026-08-14T06:46:47.830Z",
+ "built": "2026-08-14T18:08:24.615Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -716,6 +716,14 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Lerone Murphy",
+     "b": "Kevin Vallejos",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
