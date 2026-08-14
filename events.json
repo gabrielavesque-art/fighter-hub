@@ -1,12 +1,94 @@
 {
- "built": "2026-08-13T18:09:14.594Z",
+ "built": "2026-08-14T06:46:47.830Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
    "name": "UFC 330: Makhachev vs. Machado Garry",
    "date": "2026-08-15",
    "location": "Xfinity Mobile Arena, Philadelphia, Pennsylvania, U.S.",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Tresean Gore",
+     "b": "Vicente Luque",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Myktybek Orolbai",
+     "b": "Jeremiah Wells",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "KauÃª Fernandes",
+     "b": "Jalin Turner",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Ramiz Brahimaj",
+     "b": "Neil Magny",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Eric McConico",
+     "b": "Donte Johnson",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Chidi Njokuani",
+     "b": "Geoff Neal",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Ian Machado Garry",
+     "b": "Islam Makhachev",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Jasmine Jasudavicius",
+     "b": "Erin Blanchfield",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Esteban Ribovics",
+     "b": "Edson Barboza",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Dustin Stoltzfus",
+     "b": "Mansur Abdul-Malik",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "api"
   },
   {
    "name": "UFC Fight Night: Hernandez vs. Rodrigues",
@@ -51,7 +133,7 @@
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Wesley Schultz",
@@ -207,6 +289,14 @@
      "card": "main"
     },
     {
+     "a": "Farès Ziam",
+     "b": "Axel Sola",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Michael Page",
      "b": "Nursulton Ruziboev",
      "wc": "Middleweight",
@@ -217,6 +307,14 @@
     {
      "a": "Morgan Charrière",
      "b": "Felipe Lima",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Losene Keita",
+     "b": "Muhammad Naimov",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
@@ -239,9 +337,25 @@
      "card": "prelim"
     },
     {
+     "a": "Oumar Sy",
+     "b": "Modestas Bukauskas",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Nathaniel Wood",
      "b": "Mairon Santos",
      "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Nora Cornolle",
+     "b": "Klaudia Syguła",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -263,41 +377,9 @@
      "card": "main"
     },
     {
-     "a": "Nora Cornolle",
-     "b": "Klaudia Syguła",
-     "wc": "Women's Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Modestas Bukauskas",
-     "b": "Oumar Sy",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Losene Keita",
-     "b": "Muhammad Naimov",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Punahele Soriano",
      "b": "Daniil Donchenko",
      "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Farès Ziam",
-     "b": "Axel Sola",
-     "wc": "Lightweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -375,14 +457,6 @@
      "card": "prelim"
     },
     {
-     "a": "Kelvin Gastelum",
-     "b": "Yousri Belgaroui",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "JJ Aldrich",
      "b": "Regina Tarin",
      "wc": "Women's Flyweight",
@@ -396,6 +470,14 @@
      "wc": "Lightweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Yousri Belgaroui",
+     "b": "Djorden Santos",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -531,6 +613,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Gerald Meerschaert",
+     "b": "Julius Walker",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -634,7 +724,7 @@
   {
    "name": "UFC 334",
    "date": "2026-11-14",
-   "location": "Madison Square Garden, New York City,NY, U.S.",
+   "location": "Madison Square Garden, New York City, NY, U.S.",
    "bouts": []
   }
  ]
