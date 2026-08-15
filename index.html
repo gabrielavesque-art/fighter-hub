@@ -4300,11 +4300,18 @@ function pnEvents(){
   });
 
   const today = new Date().toISOString().slice(0,10);
-  const future = (EVENTS || []).filter(e=>e.date >= today).map(e=>({
-    name: e.name, iso: e.date, date: Date.parse(e.date), location: e.location || '',
-    poster: e.poster || evPoster(e.name), upcoming: true,
-    bouts: pnAnnounced().filter(b=>b.event === e.name),
-  }));
+  const future = (EVENTS || []).filter(e=>e.date >= today).map(e=>{
+    const bouts = pnAnnounced().filter(b=>b.event === e.name);
+    // même tri que pour les soirées passées (cf. plus haut) : sans lui, l'ordre
+    // vient de la source (Wikipedia) et rien ne garantit qu'elle liste le main
+    // event en premier — la vignette montrait alors un préliminaire au hasard.
+    const i = pnMainIndex(e.name, bouts);
+    if(i > 0) bouts.unshift(bouts.splice(i, 1)[0]);
+    return {
+      name: e.name, iso: e.date, date: Date.parse(e.date), location: e.location || '',
+      poster: e.poster || evPoster(e.name), upcoming: true, bouts,
+    };
+  });
 
   _evAll = [...future, ...past].sort((x,y)=>(y.date||0) - (x.date||0));
   return _evAll;
@@ -5520,11 +5527,7 @@ function acctRender(){
 
     <div class="ac-sec">Mes soirées <span>${evs.length || 'aucune'}</span></div>
     ${evs.length
-      ? `<div class="ac-elist">${evs.map(e=>
-          `<div class="ac-erow" data-ev="${esc(e.name)}" role="button" tabindex="0">
-             <span class="ac-ename">${esc(e.name)}</span>
-             <span class="ac-edate">${e.iso ? pnDateFR(e.date) : '—'}</span>
-           </div>`).join('')}</div>`
+      ? `<div class="ac-evgrid pn-egrid">${evs.map((e,i)=>pnEvCardHTML(e,i)).join('')}</div>`
       : `<div class="rk-empty"><b>Aucune soirée suivie</b>L'étoile sur une affiche, dans les cartes, la range ici.</div>`}
 
     <p class="ac-note">
@@ -5541,7 +5544,10 @@ function acctRender(){
   // avant que sb existe et figerait une liste vide pour toute la session
   if(SBReady && _sbBoard === null) sbLoadBoard().then(b=>{ _sbBoard = b; if(acctPage.classList.contains('on')) acctRender(); });
 
-  // photos : uniquement ce qui est déjà en cache, aucune requête réseau
+  // photos : uniquement ce qui est déjà en cache, aucune requête réseau. Les
+  // vignettes d'événements (pnDuoHTML) lisent photoCache AU RENDU : si rien
+  // n'y est encore, la vignette retombe sur l'affiche ou le texte — même
+  // limite que sur le calendrier, pas une régression propre à cette page.
   favs.forEach(paintPhoto);
   acctWire(view);
   fhSyncChrome();
@@ -5586,16 +5592,27 @@ function acctWire(view){
     e.stopPropagation();
     fhStarClick(b.dataset.unfav);
   }));
-  view.querySelectorAll('[data-open]').forEach(el=>{
+  // scopé à .ac-flist : pnEvCardHTML() (soirées, juste en dessous) pose AUSSI
+  // un data-open, mais avec un nom de soirée — un sélecteur non scopé
+  // essaierait d'ouvrir la fiche d'un combattant qui n'existe pas
+  view.querySelectorAll('.ac-flist [data-open]').forEach(el=>{
     const go = ()=>openModal(BY_NAME.get(el.dataset.open));
     el.addEventListener('click', go);
     el.addEventListener('keydown', e=>{ if(e.key === 'Enter') go(); });
   });
-  view.querySelectorAll('[data-ev]').forEach(el=>{
-    const go = ()=>{ pnOpenEv = el.dataset.ev; pnFilter = 'tout'; navigate('#pronos'); };
-    el.addEventListener('click', go);
-    el.addEventListener('keydown', e=>{ if(e.key === 'Enter') go(); });
+  // pnEvCardHTML() vient du calendrier : mêmes attributs (data-open, data-fav),
+  // donc même geste — ouvrir la soirée dans les pronos, ou juste basculer
+  // l'étoile sans y aller.
+  view.querySelectorAll('.ac-evgrid [data-open]').forEach(el=>{
+    const go = ()=>{ pnOpenEv = el.dataset.open; pnFilter = 'tout'; navigate('#pronos'); };
+    el.addEventListener('click', e=>{ if(!e.target.closest('[data-fav]')) go(); });
+    el.addEventListener('keydown', e=>{ if(e.key === 'Enter' && !e.target.closest('[data-fav]')) go(); });
   });
+  view.querySelectorAll('.ac-evgrid [data-fav]').forEach(b=>b.addEventListener('click', e=>{
+    e.stopPropagation();
+    pnToggleFav(b.dataset.fav);
+    acctRender();                 // la soirée retirée doit disparaître de la liste
+  }));
 
   const reset = view.querySelector('#acReset');
   if(reset) reset.addEventListener('click', ()=>{
