@@ -1,5 +1,5 @@
 {
- "built": "2026-08-15T05:44:55.146Z",
+ "built": "2026-08-15T17:37:20.239Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -10,14 +10,6 @@
     {
      "a": "Chidi Njokuani",
      "b": "Geoff Neal",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Ian Machado Garry",
-     "b": "Islam Makhachev",
      "wc": "Welterweight",
      "title": false,
      "rounds": 5,
@@ -557,6 +549,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Yarsolav Amosov",
+     "b": "Gabriel Bonfim",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -618,6 +618,14 @@
      "a": "Gerald Meerschaert",
      "b": "Julius Walker",
      "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "RJ Harris",
+     "b": "Allen Frye Jr.",
+     "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
      "card": "main"
