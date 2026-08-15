@@ -1,3 +1,4 @@
+[CLAUDE.md](https://github.com/user-attachments/files/31098994/CLAUDE.md)
 # Fighter Hub
 
 Site MMA statique, fan project. En ligne : fighter-hub.vercel.app
@@ -116,15 +117,21 @@ Avant toute modification :
   est marqué `derived` et le signale à l'écran : on infère, on ne l'invente pas.
 - Deux fonctions lisent le nom d'une soirée, **ne pas les confondre** :
   `pnMainFromName()` cherche dans `FIGHTERS` et n'accepte que les **actifs** —
-  pour les cartes à venir. `pnMainIndex(nom, bouts)` cherche dans les combats de
-  la soirée **elle-même** — pour les cartes passées, où « Khabib » a pris sa
-  retraite et n'existe plus dans la liste. Sans ce tri la vignette d'UFC 254
-  montrait deux préliminaires, l'ordre venant de l'itération des palmarès.
-  Il reconnaît un prénom (« Khabib »), un patronyme composé (« Machado Garry »),
-  et retombe sur un seul camp reconnu quand l'autre est un surnom (« Cowboy »,
-  « The Korean Zombie ») : un combattant ne figure qu'une fois par carte, donc
-  un seul combat le contient. 646 des 669 soirées nommées « A vs B » retrouvent
-  leur vedette ; les 23 restantes sont des `TUF: Team X vs Team Y`, où les noms
+  pour une carte pas encore publiée, où il n'y a encore aucun combat à
+  regarder. `pnMainIndex(nom, bouts)` cherche dans les combats **déjà connus**
+  de la soirée, publiés ou joués — pour les cartes passées (où « Khabib » a
+  pris sa retraite et n'existe plus dans `FIGHTERS`) **et** pour les cartes à
+  venir déjà publiées : `pnEvents()` l'applique aux deux branches (`past` et
+  `future`), sinon la vignette montre le premier combat de la source (Wikipedia,
+  l'ordre de scrape) au lieu du main event — bug réel, vu en prod sur UFC 330
+  qui montrait Njokuani/Neal à la place de Makhachev/Machado Garry. Sans ce tri
+  la vignette d'UFC 254 montrait deux préliminaires, l'ordre venant de
+  l'itération des palmarès. Il reconnaît un prénom (« Khabib »), un patronyme
+  composé (« Machado Garry »), et retombe sur un seul camp reconnu quand
+  l'autre est un surnom (« Cowboy », « The Korean Zombie ») : un combattant ne
+  figure qu'une fois par carte, donc un seul combat le contient. 646 des 669
+  soirées nommées « A vs B » retrouvent leur vedette ; les 23 restantes sont
+  des `TUF: Team X vs Team Y`, où les noms
   sont ceux des **coachs** — l'échec est le bon comportement.
 - Une carte lointaine n'a pas de tableau, mais ses combats sont annoncés **en
   prose** (« A Lightweight bout between [[A]] and [[B]] is expected… »). Aucun
@@ -264,6 +271,14 @@ Avant toute modification :
   demandera de repenser le header pour de bon.
 - `#pnBank` vit **hors** de `#pnView` : le bouton de prime qu'il contient est
   branché par `pnRender()`, pas par `pnWire()` — même piège que `#pnTabs`.
+- « Mes soirées », sur le compte, réutilise `pnEvCardHTML()` (donc les vraies
+  affiches/photos du calendrier) au lieu de simples lignes de texte. Elle pose
+  `data-open` avec un **nom de soirée**, exactement comme « Mes combattants »
+  pose `data-open` avec une **clé de combattant** juste au-dessus — un
+  sélecteur `[data-open]` non scopé dans `acctWire()` essaierait donc d'ouvrir
+  la fiche d'un combattant qui n'existe pas. D'où `.ac-flist [data-open]`
+  (combattants → fiche) et `.ac-evgrid [data-open]` (soirées → pronos),
+  jamais l'un pour l'autre.
 
 ## Roadmap
 
