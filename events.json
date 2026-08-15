@@ -1,5 +1,5 @@
 {
- "built": "2026-08-14T18:08:24.615Z",
+ "built": "2026-08-15T05:44:55.146Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -7,46 +7,6 @@
    "date": "2026-08-15",
    "location": "Xfinity Mobile Arena, Philadelphia, Pennsylvania, U.S.",
    "bouts": [
-    {
-     "a": "Tresean Gore",
-     "b": "Vicente Luque",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Myktybek Orolbai",
-     "b": "Jeremiah Wells",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "KauÃª Fernandes",
-     "b": "Jalin Turner",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Ramiz Brahimaj",
-     "b": "Neil Magny",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Eric McConico",
-     "b": "Donte Johnson",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
     {
      "a": "Chidi Njokuani",
      "b": "Geoff Neal",
@@ -72,20 +32,36 @@
      "card": "main"
     },
     {
-     "a": "Esteban Ribovics",
-     "b": "Edson Barboza",
-     "wc": "Lightweight",
+     "a": "Myktybek Orolbai",
+     "b": "Jeremiah Wells",
+     "wc": "Welterweight",
      "title": false,
-     "rounds": 5,
-     "card": "main"
+     "rounds": 3,
+     "card": "prelim"
     },
     {
-     "a": "Dustin Stoltzfus",
-     "b": "Mansur Abdul-Malik",
+     "a": "Ramiz Brahimaj",
+     "b": "Neil Magny",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Tresean Gore",
+     "b": "Vicente Luque",
      "wc": "Middleweight",
      "title": false,
-     "rounds": 5,
-     "card": "main"
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Eric McConico",
+     "b": "Donte Johnson",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     }
    ],
    "src": "api"
@@ -144,14 +120,6 @@
      "card": "prelim"
     },
     {
-     "a": "Kody Steele",
-     "b": "Gauge Young",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "Shanelle Dyer",
      "b": "Elise Reed",
      "wc": "Women's Strawweight",
@@ -181,6 +149,30 @@
      "wc": "Featherweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Anthony Wint",
+     "b": "Terrance Chatman",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Márcio Barbosa",
+     "b": "Ryan Kuse",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Gauge Young",
+     "b": "Stanley Dorsainvil",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -479,6 +471,14 @@
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Rafa García",
+     "b": "Rong Zhu",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -717,23 +717,9 @@
      "title": true,
      "rounds": 5,
      "card": "main"
-    },
-    {
-     "a": "Lerone Murphy",
-     "b": "Kevin Vallejos",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
-  },
-  {
-   "name": "UFC 334",
-   "date": "2026-11-14",
-   "location": "Madison Square Garden, New York City, NY, U.S.",
-   "bouts": []
   }
  ]
 }
