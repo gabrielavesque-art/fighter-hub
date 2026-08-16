@@ -1,5 +1,5 @@
 {
- "built": "2026-08-16T05:47:12.924Z",
+ "built": "2026-08-16T17:35:45.572Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -736,6 +736,14 @@
      "a": "Sean Brady",
      "b": "Gabriel Bonfim",
      "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Davey Grant",
+     "b": "Elijah Smith",
+     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
