@@ -1,63 +1,7 @@
 {
- "built": "2026-08-15T17:37:20.239Z",
+ "built": "2026-08-16T05:47:12.924Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC 330: Makhachev vs. Machado Garry",
-   "date": "2026-08-15",
-   "location": "Xfinity Mobile Arena, Philadelphia, Pennsylvania, U.S.",
-   "bouts": [
-    {
-     "a": "Chidi Njokuani",
-     "b": "Geoff Neal",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Jasmine Jasudavicius",
-     "b": "Erin Blanchfield",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Myktybek Orolbai",
-     "b": "Jeremiah Wells",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Ramiz Brahimaj",
-     "b": "Neil Magny",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Tresean Gore",
-     "b": "Vicente Luque",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Eric McConico",
-     "b": "Donte Johnson",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "api"
-  },
   {
    "name": "UFC Fight Night: Hernandez vs. Rodrigues",
    "date": "2026-08-22",
@@ -88,9 +32,33 @@
      "card": "main"
     },
     {
+     "a": "MarQuel Mederos",
+     "b": "Mason Jones",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Carli Judice",
      "b": "Jeisla Chaves",
      "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Terrance Chatman",
+     "b": "Anthony Wint",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jamall Emmers",
+     "b": "Lerryan Douglas",
+     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -101,52 +69,12 @@
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
-     "a": "Wesley Schultz",
-     "b": "Jackson McVey",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Shanelle Dyer",
-     "b": "Elise Reed",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Mason Jones",
-     "b": "MarQuel Mederos",
+     "a": "Chris Padilla",
+     "b": "Nasrat Haqparast",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Nasrat Haqparast",
-     "b": "Chris Padilla",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Jamall Emmers",
-     "b": "Lerryan Douglas",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Anthony Wint",
-     "b": "Terrance Chatman",
-     "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -163,6 +91,22 @@
      "a": "Gauge Young",
      "b": "Stanley Dorsainvil",
      "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Wesley Schultz",
+     "b": "Jackson McVey",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Shanelle Dyer",
+     "b": "Elise Reed",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -487,6 +431,14 @@
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
     {
+     "a": "Raoni Barcelos",
+     "b": "Raul Rosas Jr.",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
      "a": "Norma Dumont",
      "b": "Ailín Pérez",
      "wc": "Women's Bantamweight",
@@ -498,14 +450,6 @@
      "a": "Rodolfo Bellato",
      "b": "Christian Edwards",
      "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Raoni Barcelos",
-     "b": "Raul Rosas Jr.",
-     "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -548,14 +492,6 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Yarsolav Amosov",
-     "b": "Gabriel Bonfim",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
      "card": "main"
     }
    ],
@@ -724,6 +660,84 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Lone'er Kavanagh",
+     "b": "Ramazan Temirov",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Alexander Volkov",
+     "b": "Rizvan Kuniev",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Arnold Allen",
+     "b": "Aaron Pico",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Dominick Reyes",
+     "b": "Azamat Murzakanov",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Grant Dawson",
+     "b": "Nurullo Aliev",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Nikita Krylov",
+     "b": "Abdul-Rakhman Yakhyaev",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Abusupiyan Magomedov",
+     "b": "Cameron Rowston",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
+   "name": "UFC Fight Night 292",
+   "date": "2026-10-31",
+   "location": "",
+   "bouts": []
+  },
+  {
+   "name": "UFC Fight Night 293",
+   "date": "2026-11-07",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Sean Brady",
+     "b": "Gabriel Bonfim",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
