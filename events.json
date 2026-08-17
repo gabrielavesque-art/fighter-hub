@@ -1,5 +1,5 @@
 {
- "built": "2026-08-16T17:35:45.572Z",
+ "built": "2026-08-17T05:53:26.400Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -642,84 +642,10 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC 333",
+   "name": "UFC 333: Volkanovski vs. Evloev",
    "date": "2026-10-24",
    "location": "Etihad Arena, Abu Dhabi, United Arab Emirates",
-   "bouts": [
-    {
-     "a": "Alexander Volkanovski",
-     "b": "Movsar Evloev",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Petr Yan",
-     "b": "Merab Dvalishvili",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Lone'er Kavanagh",
-     "b": "Ramazan Temirov",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Alexander Volkov",
-     "b": "Rizvan Kuniev",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Arnold Allen",
-     "b": "Aaron Pico",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Dominick Reyes",
-     "b": "Azamat Murzakanov",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Grant Dawson",
-     "b": "Nurullo Aliev",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Nikita Krylov",
-     "b": "Abdul-Rakhman Yakhyaev",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Abusupiyan Magomedov",
-     "b": "Cameron Rowston",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
+   "bouts": []
   },
   {
    "name": "UFC Fight Night 292",
