@@ -1,5 +1,5 @@
 {
- "built": "2026-08-17T17:47:06.116Z",
+ "built": "2026-08-18T05:48:41.801Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -48,49 +48,9 @@
      "card": "main"
     },
     {
-     "a": "Terrance Chatman",
-     "b": "Anthony Wint",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jamall Emmers",
-     "b": "Lerryan Douglas",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Kennedy Nzechukwu",
      "b": "Shamil Gaziev",
      "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Chris Padilla",
-     "b": "Nasrat Haqparast",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Márcio Barbosa",
-     "b": "Ryan Kuse",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Gauge Young",
-     "b": "Stanley Dorsainvil",
-     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -101,7 +61,31 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Chris Padilla",
+     "b": "Nasrat Haqparast",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Gauge Young",
+     "b": "Stanley Dorsainvil",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Jamall Emmers",
+     "b": "Lerryan Douglas",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Shanelle Dyer",
@@ -109,7 +93,23 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Márcio Barbosa",
+     "b": "Ryan Kuse",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Terrance Chatman",
+     "b": "Anthony Wint",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     }
    ],
    "src": "wikipedia"
