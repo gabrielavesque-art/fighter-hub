@@ -1,5 +1,5 @@
 {
- "built": "2026-08-18T05:48:41.801Z",
+ "built": "2026-08-18T17:45:14.986Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -492,6 +492,22 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Marvin Vettori",
+     "b": "Ismail Naurdiev",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Damian Pinas",
+     "b": "Andrey Pulyaev",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
