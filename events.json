@@ -1,5 +1,5 @@
 {
- "built": "2026-08-20T17:47:17.093Z",
+ "built": "2026-08-21T05:51:02.259Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -176,6 +176,22 @@
      "card": "prelim"
     },
     {
+     "a": "Rei Tsuruya",
+     "b": "Kevin Borjas",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Xiao Long",
+     "b": "Francesco Nuzzi",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Jack Jenkins",
      "b": "Sean Woodson",
      "wc": "Featherweight",
@@ -184,9 +200,9 @@
      "card": "prelim"
     },
     {
-     "a": "Rei Tsuruya",
-     "b": "Kevin Borjas",
-     "wc": "Flyweight",
+     "a": "Lawrence Lui",
+     "b": "Hector Santiago",
+     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -200,12 +216,12 @@
      "card": "prelim"
     },
     {
-     "a": "Francesco Nuzzi",
-     "b": "Xiao Long",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
+     "a": "Ding Meng",
+     "b": "Cameron Nelson",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     }
    ],
    "src": "wikipedia",
@@ -307,7 +323,7 @@
     {
      "a": "Delphine Benouaich",
      "b": "Sofia Montenegro",
-     "wc": "Women's Flyweight",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -402,7 +418,7 @@
     },
     {
      "a": "Jean Silva",
-     "b": "Jose Miguel Delgado",
+     "b": "Jose Delgado",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
@@ -565,6 +581,22 @@
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Valentina Shevchenko",
+     "b": "Natália Silva",
+     "wc": "Women's Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Rafael dos Anjos",
+     "b": "Alexander Hernandez",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -634,6 +666,14 @@
      "a": "RJ Harris",
      "b": "Allen Frye Jr.",
      "wc": "Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Andre Fili",
+     "b": "Kai Kamaka III",
+     "wc": "Featherweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -731,7 +771,41 @@
    "name": "UFC Fight Night 292",
    "date": "2026-10-31",
    "location": "",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Julian Erosa",
+     "b": "Lee Jeong-yeong",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Yana Santos",
+     "b": "Luana Santos",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Andre Petroski",
+     "b": "Azamat bekoev",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Francis Marshall",
+     "b": "Gaston balanos",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night 293",
