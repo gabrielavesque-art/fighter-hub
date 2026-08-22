@@ -1,5 +1,5 @@
 {
- "built": "2026-08-21T17:47:35.384Z",
+ "built": "2026-08-22T05:46:15.117Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -789,19 +789,19 @@
      "card": "main"
     },
     {
-     "a": "Andre Petroski",
-     "b": "Azamat Bekoev",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
+     "a": "Tainara Lisboa",
+     "b": "Lucia Szabová",
+     "wc": "Women's Bantamweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
-     "a": "Francis Marshall",
-     "b": "Gaston Bolaños",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
+     "a": "Andre Petroski",
+     "b": "Azamat Bekoev",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
@@ -816,14 +816,6 @@
      "a": "Sean Brady",
      "b": "Gabriel Bonfim",
      "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Davey Grant",
-     "b": "Elijah Smith",
-     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
