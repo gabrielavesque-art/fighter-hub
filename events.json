@@ -1,119 +1,7 @@
 {
- "built": "2026-08-22T17:38:15.925Z",
+ "built": "2026-08-23T05:48:47.155Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Hernandez vs. Rodrigues",
-   "date": "2026-08-22",
-   "location": "Golden 1 Center, Sacramento, California, U.S.",
-   "bouts": [
-    {
-     "a": "Anthony Hernandez",
-     "b": "Gregory Rodrigues",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Serghei Spivac",
-     "b": "Vitor Petrino",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Reinier de Ridder",
-     "b": "Roman Dolidze",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "MarQuel Mederos",
-     "b": "Mason Jones",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Carli Judice",
-     "b": "Jeisla Chaves",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Anthony Wint",
-     "b": "Terrance Chatman",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jamall Emmers",
-     "b": "Lerryan Douglas",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Kennedy Nzechukwu",
-     "b": "Shamil Gaziev",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Chris Padilla",
-     "b": "Nasrat Haqparast",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Márcio Barbosa",
-     "b": "Ryan Kuse",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Gauge Young",
-     "b": "Stanley Dorsainvil",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Wesley Schultz",
-     "b": "Jackson McVey",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Shanelle Dyer",
-     "b": "Elise Reed",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia"
-  },
   {
    "name": "UFC Fight Night: Nurmagomedov vs. Song",
    "date": "2026-08-29",
@@ -409,6 +297,22 @@
      "card": "prelim"
     },
     {
+     "a": "Ramiro Jimenez",
+     "b": "Rodrigo Vera",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Rafa García",
+     "b": "Rong Zhu",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "JJ Aldrich",
      "b": "Regina Tarin",
      "wc": "Women's Flyweight",
@@ -438,14 +342,6 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Rafa García",
-     "b": "Rong Zhu",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
      "card": "main"
     }
    ],
@@ -808,20 +704,17 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 293",
-   "date": "2026-11-07",
-   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Sean Brady",
-     "b": "Gabriel Bonfim",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
+   "name": "UFC 334",
+   "date": "2026-11-14",
+   "location": "Madison Square Garden, New York City, New York, U.S., {{Cite web",
+   "bouts": [],
+   "src": ""
+  },
+  {
+   "name": "UFC 335",
+   "date": "2026-12-12",
+   "location": "T-Mobile Arena, Las Vegas, Nevada, U.S., {{Cite web",
+   "bouts": []
   }
  ]
 }
