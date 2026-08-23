@@ -1,5 +1,5 @@
 {
- "built": "2026-08-23T05:48:47.155Z",
+ "built": "2026-08-23T17:36:55.162Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -704,17 +704,34 @@
    "src": "wikipedia"
   },
   {
+   "name": "UFC Fight Night 293",
+   "date": "2026-11-07",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Sean Brady",
+     "b": "Gabriel Bonfim",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
    "name": "UFC 334",
    "date": "2026-11-14",
-   "location": "Madison Square Garden, New York City, New York, U.S., {{Cite web",
+   "location": "Madison Square Garden, New York City, New York, U.S.",
    "bouts": [],
    "src": ""
   },
   {
    "name": "UFC 335",
    "date": "2026-12-12",
-   "location": "T-Mobile Arena, Las Vegas, Nevada, U.S., {{Cite web",
-   "bouts": []
+   "location": "T-Mobile Arena, Las Vegas, Nevada, U.S.",
+   "bouts": [],
+   "src": ""
   }
  ]
 }
