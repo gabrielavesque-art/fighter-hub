@@ -1,5 +1,5 @@
 {
- "built": "2026-08-24T17:48:06.617Z",
+ "built": "2026-08-25T05:50:56.216Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -41,7 +41,7 @@
     },
     {
      "a": "Liu Ce",
-     "b": "Junior Tafa",
+     "b": "Levi Rodrigues Jr.",
      "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
@@ -652,6 +652,14 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Chad Anheliger",
+     "b": "Steven Koslow",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
