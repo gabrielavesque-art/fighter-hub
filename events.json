@@ -1,5 +1,5 @@
 {
- "built": "2026-08-26T19:19:55.290Z",
+ "built": "2026-08-27T16:33:52.868Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -145,6 +145,14 @@
      "card": "main"
     },
     {
+     "a": "Daniil Donchenko",
+     "b": "Punahele Soriano",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Morgan Charrière",
      "b": "Felipe Lima",
      "wc": "Featherweight",
@@ -166,7 +174,7 @@
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
      "a": "Kurtis Campbell",
@@ -174,7 +182,7 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
      "a": "Oumar Sy",
@@ -182,7 +190,7 @@
      "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
      "a": "Nathaniel Wood",
@@ -190,7 +198,15 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
+    },
+    {
+     "a": "Michael Aljarouj",
+     "b": "Fabià Sintes",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     },
     {
      "a": "Nora Cornolle",
@@ -198,7 +214,7 @@
      "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
      "a": "Matthieu Letho Duclos",
@@ -206,7 +222,7 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
      "a": "Delphine Benouaich",
@@ -214,22 +230,6 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Fabià Sintes",
-     "b": "Michael Aljarouj",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Punahele Soriano",
-     "b": "Daniil Donchenko",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
      "card": "main"
     }
    ],
@@ -367,24 +367,48 @@
      "card": "main"
     },
     {
-     "a": "Norma Dumont",
-     "b": "Ailín Pérez",
-     "wc": "Women's Bantamweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Melissa Amaya",
+     "b": "Valesca Machado",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Mehemmedeli Osmanli",
+     "b": "Ilimbek Akylbek Uulu",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Montel Jackson",
+     "b": "Ricky Simón",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
      "a": "Rodolfo Bellato",
      "b": "Christian Edwards",
      "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Montel Jackson",
-     "b": "Ricky Simón",
+     "a": "Rodolfo Vieira",
+     "b": "Robert Bryczek",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Brady Hiestand",
+     "b": "Rinya Nakamura",
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
@@ -399,16 +423,24 @@
      "card": "main"
     },
     {
-     "a": "Ilimbek Akylbek Uulu",
-     "b": "Mehemmedeli Osmanli",
-     "wc": "Bantamweight",
+     "a": "Josiah Harrell",
+     "b": "Elves Brener",
+     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Valesca Machado",
-     "b": "Melissa Amaya",
+     "a": "Norma Dumont",
+     "b": "Ailín Pérez",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Vanessa Demopoulos",
+     "b": "Yazmin Jauregui",
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
@@ -712,7 +744,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 293",
+   "name": "UFC Fight Night: Bonfim vs. Brady",
    "date": "2026-11-07",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
