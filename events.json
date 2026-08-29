@@ -1,5 +1,5 @@
 {
- "built": "2026-08-29T11:41:38.120Z",
+ "built": "2026-08-29T19:45:50.104Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -8,28 +8,12 @@
    "location": "SPD Bank Oriental Sports Center, Shanghai, China",
    "bouts": [
     {
-     "a": "Umar Nurmagomedov",
-     "b": "Song Yadong",
-     "wc": "Bantamweight",
+     "a": "Liu Ce",
+     "b": "Levi Rodrigues Jr.",
+     "wc": "",
      "title": false,
      "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Yan Xiaonan",
-     "b": "Denise Gomes",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Aori Qileng",
-     "b": "Kai Asakura",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     }
    ],
    "src": "wikipedia",
