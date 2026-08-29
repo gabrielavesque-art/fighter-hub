@@ -1,5 +1,5 @@
 {
- "built": "2026-08-29T00:58:54.024Z",
+ "built": "2026-08-29T11:41:38.120Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -30,86 +30,6 @@
      "title": false,
      "rounds": 3,
      "card": "main"
-    },
-    {
-     "a": "Su Mudaerji",
-     "b": "Alex Perez",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Liu Ce",
-     "b": "Levi Rodrigues Jr.",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Bilal Hasan",
-     "b": "Nilson Rojas",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Namsrai Batbayar",
-     "b": "André Lima",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Rei Tsuruya",
-     "b": "Kevin Borjas",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Xiao Long",
-     "b": "Francesco Nuzzi",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Jack Jenkins",
-     "b": "Sean Woodson",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Lawrence Lui",
-     "b": "Hector Santiago",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Xiong Jingnan",
-     "b": "Julia Polastri",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Ding Meng",
-     "b": "Cameron Nelson",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
     }
    ],
    "src": "wikipedia",
