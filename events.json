@@ -1,24 +1,7 @@
 {
- "built": "2026-08-29T19:45:50.104Z",
+ "built": "2026-08-30T10:31:04.213Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Nurmagomedov vs. Song",
-   "date": "2026-08-29",
-   "location": "SPD Bank Oriental Sports Center, Shanghai, China",
-   "bouts": [
-    {
-     "a": "Liu Ce",
-     "b": "Levi Rodrigues Jr.",
-     "wc": "",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia",
-   "poster": "https://upload.wikimedia.org/wikipedia/en/c/c7/UFC_Fight_Night_286_poster.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
-  },
   {
    "name": "UFC Fight Night: Hooker vs. Parnasse",
    "date": "2026-09-05",
