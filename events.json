@@ -1,5 +1,5 @@
 {
- "built": "2026-08-30T10:31:04.213Z",
+ "built": "2026-08-30T19:50:53.621Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -75,14 +75,6 @@
      "a": "Oumar Sy",
      "b": "Modestas Bukauskas",
      "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Nathaniel Wood",
-     "b": "Mairon Santos",
-     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -626,6 +618,30 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Theodor Berggren",
+     "b": "Rodrigo Sezinando",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Nick Klein",
+     "b": "Joseph Kropschot",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Gastón Bolaños",
+     "b": "Francis Marshall",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -652,6 +668,12 @@
    "location": "Madison Square Garden, New York City, New York, U.S.",
    "bouts": [],
    "src": ""
+  },
+  {
+   "name": "UFC Fight Night 294",
+   "date": "2026-11-21",
+   "location": "Ali Bin Hamad al-Attiyah Arena, Al Rayyan, Qatar",
+   "bouts": []
   },
   {
    "name": "UFC 335",
