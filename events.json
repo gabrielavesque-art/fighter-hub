@@ -1,5 +1,5 @@
 {
- "built": "2026-08-31T11:39:05.398Z",
+ "built": "2026-08-31T21:54:48.596Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -61,7 +61,7 @@
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Kurtis Campbell",
@@ -69,7 +69,7 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Oumar Sy",
@@ -77,7 +77,7 @@
      "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Michael Aljarouj",
@@ -85,7 +85,7 @@
      "wc": "Flyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Nora Cornolle",
@@ -93,7 +93,7 @@
      "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Matthieu Letho Duclos",
@@ -101,12 +101,20 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Delphine Benouaich",
      "b": "Sofia Montenegro",
      "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Nathaniel Wood",
+     "b": "Pavel Andrusca",
+     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "main"
