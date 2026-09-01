@@ -1,5 +1,5 @@
 {
- "built": "2026-09-01T10:11:54.609Z",
+ "built": "2026-09-01T19:57:04.000Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -421,6 +421,14 @@
    "date": "2026-10-10",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
+    {
+     "a": "Brendan Allen",
+     "b": "Christian Leroy Duncan",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
     {
      "a": "Malcolm Wellmaker",
      "b": "Otari Tanzilovi",
