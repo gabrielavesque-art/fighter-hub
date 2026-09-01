@@ -1,5 +1,5 @@
 {
- "built": "2026-08-31T21:54:48.596Z",
+ "built": "2026-09-01T10:11:54.609Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -649,6 +649,14 @@
      "wc": "Featherweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Jean Paul",
+     "b": "Farman hasanov",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
