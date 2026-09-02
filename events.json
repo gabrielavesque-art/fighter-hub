@@ -1,5 +1,5 @@
 {
- "built": "2026-09-01T19:57:04.000Z",
+ "built": "2026-09-02T09:42:20.791Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -40,8 +40,8 @@
      "card": "main"
     },
     {
-     "a": "Morgan Charrière",
-     "b": "Felipe Lima",
+     "a": "Kurtis Campbell",
+     "b": "Trevor Peek",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
@@ -56,6 +56,14 @@
      "card": "main"
     },
     {
+     "a": "Morgan Charrière",
+     "b": "Felipe Lima",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Mário Pinto",
      "b": "Ryan Spann",
      "wc": "Heavyweight",
@@ -64,17 +72,17 @@
      "card": "prelim"
     },
     {
-     "a": "Kurtis Campbell",
-     "b": "Trevor Peek",
-     "wc": "Featherweight",
+     "a": "Oumar Sy",
+     "b": "Modestas Bukauskas",
+     "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
     },
     {
-     "a": "Oumar Sy",
-     "b": "Modestas Bukauskas",
-     "wc": "Light Heavyweight",
+     "a": "Nathaniel Wood",
+     "b": "Pavel Andrusca",
+     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -110,14 +118,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Nathaniel Wood",
-     "b": "Pavel Andrusca",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -398,14 +398,6 @@
      "card": "main"
     },
     {
-     "a": "Valentina Shevchenko",
-     "b": "Natália Silva",
-     "wc": "Women's Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Rafael dos Anjos",
      "b": "Alexander Hernandez",
      "wc": "Lightweight",
@@ -417,7 +409,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 290",
+   "name": "UFC Fight Night: Allen vs. Duncan",
    "date": "2026-10-10",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
@@ -660,11 +652,11 @@
      "card": "main"
     },
     {
-     "a": "Jean Paul",
-     "b": "Farman hasanov",
+     "a": "Farman Hasanov",
+     "b": "Jean-Paul Lebosnoyani",
      "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
