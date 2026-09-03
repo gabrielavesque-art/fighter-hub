@@ -1,5 +1,5 @@
 {
- "built": "2026-09-03T09:55:38.419Z",
+ "built": "2026-09-03T19:52:18.530Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -682,8 +682,17 @@
    "name": "UFC 334",
    "date": "2026-11-14",
    "location": "Madison Square Garden, New York City, New York, U.S.",
-   "bouts": [],
-   "src": ""
+   "bouts": [
+    {
+     "a": "Nazim Sadykhov",
+     "b": "Jefferson Nascimento",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night 294",
