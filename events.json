@@ -1,5 +1,5 @@
 {
- "built": "2026-09-02T19:49:00.216Z",
+ "built": "2026-09-03T09:55:38.419Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -403,14 +403,6 @@
      "wc": "Lightweight",
      "title": true,
      "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Natalia Silva",
-     "b": "Wang Cong",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
      "card": "main"
     }
    ],
