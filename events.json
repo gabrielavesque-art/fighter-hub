@@ -1,5 +1,5 @@
 {
- "built": "2026-09-03T19:52:18.530Z",
+ "built": "2026-09-04T09:43:15.998Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -425,32 +425,32 @@
      "a": "Malcolm Wellmaker",
      "b": "Otari Tanzilovi",
      "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
      "a": "Jai Herbert",
      "b": "Matheus Camilo",
      "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
      "a": "Francisco Prado",
      "b": "Artur Minev",
      "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
      "a": "Darya Zheleznyakova",
      "b": "Alice Pereira",
      "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
@@ -596,6 +596,22 @@
    "location": "",
    "bouts": [
     {
+     "a": "Lucia Szabová",
+     "b": "Tainara Lisboa",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Nick Klein",
+     "b": "Joseph Kropschot",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Julian Erosa",
      "b": "Lee Jeong-yeong",
      "wc": "Featherweight",
@@ -612,14 +628,6 @@
      "card": "main"
     },
     {
-     "a": "Tainara Lisboa",
-     "b": "Lucia Szabová",
-     "wc": "Women's Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Andre Petroski",
      "b": "Azamat Bekoev",
      "wc": "Middleweight",
@@ -631,14 +639,6 @@
      "a": "Theodor Berggren",
      "b": "Rodrigo Sezinando",
      "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Nick Klein",
-     "b": "Joseph Kropschot",
-     "wc": "Middleweight",
      "title": true,
      "rounds": 5,
      "card": "main"
