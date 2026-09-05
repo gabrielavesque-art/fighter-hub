@@ -1,5 +1,5 @@
 {
- "built": "2026-09-04T19:38:15.409Z",
+ "built": "2026-09-05T09:08:45.607Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -200,9 +200,25 @@
      "card": "prelim"
     },
     {
+     "a": "Drakkar Klose",
+     "b": "Thomas Gantt",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Rafa García",
      "b": "Rong Zhu",
      "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Sean King",
+     "b": "Jessie Rosas",
+     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -214,22 +230,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Drakkar Klose",
-     "b": "Thomas Gantt",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Jessie Rosas",
-     "b": "Sean King",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -579,6 +579,22 @@
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "You Su-young",
+     "b": "Cody Chovancek",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Javad Mahjoub",
+     "b": "Louie Sutherland",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
