@@ -1,71 +1,7 @@
 {
- "built": "2026-09-05T19:03:29.152Z",
+ "built": "2026-09-06T09:29:55.299Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Hooker vs. Parnasse",
-   "date": "2026-09-05",
-   "location": "Accor Arena, Paris, France",
-   "bouts": [
-    {
-     "a": "Dan Hooker",
-     "b": "Salahdine Parnasse",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Farès Ziam",
-     "b": "Axel Sola",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Michael Page",
-     "b": "Nursulton Ruziboev",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Daniil Donchenko",
-     "b": "Punahele Soriano",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Kurtis Campbell",
-     "b": "Trevor Peek",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Losene Keita",
-     "b": "Muhammad Naimov",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Morgan Charrière",
-     "b": "Felipe Lima",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia"
-  },
   {
    "name": "UFC Fight Night: Silva vs. Delgado",
    "date": "2026-09-12",
@@ -281,76 +217,10 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC 332",
+   "name": "UFC 332: Silva vs. Cong",
    "date": "2026-10-03",
    "location": "Delta Center, Salt Lake City, Utah, U.S.",
-   "bouts": [
-    {
-     "a": "Deiveson Figueiredo",
-     "b": "Payton Talbott",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Johnny Walker",
-     "b": "Mick Parkin",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Marvin Vettori",
-     "b": "Ismail Naurdiev",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Ateba Gautier",
-     "b": "Roman Kopylov",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Imanol Rodríguez",
-     "b": "Alden Coria",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Damian Pinas",
-     "b": "Andrey Pulyaev",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Court McGee",
-     "b": "Eric Nolan",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Rafael dos Anjos",
-     "b": "Alexander Hernandez",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
+   "bouts": []
   },
   {
    "name": "UFC Fight Night: Allen vs. Duncan",
