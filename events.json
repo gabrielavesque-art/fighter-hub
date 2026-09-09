@@ -1,5 +1,5 @@
 {
- "built": "2026-09-08T19:55:36.916Z",
+ "built": "2026-09-09T09:51:43.591Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -306,6 +306,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Niko Price",
+     "b": "Leon Shahbazyan",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -503,6 +511,14 @@
      "wc": "Welterweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Murtazali Magomedov",
+     "b": "José Mauro Delano",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
