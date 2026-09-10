@@ -1,5 +1,5 @@
 {
- "built": "2026-09-10T09:49:31.699Z",
+ "built": "2026-09-10T19:44:01.434Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -253,10 +253,10 @@
     },
     {
      "a": "Francisco Prado",
-     "b": "Artur Minev",
+     "b": "Ismael Bonfim",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
@@ -520,6 +520,14 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Wellington Turman",
+     "b": "Ko Seok-hyeon",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -550,8 +558,17 @@
    "name": "UFC 335",
    "date": "2026-12-12",
    "location": "T-Mobile Arena, Las Vegas, Nevada, U.S.",
-   "bouts": [],
-   "src": ""
+   "bouts": [
+    {
+     "a": "Sean Strickland",
+     "b": "Nassourdine Imavov",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   }
  ]
 }
