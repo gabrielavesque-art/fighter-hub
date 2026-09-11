@@ -1,5 +1,5 @@
 {
- "built": "2026-09-11T09:48:28.775Z",
+ "built": "2026-09-11T19:44:57.633Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -496,14 +496,6 @@
      "wc": "Welterweight",
      "title": true,
      "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "talita alencar",
-     "b": "piera Rodriguez",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
      "card": "main"
     }
    ],
