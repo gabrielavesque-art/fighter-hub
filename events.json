@@ -1,5 +1,5 @@
 {
- "built": "2026-09-10T19:44:01.434Z",
+ "built": "2026-09-11T09:48:28.775Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -214,7 +214,8 @@
      "card": "prelim"
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia",
+   "poster": "https://upload.wikimedia.org/wikipedia/en/5/5c/UFC_Fight_Night_289.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
    "name": "UFC 332: Silva vs. Wang",
@@ -495,6 +496,14 @@
      "wc": "Welterweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "talita alencar",
+     "b": "piera Rodriguez",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
