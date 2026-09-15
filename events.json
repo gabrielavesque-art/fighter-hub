@@ -1,5 +1,5 @@
 {
- "built": "2026-09-15T10:09:36.203Z",
+ "built": "2026-09-15T20:16:05.367Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -491,11 +491,11 @@
      "card": "main"
     },
     {
-     "a": "Adrian Yanez",
-     "b": "Juan Diaz",
+     "a": "Adrian Yañez",
+     "b": "Juan Díaz",
      "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
