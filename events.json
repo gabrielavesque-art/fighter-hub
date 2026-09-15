@@ -1,5 +1,5 @@
 {
- "built": "2026-09-14T20:57:11.506Z",
+ "built": "2026-09-15T10:09:36.203Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -221,6 +221,14 @@
      "card": "main"
     },
     {
+     "a": "Cody Chovancek",
+     "b": "You Su-young",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Erin Blanchfield",
      "b": "Jasmine Jasudavicius",
      "wc": "Women's Flyweight",
@@ -299,14 +307,6 @@
      "title": false,
      "rounds": 3,
      "card": "main"
-    },
-    {
-     "a": "You Su-young",
-     "b": "Cody Chovancek",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -334,6 +334,14 @@
      "a": "Nick Klein",
      "b": "Joseph Kropschot",
      "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Renato Moicano",
+     "b": "Tom Nolan",
+     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -480,6 +488,14 @@
      "wc": "Lightweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Adrian Yanez",
+     "b": "Juan Diaz",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
