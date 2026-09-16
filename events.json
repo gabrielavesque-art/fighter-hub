@@ -1,5 +1,5 @@
 {
- "built": "2026-09-15T20:16:05.367Z",
+ "built": "2026-09-16T10:00:51.046Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -318,10 +318,18 @@
    "bouts": []
   },
   {
-   "name": "UFC Fight Night 292",
+   "name": "UFC Fight Night: Moicano vs. Nolan",
    "date": "2026-10-31",
    "location": "",
    "bouts": [
+    {
+     "a": "Renato Moicano",
+     "b": "Tom Nolan",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
     {
      "a": "Lucia Szabová",
      "b": "Tainara Lisboa",
@@ -334,14 +342,6 @@
      "a": "Nick Klein",
      "b": "Joseph Kropschot",
      "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Renato Moicano",
-     "b": "Tom Nolan",
-     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
