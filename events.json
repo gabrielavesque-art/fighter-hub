@@ -1,5 +1,5 @@
 {
- "built": "2026-09-16T10:00:51.046Z",
+ "built": "2026-09-16T20:09:56.541Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -348,18 +348,18 @@
     },
     {
      "a": "Julian Erosa",
-     "b": "Lee Jeong-yeong",
+     "b": "Lee Jeong-yeong <",
      "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
      "a": "Yana Santos",
      "b": "Luana Santos",
      "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
