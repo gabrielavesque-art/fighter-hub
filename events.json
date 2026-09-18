@@ -1,12 +1,70 @@
 {
- "built": "2026-09-17T20:21:09.235Z",
+ "built": "2026-09-18T09:51:22.525Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
    "name": "UFC 331: Van vs. Pantoja 2",
    "date": "2026-09-19",
    "location": "Crypto.com Arena, Los Angeles, California, U.S.",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Brunno Ferreira",
+     "b": "Edmen Shahbazyan",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "JooSang Yoo",
+     "b": "Michael Aswell",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Joanderson Brito",
+     "b": "Giga Chikadze",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Eduarda Moura",
+     "b": "Casey O'Neill",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Ozzy Diaz",
+     "b": "Ryan Gandra",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Robelis Despaigne",
+     "b": "Tai Tuivasa",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Charles Jourdain",
+     "b": "Marlon Vera",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    }
+   ],
+   "src": "api"
   },
   {
    "name": "UFC Fight Night: Rosas Jr. vs. Barcelos",
@@ -505,7 +563,17 @@
    "name": "UFC Fight Night 294",
    "date": "2026-11-21",
    "location": "Ali Bin Hamad al-Attiyah Arena, Al Rayyan, Qatar",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Aleksandre Topuria",
+     "b": "Santiago Luna",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC 335",
