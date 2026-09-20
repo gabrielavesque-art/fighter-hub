@@ -1,71 +1,7 @@
 {
- "built": "2026-09-19T19:20:13.919Z",
+ "built": "2026-09-20T09:51:09.153Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC 331: Van vs. Pantoja 2",
-   "date": "2026-09-19",
-   "location": "Crypto.com Arena, Los Angeles, California, U.S.",
-   "bouts": [
-    {
-     "a": "Brunno Ferreira",
-     "b": "Edmen Shahbazyan",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "JooSang Yoo",
-     "b": "Michael Aswell",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Joanderson Brito",
-     "b": "Giga Chikadze",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Eduarda Moura",
-     "b": "Casey O'Neill",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Ozzy Diaz",
-     "b": "Ryan Gandra",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Robelis Despaigne",
-     "b": "Tai Tuivasa",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Charles Jourdain",
-     "b": "Marlon Vera",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "api"
-  },
   {
    "name": "UFC Fight Night: Rosas Jr. vs. Barcelos",
    "date": "2026-09-26",
@@ -541,17 +477,81 @@
    "location": "Madison Square Garden, New York City, New York, U.S.",
    "bouts": [
     {
-     "a": "Nazim Sadykhov",
-     "b": "Jefferson Nascimento",
+     "a": "Ciryl Gane",
+     "b": "Josh Hokit",
+     "wc": "Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Kayla Harrison",
+     "b": "Amanda Nunes",
+     "wc": "Women's Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Kevin Holland",
+     "b": "Uroš Medić",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Stephen Thompson",
+     "b": "Charles Radtke",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Drew Dober",
+     "b": "Chris Duncan",
      "wc": "Lightweight",
      "title": true,
      "rounds": 5,
      "card": "main"
     },
     {
+     "a": "Jim Miller",
+     "b": "Terrance McKinney",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Baisangur Susurkaev",
+     "b": "Donte Johnson",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Macy Chiasson",
+     "b": "Beatriz Mesquita",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Adrian Yañez",
      "b": "Juan Díaz",
      "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Nazim Sadykhov",
+     "b": "Jefferson Nascimento",
+     "wc": "Lightweight",
      "title": true,
      "rounds": 5,
      "card": "main"
