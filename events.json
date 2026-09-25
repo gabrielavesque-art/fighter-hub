@@ -1,5 +1,5 @@
 {
- "built": "2026-09-24T20:31:27.292Z",
+ "built": "2026-09-25T10:15:52.785Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -16,9 +16,17 @@
      "card": "main"
     },
     {
-     "a": "Rodolfo Vieira",
-     "b": "Robert Bryczek",
-     "wc": "Middleweight",
+     "a": "Norma Dumont",
+     "b": "Ailín Pérez",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Luis Hernandez",
+     "b": "Sedriques Dumas",
+     "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -45,7 +53,15 @@
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Rodolfo Vieira",
+     "b": "Robert Bryczek",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Rodolfo Bellato",
@@ -56,8 +72,8 @@
      "card": "prelim"
     },
     {
-     "a": "Josiah Harrell",
-     "b": "Elves Brener",
+     "a": "Elves Brener",
+     "b": "Josiah Harrell",
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
@@ -72,25 +88,9 @@
      "card": "prelim"
     },
     {
-     "a": "Norma Dumont",
-     "b": "Ailín Pérez",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "John Castañeda",
      "b": "Alateng Heili",
      "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Mickey Gall",
-     "b": "Sedriques Dumas",
-     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
