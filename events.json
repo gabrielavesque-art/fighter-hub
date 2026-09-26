@@ -1,5 +1,5 @@
 {
- "built": "2026-09-26T09:56:43.261Z",
+ "built": "2026-09-26T19:53:31.124Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -207,7 +207,8 @@
      "card": "main"
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia",
+   "poster": "https://thumb.wikimedia.org/wikipedia/en/thumb/8/8e/UFC_Fight_Night_290.jpg/500px-UFC_Fight_Night_290.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   {
    "name": "UFC Fight Night: Buckley vs. Malott",
@@ -226,6 +227,14 @@
      "a": "Erin Blanchfield",
      "b": "Jasmine Jasudavicius",
      "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Kyle Nelson",
+     "b": "Cristian Pérez",
+     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -309,14 +318,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Kyle Nelson",
-     "b": "Cristian Pérez",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -510,6 +511,14 @@
      "a": "Aleksandre Topuria",
      "b": "Santiago Luna",
      "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Magomed Zaynukov",
+     "b": "Manoel Sousa",
+     "wc": "Lightweight",
      "title": true,
      "rounds": 5,
      "card": "main"
