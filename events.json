@@ -1,5 +1,5 @@
 {
- "built": "2026-09-28T11:46:23.715Z",
+ "built": "2026-09-28T22:33:32.959Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -429,14 +429,13 @@
     {
      "a": "Sean Strickland",
      "b": "Nassourdine Imavov",
-     "wc": "Light Heavyweight",
+     "wc": "Middleweight",
      "title": true,
      "rounds": 5,
-     "card": "main",
-     "announced": true
+     "card": "main"
     }
    ],
-   "src": "wikipedia-prose"
+   "src": "wikipedia"
   }
  ]
 }
