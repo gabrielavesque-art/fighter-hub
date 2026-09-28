@@ -1,5 +1,5 @@
 {
- "built": "2026-09-27T20:10:05.344Z",
+ "built": "2026-09-28T11:46:23.715Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -183,14 +183,6 @@
      "card": "prelim"
     },
     {
-     "a": "Jamey-Lyn Horth",
-     "b": "Katlyn Cerminara",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "Tanner Boser",
      "b": "Jhonata Diniz",
      "wc": "Heavyweight",
@@ -213,6 +205,14 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
+    },
+    {
+     "a": "Katlyn Cerminara",
+     "b": "TBD",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -411,11 +411,11 @@
      "card": "main"
     },
     {
-     "a": "Magomed Zaynukov",
-     "b": "Manoel Sousa",
+     "a": "Manoel Sousa",
+     "b": "TBD",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
