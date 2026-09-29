@@ -1,5 +1,5 @@
 {
- "built": "2026-09-29T11:24:44.317Z",
+ "built": "2026-09-29T21:25:36.182Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -403,6 +403,14 @@
    "location": "Ali Bin Hamad al-Attiyah Arena, Al Rayyan, Qatar",
    "bouts": [
     {
+     "a": "Jiří Procházka",
+     "b": "Navajo Stirling",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Aleksandre Topuria",
      "b": "Santiago Luna",
      "wc": "Bantamweight",
@@ -414,6 +422,46 @@
      "a": "Manoel Sousa",
      "b": "TBD",
      "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Aljamain Sterling",
+     "b": "Kevin Vallejos",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Dan Hooker",
+     "b": "Brian Ortega",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jared Cannonier",
+     "b": "Ikram Aliskerov",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Shamil Gaziev",
+     "b": "Tallison Teixeira",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jake Matthews",
+     "b": "Akbar Abdullaev",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -433,17 +481,16 @@
      "title": true,
      "rounds": 5,
      "card": "main"
-    },
-    {
-     "a": "Charles Oliveira",
-     "b": "Diego Lopes",
-     "wc": "",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
+  },
+  {
+   "name": "UFC Fight Night 295",
+   "date": "2027-02-07",
+   "location": "Afterpay Arena, Sydney, Australia",
+   "bouts": [],
+   "src": ""
   }
  ]
 }
