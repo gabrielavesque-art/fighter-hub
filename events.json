@@ -1,5 +1,5 @@
 {
- "built": "2026-09-29T21:25:36.182Z",
+ "built": "2026-09-30T11:12:44.290Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -22,19 +22,43 @@
      "card": "main"
     },
     {
-     "a": "Malcolm Wellmaker",
-     "b": "Otari Tanzilovi",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Jai Herbert",
      "b": "Matheus Camilo",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Loopy Godinez",
+     "b": "Ketlen Souza",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Andre Fili",
+     "b": "Kai Kamaka III",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Julius Walker",
+     "b": "Gerald Meerschaert",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Malcolm Wellmaker",
+     "b": "Otari Tanzilovi",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
@@ -43,63 +67,47 @@
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Darya Zheleznyakova",
-     "b": "Alice Pereira",
-     "wc": "Women's Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Melissa Gatto",
-     "b": "Ernesta Kareckaitė",
-     "wc": "Women's Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Felipe Franco",
-     "b": "Alexander Poppeck",
-     "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Gerald Meerschaert",
-     "b": "Julius Walker",
-     "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "RJ Harris",
-     "b": "Allen Frye Jr.",
-     "wc": "Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Andre Fili",
-     "b": "Kai Kamaka III",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Niko Price",
      "b": "Leon Shahbazyan",
      "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Felipe Franco",
+     "b": "Brendson Ribeiro",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Allen Frye Jr.",
+     "b": "RJ Harris",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Alice Pereira",
+     "b": "Darya Zheleznyakova",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Ernesta Kareckaitė",
+     "b": "Melissa Gatto",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     }
    ],
    "src": "wikipedia",
@@ -237,9 +245,33 @@
      "card": "main"
     },
     {
+     "a": "Randy Brown",
+     "b": "Carlos Leal",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Lucia Szabová",
      "b": "Tainara Lisboa",
      "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Yana Santos",
+     "b": "Luana Santos",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Talita Alencar",
+     "b": "Piera Rodriguez",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -253,67 +285,43 @@
      "card": "main"
     },
     {
+     "a": "Rodrigo Sezinando",
+     "b": "Theodor Berggren",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jean-Paul Lebosnoyani",
+     "b": "Farman Hasanov",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Azamat Bekoev",
+     "b": "Andre Petroski",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Julian Erosa",
      "b": "Lee Jeong-yeong",
      "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Yana Santos",
-     "b": "Luana Santos",
-     "wc": "Women's Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Andre Petroski",
-     "b": "Azamat Bekoev",
-     "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Theodor Berggren",
-     "b": "Rodrigo Sezinando",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Gastón Bolaños",
-     "b": "Francis Marshall",
+     "a": "Francis Marshall",
+     "b": "Gastón Bolaños",
      "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Farman Hasanov",
-     "b": "Jean-Paul Lebosnoyani",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Talita Alencar",
-     "b": "Piera Rodriguez",
-     "wc": "Women's Strawweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Randy Brown",
-     "b": "Carlos Leal",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -333,22 +341,6 @@
      "card": "main"
     },
     {
-     "a": "Murtazali Magomedov",
-     "b": "José Mauro Delano",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Wellington Turman",
-     "b": "Ko Seok-hyeon",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Tatiana Suarez",
      "b": "Virna Jandiroba",
      "wc": "Women's Strawweight",
@@ -357,17 +349,9 @@
      "card": "main"
     },
     {
-     "a": "José Henrique Souza",
-     "b": "Jonny Parsons",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Alvin Hines",
-     "b": "Gabriel Lorenço",
-     "wc": "Heavyweight",
+     "a": "Mantas Kondratavičius",
+     "b": "Wesley Schultz",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -376,16 +360,80 @@
      "a": "Billy Elekana",
      "b": "Lucas Fernando",
      "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Lucas Brennan",
-     "b": "Austin Bashi",
+     "a": "Austin Bashi",
+     "b": "Lucas Brennan",
      "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Karine Silva",
+     "b": "Gabriella Fernandes",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Priscila Cachoeira",
+     "b": "Nina Nikolija Milošević",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Keiichiro Nakamura",
+     "b": "Ollie Schmid",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Ko Seok-hyeon",
+     "b": "Wellington Turman",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jonny Parsons",
+     "b": "José Henrique Souza",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Davey Grant",
+     "b": "Elijah Smith",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "José Mauro Delano",
+     "b": "Murtazali Magomedov",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Gabriel Lorenço",
+     "b": "Alvin Hines",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -406,22 +454,6 @@
      "a": "Jiří Procházka",
      "b": "Navajo Stirling",
      "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Aleksandre Topuria",
-     "b": "Santiago Luna",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Manoel Sousa",
-     "b": "TBD",
-     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -460,8 +492,40 @@
     },
     {
      "a": "Jake Matthews",
-     "b": "Akbar Abdullaev",
+     "b": "Tahir Abdullayev",
      "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Aleksandre Topuria",
+     "b": "Santiago Luna",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Asu Almabayev",
+     "b": "Kyoji Horiguchi",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Amir Albazi",
+     "b": "Alessandro Costa",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Manoel Sousa",
+     "b": "TBD",
+     "wc": "Lightweight",
      "title": false,
      "rounds": 3,
      "card": "main"
