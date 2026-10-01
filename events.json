@@ -1,5 +1,5 @@
 {
- "built": "2026-09-30T21:26:10.270Z",
+ "built": "2026-10-01T11:40:07.007Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -542,6 +542,14 @@
      "a": "Sean Strickland",
      "b": "Nassourdine Imavov",
      "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Brandon Moreno",
+     "b": "Charles Johnson",
+     "wc": "Flyweight",
      "title": true,
      "rounds": 5,
      "card": "main"
