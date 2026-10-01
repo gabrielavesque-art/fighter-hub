@@ -1,5 +1,5 @@
 {
- "built": "2026-10-01T11:40:07.007Z",
+ "built": "2026-10-01T21:50:43.381Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -207,17 +207,17 @@
      "card": "prelim"
     },
     {
-     "a": "Julien Leblanc",
-     "b": "Gilbert Urbina",
-     "wc": "Middleweight",
+     "a": "Katlyn Cerminara",
+     "b": "Mackenzie Stiller",
+     "wc": "Women's Flyweight",
      "title": false,
      "rounds": 3,
-     "card": "prelim"
+     "card": "main"
     },
     {
-     "a": "Katlyn Cerminara",
-     "b": "TBD",
-     "wc": "Women's Flyweight",
+     "a": "Julien Leblanc",
+     "b": "Nick Galanti",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
