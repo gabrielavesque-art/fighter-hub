@@ -1,5 +1,5 @@
 {
- "built": "2026-10-02T11:09:41.193Z",
+ "built": "2026-10-02T21:20:25.036Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -27,14 +27,6 @@
      "a": "Eric Nolan",
      "b": "Court McGee",
      "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Alden Coria",
-     "b": "Imanol Rodriguez",
-     "wc": "Flyweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -83,6 +75,14 @@
      "a": "Andrey Pulyaev",
      "b": "Damian Pinas",
      "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Alden Coria",
+     "b": "Imanol Rodriguez",
+     "wc": "Flyweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -524,6 +524,14 @@
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Mitch Raposo",
+     "b": "Marcos Degli",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
