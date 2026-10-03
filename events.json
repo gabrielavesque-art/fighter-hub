@@ -1,5 +1,5 @@
 {
- "built": "2026-10-02T21:20:25.036Z",
+ "built": "2026-10-03T10:27:41.305Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -626,6 +626,14 @@
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Nikolas Motta",
+     "b": "Dom Mar Fan",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
