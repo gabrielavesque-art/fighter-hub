@@ -1,5 +1,5 @@
 {
- "built": "2026-10-04T11:09:14.281Z",
+ "built": "2026-10-04T20:12:00.418Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -544,44 +544,10 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC 335",
+   "name": "UFC 335: Oliveira vs. Lopes",
    "date": "2026-12-12",
    "location": "T-Mobile Arena, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Charles Oliveira",
-     "b": "Diego Lopes",
-     "wc": "",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Sergei Pavlovich",
-     "b": "Alex Pereira",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Brandon Moreno",
-     "b": "Charles Johnson",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Joe Pyfer",
-     "b": "Bo Nickal",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
+   "bouts": []
   },
   {
    "name": "UFC Fight Night 295",
