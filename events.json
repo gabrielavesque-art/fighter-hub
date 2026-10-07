@@ -1,5 +1,5 @@
 {
- "built": "2026-10-06T21:39:17.622Z",
+ "built": "2026-10-07T11:50:29.318Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -16,8 +16,8 @@
      "card": "main"
     },
     {
-     "a": "Jai Herbert",
-     "b": "Matheus Camilo",
+     "a": "Matheus Camilo",
+     "b": "Jai Herbert",
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
@@ -40,20 +40,20 @@
      "card": "main"
     },
     {
-     "a": "Julius Walker",
-     "b": "Gerald Meerschaert",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Malcolm Wellmaker",
      "b": "Otari Tanzilovi",
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Julius Walker",
+     "b": "Gerald Meerschaert",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Francisco Prado",
@@ -169,6 +169,22 @@
      "card": "prelim"
     },
     {
+     "a": "Julien Leblanc",
+     "b": "Nick Galanti",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Javad Mahjoub",
+     "b": "Joel Faglier",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Chad Anheliger",
      "b": "Steven Koslow",
      "wc": "Bantamweight",
@@ -196,22 +212,6 @@
      "a": "Katlyn Cerminara",
      "b": "Mackenzie Stiller",
      "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Javad Mahjoub",
-     "b": "Joel Faglier",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Julien Leblanc",
-     "b": "Nick Galanti",
-     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -375,14 +375,6 @@
      "card": "main"
     },
     {
-     "a": "Priscila Cachoeira",
-     "b": "Nina Nikolija Milošević",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Keiichiro Nakamura",
      "b": "Ollie Schmid",
      "wc": "Featherweight",
@@ -426,6 +418,14 @@
      "a": "Gabriel Lorenço",
      "b": "Alvin Hines",
      "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Priscila Cachoeira",
+     "b": "Nina Nikolija Milošević",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
