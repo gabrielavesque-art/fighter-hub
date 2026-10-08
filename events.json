@@ -1,5 +1,5 @@
 {
- "built": "2026-10-07T22:01:34.476Z",
+ "built": "2026-10-08T12:05:38.852Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -415,14 +415,6 @@
      "card": "main"
     },
     {
-     "a": "Gabriel Lorenço",
-     "b": "Alvin Hines",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Priscila Cachoeira",
      "b": "Nina Nikolija Milošević",
      "wc": "Women's Bantamweight",
@@ -436,6 +428,14 @@
      "wc": "Flyweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Gabriel Lorenço",
+     "b": "TBD",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
@@ -539,6 +539,38 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Jacqueline Cavalcanti",
+     "b": "Michelle Montague",
+     "wc": "Women's Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
+   "name": "UFC Fight Night 295",
+   "date": "2026-11-28",
+   "location": "Riyadh, Saudi Arabia",
+   "bouts": [
+    {
+     "a": "Abdul Hussein",
+     "b": "Hecher Sosa",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Matthieu Letho Duclos",
+     "b": "Modestino Rodrigues",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -550,7 +582,7 @@
    "bouts": []
   },
   {
-   "name": "UFC Fight Night 295",
+   "name": "UFC Fight Night 296",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
    "bouts": [],
