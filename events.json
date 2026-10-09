@@ -1,5 +1,5 @@
 {
- "built": "2026-10-08T22:06:58.400Z",
+ "built": "2026-10-09T11:57:22.317Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -185,6 +185,14 @@
      "card": "prelim"
     },
     {
+     "a": "Katlyn Cerminara",
+     "b": "Mackenzie Stiller",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Chad Anheliger",
      "b": "Steven Koslow",
      "wc": "Bantamweight",
@@ -207,14 +215,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Katlyn Cerminara",
-     "b": "Mackenzie Stiller",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -234,14 +234,6 @@
      "a": "Renato Moicano",
      "b": "Tom Nolan",
      "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Randy Brown",
-     "b": "Carlos Leal",
-     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -312,8 +304,24 @@
     },
     {
      "a": "Francis Marshall",
-     "b": "Gastón Bolaños",
+     "b": "Dakota Hope",
      "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Ode' Osbourne",
+     "b": "Cody Durden",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Randy Brown",
+     "b": "TBD",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
