@@ -1,5 +1,5 @@
 {
- "built": "2026-10-09T21:42:29.094Z",
+ "built": "2026-10-10T11:13:51.733Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -26,7 +26,7 @@
     {
      "a": "Loopy Godínez",
      "b": "Ketlen Souza",
-     "wc": "Women's Strawweight",
+     "wc": "Catchweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -58,7 +58,7 @@
     {
      "a": "Francisco Prado",
      "b": "Ismael Bonfim",
-     "wc": "Lightweight",
+     "wc": "Catchweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -74,7 +74,7 @@
     {
      "a": "Felipe Franco",
      "b": "Brendson Ribeiro",
-     "wc": "Light Heavyweight",
+     "wc": "Catchweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
