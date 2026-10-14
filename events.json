@@ -1,5 +1,5 @@
 {
- "built": "2026-10-14T10:18:15.216Z",
+ "built": "2026-10-14T20:43:31.967Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -222,7 +222,8 @@
      "card": "main"
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia",
+   "poster": "https://upload.wikimedia.org/wikipedia/en/2/20/UFC_Fight_Night_292.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
    "name": "UFC Fight Night: Bonfim vs. Brady",
