@@ -1,5 +1,5 @@
 {
- "built": "2026-10-15T20:21:35.436Z",
+ "built": "2026-10-16T09:54:46.032Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -457,9 +457,17 @@
   },
   {
    "name": "UFC Fight Night 295",
-   "date": "2026-11-28",
+   "date": "2026-12-05",
    "location": "Riyadh, Saudi Arabia",
    "bouts": [
+    {
+     "a": "Israel Adesanya",
+     "b": "Sharabutdin Magomedov",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
     {
      "a": "Abdul Hussein",
      "b": "Hecher Sosa",
