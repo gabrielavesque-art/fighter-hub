@@ -1,5 +1,5 @@
 {
- "built": "2026-10-16T19:58:07.115Z",
+ "built": "2026-10-17T09:28:12.746Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -134,41 +134,9 @@
      "card": "main"
     },
     {
-     "a": "Lucia Szabová",
-     "b": "Tainara Lisboa",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Yana Santos",
      "b": "Luana Santos",
      "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Talita Alencar",
-     "b": "Piera Rodriguez",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Nick Klein",
-     "b": "Joseph Kropschot",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Rodrigo Sezinando",
-     "b": "Theodor Berggren",
-     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -187,7 +155,15 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Rodrigo Sezinando",
+     "b": "Theodor Berggren",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Julian Erosa",
@@ -195,7 +171,31 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Nick Klein",
+     "b": "Joseph Kropschot",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Talita Alencar",
+     "b": "Piera Rodriguez",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Lucia Szabová",
+     "b": "Tainara Lisboa",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Francis Marshall",
@@ -247,9 +247,9 @@
      "card": "main"
     },
     {
-     "a": "Mantas Kondratavičius",
-     "b": "Wesley Schultz",
-     "wc": "Middleweight",
+     "a": "Davey Grant",
+     "b": "Elijah Smith",
+     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -263,9 +263,17 @@
      "card": "main"
     },
     {
-     "a": "Austin Bashi",
-     "b": "Lucas Brennan",
-     "wc": "Featherweight",
+     "a": "Ko Seok-hyeon",
+     "b": "Wellington Turman",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Mantas Kondratavičius",
+     "b": "Wesley Schultz",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -276,39 +284,7 @@
      "wc": "Women's Flyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Keiichiro Nakamura",
-     "b": "Ollie Schmid",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Ko Seok-hyeon",
-     "b": "Wellington Turman",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jonny Parsons",
-     "b": "José Henrique Souza",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Davey Grant",
-     "b": "Elijah Smith",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "José Mauro Delano",
@@ -316,7 +292,23 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Keiichiro Nakamura",
+     "b": "Ollie Schmid",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Austin Bashi",
+     "b": "Lucas Brennan",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Priscila Cachoeira",
@@ -324,7 +316,15 @@
      "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Jonny Parsons",
+     "b": "José Henrique Souza",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Mitch Raposo",
