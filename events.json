@@ -1,119 +1,7 @@
 {
- "built": "2026-10-17T19:26:28.802Z",
+ "built": "2026-10-18T09:41:47.498Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Buckley vs. Malott",
-   "date": "2026-10-17",
-   "location": "Rogers Place, Edmonton, Alberta, Canada",
-   "bouts": [
-    {
-     "a": "Joaquin Buckley",
-     "b": "Mike Malott",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Erin Blanchfield",
-     "b": "Jasmine Jasudavicius",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Kyle Nelson",
-     "b": "Cristian Pérez",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Marc-André Barriault",
-     "b": "Kyle Daukaus",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Louis Jourdain",
-     "b": "Timothy Cuamba",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Mandel Nallo",
-     "b": "Nate Landwehr",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Tanner Boser",
-     "b": "Jhonata Diniz",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Julien Leblanc",
-     "b": "Nick Galanti",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Javad Mahjoub",
-     "b": "Joel Faglier",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Katlyn Cerminara",
-     "b": "Mackenzie Stiller",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Chad Anheliger",
-     "b": "Steven Koslow",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Melissa Croden",
-     "b": "Chelsea Chandler",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Cody Chovancek",
-     "b": "You Su-young",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia"
-  },
   {
    "name": "UFC 333: Volkanovski vs. Evloev",
    "date": "2026-10-24",
@@ -492,6 +380,13 @@
    "date": "2026-12-12",
    "location": "T-Mobile Arena, Las Vegas, Nevada, U.S.",
    "bouts": []
+  },
+  {
+   "name": "UFC 336",
+   "date": "2027-01-30",
+   "location": "Scotiabank Arena, Toronto, Ontario, Canada",
+   "bouts": [],
+   "src": ""
   },
   {
    "name": "UFC Fight Night 296",
