@@ -1,5 +1,5 @@
 {
- "built": "2026-10-20T10:09:03.825Z",
+ "built": "2026-10-20T20:38:14.913Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -385,8 +385,18 @@
    "name": "UFC 336",
    "date": "2027-01-30",
    "location": "Scotiabank Arena, Toronto, Ontario, Canada",
-   "bouts": [],
-   "src": ""
+   "bouts": [
+    {
+     "a": "Islam Makhachev",
+     "b": "Carlos Prates",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main",
+     "announced": true
+    }
+   ],
+   "src": "wikipedia-prose"
   },
   {
    "name": "UFC Fight Night 296",
