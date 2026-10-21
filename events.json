@@ -1,5 +1,5 @@
 {
- "built": "2026-10-21T10:16:28.861Z",
+ "built": "2026-10-21T20:38:59.384Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -370,6 +370,22 @@
      "wc": "Middleweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Islam Dulatov",
+     "b": "Levan Chokheli",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Bruno Gustavo da Silva",
+     "b": "Jafel Filho",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
