@@ -1,5 +1,5 @@
 {
- "built": "2026-10-20T20:38:14.913Z",
+ "built": "2026-10-21T10:16:28.861Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -143,17 +143,17 @@
      "card": "main"
     },
     {
-     "a": "Billy Elekana",
-     "b": "Lucas Fernando",
-     "wc": "Light Heavyweight",
+     "a": "Ko Seok-hyeon",
+     "b": "Wellington Turman",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Ko Seok-hyeon",
-     "b": "Wellington Turman",
-     "wc": "Welterweight",
+     "a": "Billy Elekana",
+     "b": "Lucas Fernando",
+     "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -385,18 +385,8 @@
    "name": "UFC 336",
    "date": "2027-01-30",
    "location": "Scotiabank Arena, Toronto, Ontario, Canada",
-   "bouts": [
-    {
-     "a": "Islam Makhachev",
-     "b": "Carlos Prates",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main",
-     "announced": true
-    }
-   ],
-   "src": "wikipedia-prose"
+   "bouts": [],
+   "src": ""
   },
   {
    "name": "UFC Fight Night 296",
