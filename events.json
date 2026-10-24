@@ -1,5 +1,5 @@
 {
- "built": "2026-10-24T09:36:34.004Z",
+ "built": "2026-10-24T19:30:56.095Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -24,9 +24,9 @@
      "card": "main"
     },
     {
-     "a": "Asaf Chopurov",
-     "b": "Colby Thicknesse",
-     "wc": "Bantamweight",
+     "a": "Nicolle Caliari",
+     "b": "Iasmin Lucindo",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -48,17 +48,17 @@
      "card": "prelim"
     },
     {
-     "a": "Nicolle Caliari",
-     "b": "Iasmin Lucindo",
-     "wc": "Women's Strawweight",
+     "a": "Jacob Malkoun",
+     "b": "Abubakar Vagaev",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
     },
     {
-     "a": "Jacob Malkoun",
-     "b": "Abubakar Vagaev",
-     "wc": "Middleweight",
+     "a": "Asaf Chopurov",
+     "b": "Colby Thicknesse",
+     "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
