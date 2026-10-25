@@ -1,135 +1,7 @@
 {
- "built": "2026-10-24T19:30:56.095Z",
+ "built": "2026-10-25T09:53:27.787Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC 333: Volkanovski vs. Evloev",
-   "date": "2026-10-24",
-   "location": "Etihad Arena, Abu Dhabi, United Arab Emirates",
-   "bouts": [
-    {
-     "a": "Cam Rowston",
-     "b": "Abus Magomedov",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Aaron Pico",
-     "b": "Arnold Allen",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Nicolle Caliari",
-     "b": "Iasmin Lucindo",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Daniel Santos",
-     "b": "Bolaji Oki",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Noah Gugnon",
-     "b": "Kody Steele",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Jacob Malkoun",
-     "b": "Abubakar Vagaev",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Asaf Chopurov",
-     "b": "Colby Thicknesse",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Nurullo Aliev",
-     "b": "Grant Dawson",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Abdul-Rakhman Yakhyaev",
-     "b": "Nikita Krylov",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Dominick Reyes",
-     "b": "Azamat Murzakanov",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Losene Keita",
-     "b": "Aaron Pico",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Rizvan Kuniev",
-     "b": "Alexander Volkov",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Ramazan Temirov",
-     "b": "Lone'er Kavanagh",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Merab Dvalishvili",
-     "b": "Petr Yan",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Movsar Evloev",
-     "b": "Alexander Volkanovski",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    }
-   ],
-   "src": "api"
-  },
   {
    "name": "UFC Fight Night: Moicano vs. Nolan",
    "date": "2026-10-31",
@@ -144,73 +16,17 @@
      "card": "main"
     },
     {
+     "a": "Randy Brown",
+     "b": "Jacobe Smith",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Yana Santos",
      "b": "Luana Santos",
      "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jean-Paul Lebosnoyani",
-     "b": "Farman Hasanov",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Azamat Bekoev",
-     "b": "Andre Petroski",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Rodrigo Sezinando",
-     "b": "Theodor Berggren",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Julian Erosa",
-     "b": "Lee Jeong-yeong",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Nick Klein",
-     "b": "Joseph Kropschot",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Talita Alencar",
-     "b": "Piera Rodriguez",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Lucia Szabová",
-     "b": "Tainara Lisboa",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Francis Marshall",
-     "b": "Dakota Hope",
-     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -224,9 +40,73 @@
      "card": "main"
     },
     {
-     "a": "Randy Brown",
-     "b": "Jacobe Smith",
+     "a": "Zachary Reese",
+     "b": "Mickey Gall",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jean-Paul Lebosnoyani",
+     "b": "Farman Hasanov",
      "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Francis Marshall",
+     "b": "Dakota Hope",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Azamat Bekoev",
+     "b": "Andre Petroski",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Rodrigo Sezinando",
+     "b": "Theodor Berggren",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Julian Erosa",
+     "b": "Lee Jeong-yeong",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Nick Klein",
+     "b": "Joseph Kropschot",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Talita Alencar",
+     "b": "Piera Rodriguez",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Lucia Szabová",
+     "b": "Tainara Lisboa",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -273,17 +153,17 @@
      "card": "main"
     },
     {
-     "a": "Billy Elekana",
-     "b": "Lucas Fernando",
-     "wc": "Light Heavyweight",
+     "a": "Mantas Kondratavičius",
+     "b": "Wesley Schultz",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Mantas Kondratavičius",
-     "b": "Wesley Schultz",
-     "wc": "Middleweight",
+     "a": "Billy Elekana",
+     "b": "Lucas Fernando",
+     "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -528,14 +408,38 @@
    "bouts": []
   },
   {
-   "name": "UFC 336",
-   "date": "2027-01-30",
-   "location": "Scotiabank Arena, Toronto, Ontario, Canada",
+   "name": "UFC Fight Night 296",
+   "date": "2027-01-16",
+   "location": "American Airlines Center, Dallas, Texas, U.S.",
    "bouts": [],
    "src": ""
   },
   {
-   "name": "UFC Fight Night 296",
+   "name": "UFC 336: Van vs. Kape",
+   "date": "2027-01-30",
+   "location": "Scotiabank Arena, Toronto, Ontario, Canada",
+   "bouts": [
+    {
+     "a": "Joshua Van",
+     "b": "Manel Kape",
+     "wc": "Flyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Carlos Prates",
+     "b": "Michael Morales",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
+   "name": "UFC Fight Night 297",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
    "bouts": [],
