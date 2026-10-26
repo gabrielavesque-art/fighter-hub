@@ -1,5 +1,5 @@
 {
- "built": "2026-10-26T11:13:24.760Z",
+ "built": "2026-10-26T21:38:56.894Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -64,14 +64,6 @@
      "card": "main"
     },
     {
-     "a": "Azamat Bekoev",
-     "b": "Andre Petroski",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Rodrigo Sezinando",
      "b": "Theodor Berggren",
      "wc": "Welterweight",
@@ -121,6 +113,102 @@
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
     {
+     "a": "Gabriel Bonfim",
+     "b": "Sean Brady",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Tatiana Suarez",
+     "b": "Virna Jandiroba",
+     "wc": "Women's Strawweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Davey Grant",
+     "b": "Elijah Smith",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Ko Seok-hyeon",
+     "b": "Wellington Turman",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Mantas Kondratavičius",
+     "b": "Andre Petroski",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Billy Elekana",
+     "b": "Lucas Fernando",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Karine Silva",
+     "b": "Gabriella Fernandes",
+     "wc": "Women's Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "José Mauro Delano",
+     "b": "Murtazali Magomedov",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Keiichiro Nakamura",
+     "b": "Ollie Schmid",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Austin Bashi",
+     "b": "Lucas Brennan",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Priscila Cachoeira",
+     "b": "Nina Nikolija Milošević",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Jonny Parsons",
+     "b": "José Henrique Souza",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "Mitch Raposo",
      "b": "Marcos Degli",
      "wc": "Flyweight",
@@ -130,7 +218,7 @@
     },
     {
      "a": "Gabriel Lorenço",
-     "b": "TBD",
+     "b": "Thomas Petersen",
      "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
@@ -319,6 +407,22 @@
    "src": ""
   },
   {
+   "name": "UFC Fight Night 297",
+   "date": "2027-01-23",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
+   "bouts": [
+    {
+     "a": "Volkanovski",
+     "b": "Evloev]]",
+     "wc": "",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
    "name": "UFC 336: Van vs. Kape",
    "date": "2027-01-30",
    "location": "Scotiabank Arena, Toronto, Ontario, Canada",
@@ -343,7 +447,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 297",
+   "name": "UFC Fight Night 298",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
    "bouts": [],
