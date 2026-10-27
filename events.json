@@ -1,5 +1,5 @@
 {
- "built": "2026-10-26T21:38:56.894Z",
+ "built": "2026-10-27T10:40:20.389Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -24,14 +24,6 @@
      "card": "main"
     },
     {
-     "a": "Yana Santos",
-     "b": "Luana Santos",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Ode' Osbourne",
      "b": "Cody Durden",
      "wc": "Flyweight",
@@ -40,9 +32,9 @@
      "card": "main"
     },
     {
-     "a": "Zachary Reese",
-     "b": "Mickey Gall",
-     "wc": "Middleweight",
+     "a": "Yana Santos",
+     "b": "Luana Santos",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -61,7 +53,7 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Rodrigo Sezinando",
@@ -69,7 +61,7 @@
      "wc": "Welterweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Julian Erosa",
@@ -77,7 +69,15 @@
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Zachary Reese",
+     "b": "Mickey Gall",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Nick Klein",
@@ -85,7 +85,7 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Talita Alencar",
@@ -93,7 +93,7 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Lucia Szabová",
@@ -101,7 +101,7 @@
      "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     }
    ],
    "src": "wikipedia",
