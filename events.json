@@ -1,5 +1,5 @@
 {
- "built": "2026-10-27T10:40:20.389Z",
+ "built": "2026-10-27T21:21:39.234Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -169,6 +169,14 @@
      "card": "prelim"
     },
     {
+     "a": "Mitch Raposo",
+     "b": "Marcos Degli",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
      "a": "José Mauro Delano",
      "b": "Murtazali Magomedov",
      "wc": "Featherweight",
@@ -207,14 +215,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Mitch Raposo",
-     "b": "Marcos Degli",
-     "wc": "Flyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
     },
     {
      "a": "Gabriel Lorenço",
