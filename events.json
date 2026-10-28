@@ -1,5 +1,5 @@
 {
- "built": "2026-10-28T11:24:37.798Z",
+ "built": "2026-10-28T21:40:44.698Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -455,6 +455,38 @@
      "a": "Quillan Salkilld",
      "b": "Benoît Saint Denis",
      "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "George Mangos",
+     "b": "Dagiisuren Chagnaadorj",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Rabindra Dhant",
+     "b": "Ryo Tajima",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Ji Niushiyue",
+     "b": "Takaya Suzuki",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Park Bo-hyun",
+     "b": "Meng Bo",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
