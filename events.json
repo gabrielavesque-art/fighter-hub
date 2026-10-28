@@ -1,5 +1,5 @@
 {
- "built": "2026-10-27T21:21:39.234Z",
+ "built": "2026-10-28T11:24:37.798Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -450,8 +450,17 @@
    "name": "UFC Fight Night 298",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
-   "bouts": [],
-   "src": ""
+   "bouts": [
+    {
+     "a": "Quillan Salkilld",
+     "b": "Benoît Saint Denis",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   }
  ]
 }
