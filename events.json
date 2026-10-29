@@ -1,5 +1,5 @@
 {
- "built": "2026-10-29T11:35:09.502Z",
+ "built": "2026-10-29T21:49:44.823Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -108,18 +108,10 @@
    "poster": "https://upload.wikimedia.org/wikipedia/en/2/20/UFC_Fight_Night_292.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
-   "name": "UFC Fight Night: Bonfim vs. Brady",
+   "name": "UFC Fight Night 293",
    "date": "2026-11-07",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
-    {
-     "a": "Gabriel Bonfim",
-     "b": "Sean Brady",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
     {
      "a": "Tatiana Suarez",
      "b": "Virna Jandiroba",
@@ -215,6 +207,14 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
+    },
+    {
+     "a": "Gabriel Bonfim",
+     "b": "TBA",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     },
     {
      "a": "Gabriel Lorenço",
