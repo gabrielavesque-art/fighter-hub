@@ -1,5 +1,5 @@
 {
- "built": "2026-10-29T21:49:44.823Z",
+ "built": "2026-10-30T11:27:00.902Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -137,17 +137,17 @@
      "card": "main"
     },
     {
-     "a": "Mantas Kondratavičius",
-     "b": "Andre Petroski",
-     "wc": "Middleweight",
+     "a": "Billy Elekana",
+     "b": "Lucas Fernando",
+     "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Billy Elekana",
-     "b": "Lucas Fernando",
-     "wc": "Light Heavyweight",
+     "a": "Mantas Kondratavičius",
+     "b": "Andre Petroski",
+     "wc": "Middleweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -185,14 +185,6 @@
      "card": "prelim"
     },
     {
-     "a": "Austin Bashi",
-     "b": "Lucas Brennan",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "Priscila Cachoeira",
      "b": "Nina Nikolija Milošević",
      "wc": "Women's Bantamweight",
@@ -209,6 +201,14 @@
      "card": "prelim"
     },
     {
+     "a": "Waldo Cortes-Acosta",
+     "b": "Johnny Walker",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Gabriel Bonfim",
      "b": "TBA",
      "wc": "Welterweight",
@@ -220,6 +220,14 @@
      "a": "Gabriel Lorenço",
      "b": "Thomas Petersen",
      "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Austin Bashi",
+     "b": "TBD",
+     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -407,22 +415,6 @@
    "src": ""
   },
   {
-   "name": "UFC Fight Night 297",
-   "date": "2027-01-23",
-   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Volkanovski",
-     "b": "Evloev]]",
-     "wc": "",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    }
-   ],
-   "src": "wikipedia"
-  },
-  {
    "name": "UFC 336: Van vs. Kape",
    "date": "2027-01-30",
    "location": "Scotiabank Arena, Toronto, Ontario, Canada",
@@ -447,7 +439,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 298",
+   "name": "UFC Fight Night 297",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
    "bouts": [
