@@ -1,5 +1,5 @@
 {
- "built": "2026-11-01T11:53:21.109Z",
+ "built": "2026-11-01T21:12:22.246Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -317,6 +317,14 @@
     {
      "a": "Carlos Prates",
      "b": "Michael Morales",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Daniel Rodriguez",
+     "b": "Roberto Soldić",
      "wc": "Welterweight",
      "title": true,
      "rounds": 5,
