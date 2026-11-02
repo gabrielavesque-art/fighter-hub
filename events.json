@@ -1,5 +1,5 @@
 {
- "built": "2026-11-01T21:12:22.246Z",
+ "built": "2026-11-02T13:37:16.660Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -344,6 +344,14 @@
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Bogdan Guskov",
+     "b": "Robert Whittaker",
+     "wc": "Light Heavyweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     },
     {
