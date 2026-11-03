@@ -1,5 +1,5 @@
 {
- "built": "2026-11-03T12:51:41.337Z",
+ "built": "2026-11-03T22:19:12.963Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -326,7 +326,7 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 297",
+   "name": "UFC Fight Night: Salkilld vs. Saint Denis",
    "date": "2027-02-07",
    "location": "Afterpay Arena, Sydney, Australia",
    "bouts": [
@@ -342,8 +342,8 @@
      "a": "Bogdan Guskov",
      "b": "Robert Whittaker",
      "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
