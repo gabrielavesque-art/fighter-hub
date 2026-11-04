@@ -1,5 +1,5 @@
 {
- "built": "2026-11-03T22:19:12.963Z",
+ "built": "2026-11-04T13:03:37.799Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -276,6 +276,22 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Park Jun-yong",
+     "b": "Marco Tulio",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Akbar Abdullaev",
+     "b": "Mairon Santos",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -376,6 +392,14 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Joanderson Brito",
+     "b": "Kaan Ofli",
+     "wc": "Featherweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
