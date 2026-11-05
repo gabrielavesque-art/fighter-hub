@@ -1,5 +1,5 @@
 {
- "built": "2026-11-04T22:38:46.053Z",
+ "built": "2026-11-05T13:17:26.972Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -32,14 +32,6 @@
      "card": "main"
     },
     {
-     "a": "Ko Seok-hyeon",
-     "b": "Wellington Turman",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
      "a": "Billy Elekana",
      "b": "Lucas Fernando",
      "wc": "Light Heavyweight",
@@ -48,12 +40,28 @@
      "card": "main"
     },
     {
-     "a": "Mantas Kondratavičius",
-     "b": "Andre Petroski",
-     "wc": "Middleweight",
+     "a": "Priscila Cachoeira",
+     "b": "Nina Nikolija Milošević",
+     "wc": "Women's Bantamweight",
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Mitch Raposo",
+     "b": "Marcos Degli",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Keiichiro Nakamura",
+     "b": "Ollie Schmid",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Gabriel Lorenço",
@@ -72,14 +80,6 @@
      "card": "prelim"
     },
     {
-     "a": "Mitch Raposo",
-     "b": "Marcos Degli",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
      "a": "José Mauro Delano",
      "b": "Murtazali Magomedov",
      "wc": "Featherweight",
@@ -88,17 +88,25 @@
      "card": "prelim"
     },
     {
-     "a": "Keiichiro Nakamura",
-     "b": "Ollie Schmid",
+     "a": "Austin Bashi",
+     "b": "Carlos Calderon",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
     },
     {
-     "a": "Priscila Cachoeira",
-     "b": "Nina Nikolija Milošević",
-     "wc": "Women's Bantamweight",
+     "a": "Mantas Kondratavičius",
+     "b": "Andre Petroski",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Ko Seok-hyeon",
+     "b": "Wellington Turman",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "prelim"
@@ -110,14 +118,6 @@
      "title": false,
      "rounds": 3,
      "card": "prelim"
-    },
-    {
-     "a": "Austin Bashi",
-     "b": "TBD",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
     }
    ],
    "src": "wikipedia"
