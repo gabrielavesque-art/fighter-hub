@@ -1,5 +1,5 @@
 {
- "built": "2026-11-06T13:00:23.775Z",
+ "built": "2026-11-06T22:08:14.110Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -158,25 +158,17 @@
      "card": "main"
     },
     {
+     "a": "Kyoji Horiguchi",
+     "b": "Asu Almabayev",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Jared Cannonier",
      "b": "Ikram Aliskerov",
      "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Shamil Gaziev",
-     "b": "Tallison Teixeira",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jake Matthews",
-     "b": "Tahir Abdullayev",
-     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -187,15 +179,15 @@
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
-     "a": "Asu Almabayev",
-     "b": "Kyoji Horiguchi",
-     "wc": "Flyweight",
+     "a": "Shamil Gaziev",
+     "b": "Tallison Teixeira",
+     "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Amir Albazi",
@@ -203,7 +195,15 @@
      "wc": "Flyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
+    },
+    {
+     "a": "Jake Matthews",
+     "b": "Tahir Abdullayev",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Manoel Sousa",
@@ -387,6 +387,22 @@
      "card": "main"
     },
     {
+     "a": "Marwan Rahiki",
+     "b": "Yoo Joo-sang",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Kaan Ofli",
+     "b": "Joanderson Brito",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "George Mangos",
      "b": "Dagiisuren Chagnaadorj",
      "wc": "Featherweight",
@@ -416,14 +432,6 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Joanderson Brito",
-     "b": "Kaan Ofli",
-     "wc": "Featherweight",
-     "title": true,
-     "rounds": 5,
      "card": "main"
     }
    ],
