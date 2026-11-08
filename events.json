@@ -1,127 +1,7 @@
 {
- "built": "2026-11-07T20:55:12.486Z",
+ "built": "2026-11-08T11:59:09.390Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Cortes-Acosta vs. Walker",
-   "date": "2026-11-07",
-   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
-   "bouts": [
-    {
-     "a": "Waldo Cortes-Acosta",
-     "b": "Johnny Walker",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Tatiana Suarez",
-     "b": "Virna Jandiroba",
-     "wc": "Women's Strawweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Davey Grant",
-     "b": "Elijah Smith",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Billy Elekana",
-     "b": "Lucas Fernando",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Priscila Cachoeira",
-     "b": "Nina Nikolija Milošević",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Mitch Raposo",
-     "b": "Marcos Degli",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Keiichiro Nakamura",
-     "b": "Ollie Schmid",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Gabriel Lorenço",
-     "b": "Thomas Petersen",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Karine Silva",
-     "b": "Gabriella Fernandes",
-     "wc": "Women's Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "José Mauro Delano",
-     "b": "Murtazali Magomedov",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Austin Bashi",
-     "b": "Carlos Calderon",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Mantas Kondratavičius",
-     "b": "Andre Petroski",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Ko Seok-hyeon",
-     "b": "Wellington Turman",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Jonny Parsons",
-     "b": "José Henrique Souza",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "wikipedia"
-  },
   {
    "name": "UFC 334: Gane vs. Hokit",
    "date": "2026-11-14",
@@ -238,17 +118,17 @@
      "card": "main"
     },
     {
-     "a": "Abdul Hussein",
-     "b": "Hecher Sosa",
-     "wc": "Bantamweight",
+     "a": "Ian Machado Garry",
+     "b": "Yaroslav Amosov",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Matthieu Letho Duclos",
-     "b": "Modestino Rodrigues",
-     "wc": "Middleweight",
+     "a": "Serghei Spivac",
+     "b": "Mário Pinto",
+     "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -257,6 +137,14 @@
      "a": "Islam Dulatov",
      "b": "Levan Chokheli",
      "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Akbar Abdullaev",
+     "b": "Mairon Santos",
+     "wc": "Lightweight",
      "title": true,
      "rounds": 5,
      "card": "main"
@@ -286,19 +174,27 @@
      "card": "main"
     },
     {
-     "a": "Akbar Abdullaev",
-     "b": "Mairon Santos",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
      "a": "Pavel Andrusca",
      "b": "Mehemmedeli Osmanli",
      "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Matthieu Letho Duclos",
+     "b": "Modestino Rodrigues",
+     "wc": "Middleweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Abdul Hussein",
+     "b": "Hecher Sosa",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
