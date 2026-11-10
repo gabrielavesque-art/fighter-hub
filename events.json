@@ -1,5 +1,5 @@
 {
- "built": "2026-11-10T00:42:29.354Z",
+ "built": "2026-11-10T13:34:01.798Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -129,24 +129,32 @@
      "a": "Serghei Spivac",
      "b": "Mário Pinto",
      "wc": "Heavyweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Islam Dulatov",
-     "b": "Levan Chokheli",
+     "a": "Levan Chokheli",
+     "b": "Islam Dulatov",
      "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Akbar Abdullaev",
-     "b": "Mairon Santos",
+     "a": "Mairon Santos",
+     "b": "Akbar Abdullaev",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Magomed Tuchalov",
+     "b": "Ion Cuțelaba",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
@@ -158,35 +166,35 @@
      "card": "main"
     },
     {
-     "a": "Ivan Gnizditskiy",
-     "b": "Uran Satybaldiev",
+     "a": "Uran Satybaldiev",
+     "b": "Ivan Gnizditskiy",
      "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Park Jun-yong",
-     "b": "Marco Tulio",
+     "a": "Marco Tulio",
+     "b": "Park Jun-yong",
      "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
      "a": "Pavel Andrusca",
      "b": "Mehemmedeli Osmanli",
      "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Matthieu Letho Duclos",
-     "b": "Modestino Rodrigues",
+     "a": "Modestino Rodrigues",
+     "b": "Matthieu Letho Duclos",
      "wc": "Middleweight",
-     "title": true,
-     "rounds": 5,
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
