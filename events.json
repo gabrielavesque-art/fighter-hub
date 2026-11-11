@@ -1,5 +1,5 @@
 {
- "built": "2026-11-10T22:23:19.827Z",
+ "built": "2026-11-11T12:47:17.435Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -107,7 +107,7 @@
   {
    "name": "UFC Fight Night: Adesanya vs. Magomedov",
    "date": "2026-12-05",
-   "location": "ANB Arena, Riyadh, Saudi Arabia",
+   "location": "anb Arena, Riyadh, Saudi Arabia",
    "bouts": [
     {
      "a": "Israel Adesanya",
@@ -218,8 +218,17 @@
    "name": "UFC Fight Night 296",
    "date": "2027-01-16",
    "location": "American Airlines Center, Dallas, Texas, U.S.",
-   "bouts": [],
-   "src": ""
+   "bouts": [
+    {
+     "a": "Chidi Njokuani",
+     "b": "Ignacio Bahamondes",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
   },
   {
    "name": "UFC Fight Night 297",
@@ -262,6 +271,14 @@
      "a": "Daniel Rodriguez",
      "b": "Roberto Soldić",
      "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Serhiy Sidey",
+     "b": "Louis Lee Scott",
+     "wc": "Bantamweight",
      "title": true,
      "rounds": 5,
      "card": "main"
