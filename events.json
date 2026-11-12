@@ -1,5 +1,5 @@
 {
- "built": "2026-11-12T13:50:10.945Z",
+ "built": "2026-11-12T22:44:49.530Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -233,6 +233,14 @@
      "wc": "Welterweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Magomed Zaynukov",
+     "b": "Piero Guaylupo",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
