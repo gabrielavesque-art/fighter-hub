@@ -1,12 +1,86 @@
 {
- "built": "2026-11-12T22:44:49.530Z",
+ "built": "2026-11-13T13:12:06.389Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
    "name": "UFC 334: Gane vs. Hokit",
    "date": "2026-11-14",
    "location": "Madison Square Garden, New York City, New York, U.S.",
-   "bouts": []
+   "bouts": [
+    {
+     "a": "Bia Mesquita",
+     "b": "Macy Chiasson",
+     "wc": "Women's Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Juan Diaz",
+     "b": "Adrian YaÃ±ez",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Jefferson Nascimento",
+     "b": "Nazim Sadykhov",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Juan Diaz",
+     "b": "Alatengheili",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Charles Radtke",
+     "b": "Stephen Thompson",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Baisangur Susurkaev",
+     "b": "Donte Johnson",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Josh Hokit",
+     "b": "Ciryl Gane",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Samuel Sanches",
+     "b": "Evan Elder",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "Melquizael Costa",
+     "b": "Jared Gordon",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    }
+   ],
+   "src": "api"
   },
   {
    "name": "UFC Fight Night: Procházka vs. Stirling",
@@ -239,6 +313,14 @@
      "a": "Magomed Zaynukov",
      "b": "Piero Guaylupo",
      "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Chris Curtis",
+     "b": "Geoff Neal",
+     "wc": "Welterweight",
      "title": true,
      "rounds": 5,
      "card": "main"
