@@ -1,5 +1,5 @@
 {
- "built": "2026-11-13T22:40:22.082Z",
+ "built": "2026-11-14T12:16:59.778Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -369,6 +369,14 @@
      "a": "Serhiy Sidey",
      "b": "Louis Lee Scott",
      "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Gable Steveson",
+     "b": "Terrance Chatman",
+     "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
      "card": "main"
