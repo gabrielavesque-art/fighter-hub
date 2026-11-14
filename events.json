@@ -1,5 +1,5 @@
 {
- "built": "2026-11-14T12:16:59.778Z",
+ "built": "2026-11-14T21:31:40.510Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -331,11 +331,19 @@
   {
    "name": "UFC Fight Night 297",
    "date": "2027-01-23",
-   "location": "",
+   "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
     {
      "a": "Pat Sabatini",
      "b": "Vinicius Oliveira",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Yadier del Valle",
+     "b": "Ezra Elliott",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
