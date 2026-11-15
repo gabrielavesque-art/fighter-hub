@@ -1,5 +1,5 @@
 {
- "built": "2026-11-15T12:48:53.508Z",
+ "built": "2026-11-15T21:51:02.922Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -252,6 +252,22 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Toshiomi Kazama",
+     "b": "John Garza",
+     "wc": "Bantamweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Carlos Diego Ferreira",
+     "b": "MarQuel Mederos",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
    "src": "wikipedia"
@@ -315,6 +331,22 @@
      "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Michael Johnson",
+     "b": "Lance Gibson Jr.",
+     "wc": "Lightweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Cameron Nelson",
+     "b": "Sean Clancy Jr.",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
