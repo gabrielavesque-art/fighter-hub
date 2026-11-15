@@ -1,87 +1,7 @@
 {
- "built": "2026-11-14T21:31:40.510Z",
+ "built": "2026-11-15T12:48:53.508Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC 334: Gane vs. Hokit",
-   "date": "2026-11-14",
-   "location": "Madison Square Garden, New York City, New York, U.S.",
-   "bouts": [
-    {
-     "a": "Bia Mesquita",
-     "b": "Macy Chiasson",
-     "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Juan Diaz",
-     "b": "Adrian YaÃ±ez",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Jefferson Nascimento",
-     "b": "Nazim Sadykhov",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Juan Diaz",
-     "b": "Alatengheili",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Charles Radtke",
-     "b": "Stephen Thompson",
-     "wc": "Welterweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Baisangur Susurkaev",
-     "b": "Donte Johnson",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Josh Hokit",
-     "b": "Ciryl Gane",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Samuel Sanches",
-     "b": "Evan Elder",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Melquizael Costa",
-     "b": "Jared Gordon",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    }
-   ],
-   "src": "api"
-  },
   {
    "name": "UFC Fight Night: Procházka vs. Stirling",
    "date": "2026-11-21",
@@ -289,21 +209,29 @@
    "bouts": []
   },
   {
-   "name": "UFC Fight Night 296",
+   "name": "UFC Fight Night: Rodríguez vs. Garcia",
    "date": "2027-01-16",
    "location": "American Airlines Center, Dallas, Texas, U.S.",
    "bouts": [
     {
-     "a": "Chidi Njokuani",
-     "b": "Ignacio Bahamondes",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Yair Rodríguez",
+     "b": "Steve Garcia",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
      "a": "Daniel Rodriguez",
      "b": "Roberto Soldić",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Chidi Njokuani",
+     "b": "Ignacio Bahamondes",
      "wc": "Welterweight",
      "title": false,
      "rounds": 3,
@@ -329,21 +257,21 @@
    "src": "wikipedia"
   },
   {
-   "name": "UFC Fight Night 297",
+   "name": "UFC Fight Night: Bonfim vs. Brady",
    "date": "2027-01-23",
    "location": "Meta Apex, Las Vegas, Nevada, U.S.",
    "bouts": [
     {
-     "a": "Pat Sabatini",
-     "b": "Vinicius Oliveira",
-     "wc": "Featherweight",
+     "a": "Gabriel Bonfim",
+     "b": "Sean Brady",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Yadier del Valle",
-     "b": "Ezra Elliott",
+     "a": "Pat Sabatini",
+     "b": "Vinicius Oliveira",
      "wc": "Featherweight",
      "title": false,
      "rounds": 3,
@@ -463,6 +391,29 @@
     }
    ],
    "src": "wikipedia"
+  },
+  {
+   "name": "UFC Fight Night: Pyfer vs. Nickal",
+   "date": "2027-02-13",
+   "location": "Rocket Arena, Cleveland, Ohio, U.S.",
+   "bouts": [
+    {
+     "a": "Joe Pyfer",
+     "b": "Bo Nickal",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    }
+   ],
+   "src": "wikipedia"
+  },
+  {
+   "name": "UFC 337",
+   "date": "2027-02-20",
+   "location": "Kia Center, Orlando, Florida, U.S.",
+   "bouts": [],
+   "src": ""
   }
  ]
 }
