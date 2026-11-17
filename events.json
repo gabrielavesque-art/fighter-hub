@@ -1,5 +1,5 @@
 {
- "built": "2026-11-17T14:36:28.472Z",
+ "built": "2026-11-17T23:51:32.123Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -80,16 +80,24 @@
      "card": "prelim"
     },
     {
-     "a": "Manoel Sousa",
-     "b": "TBD",
+     "a": "Nikolas Motta",
+     "b": "Dom Mar Fan",
      "wc": "Lightweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
-     "a": "Nikolas Motta",
-     "b": "Dom Mar Fan",
+     "a": "Diyar Nurgozhay",
+     "b": "Alik Lorenz",
+     "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
+    },
+    {
+     "a": "John Mitchell",
+     "b": "Shoaib Yousaf",
      "wc": "Lightweight",
      "title": true,
      "rounds": 5,
