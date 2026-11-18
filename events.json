@@ -1,5 +1,5 @@
 {
- "built": "2026-11-18T14:13:36.435Z",
+ "built": "2026-11-18T23:24:41.076Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -165,7 +165,7 @@
      "wc": "Flyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Uran Satybaldiev",
@@ -173,7 +173,7 @@
      "wc": "Light Heavyweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Marco Tulio",
@@ -181,7 +181,7 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Pavel Andrusca",
@@ -189,7 +189,7 @@
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Modestino Rodrigues",
@@ -197,7 +197,7 @@
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Abdul Hussein",
@@ -205,7 +205,7 @@
      "wc": "Bantamweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     },
     {
      "a": "Mateusz Rębecki",
