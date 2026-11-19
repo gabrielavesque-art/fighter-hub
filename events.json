@@ -1,5 +1,5 @@
 {
- "built": "2026-11-19T14:29:46.102Z",
+ "built": "2026-11-19T23:35:51.998Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -96,12 +96,12 @@
      "card": "prelim"
     },
     {
-     "a": "John Mitchell",
-     "b": "Shoaib Yousaf",
+     "a": "Shoaib Yousaf",
+     "b": "John Mitchell",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     }
    ],
    "src": "wikipedia"
@@ -214,9 +214,18 @@
      "title": true,
      "rounds": 5,
      "card": "main"
+    },
+    {
+     "a": "Luke Riley",
+     "b": "Gabriel Santos",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia",
+   "poster": "https://upload.wikimedia.org/wikipedia/en/0/05/UFC_Fight_Night_295.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
   },
   {
    "name": "UFC 335: Oliveira vs. Lopes",
@@ -246,6 +255,14 @@
      "card": "main"
     },
     {
+     "a": "Geoff Neal",
+     "b": "Chris Curtis",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
      "a": "Chidi Njokuani",
      "b": "Ignacio Bahamondes",
      "wc": "Welterweight",
@@ -254,33 +271,73 @@
      "card": "main"
     },
     {
-     "a": "Magomed Zaynukov",
-     "b": "Piero Guaylupo",
-     "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Ryan Spann",
+     "b": "Louie Sutherland",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Chris Curtis",
-     "b": "Geoff Neal",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Kennedy Nzechukwu",
+     "b": "Elisha Ellison",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Toshiomi Kazama",
-     "b": "John Garza",
-     "wc": "Bantamweight",
-     "title": true,
-     "rounds": 5,
+     "a": "Gilbert Urbina",
+     "b": "Robert Valentin",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Alden Coria",
+     "b": "Michael Aljarouj",
+     "wc": "Flyweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     },
     {
      "a": "Carlos Diego Ferreira",
      "b": "MarQuel Mederos",
      "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Magomed Zaynukov",
+     "b": "Piero Guaylupo",
+     "wc": "Lightweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "John Garza",
+     "b": "Toshiomi Kazama",
+     "wc": "Bantamweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Steven Asplund",
+     "b": "Gökhan Saricam",
+     "wc": "Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Sam Hughes",
+     "b": "Karolina Kowalkiewicz",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -385,6 +442,14 @@
      "a": "Bogdan Guskov",
      "b": "Robert Whittaker",
      "wc": "Light Heavyweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Jonathan Micallef",
+     "b": "Sam Patterson",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
