@@ -1,5 +1,5 @@
 {
- "built": "2026-11-21T13:32:45.168Z",
+ "built": "2026-11-21T22:11:28.471Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -11,100 +11,22 @@
      "a": "Jiří Procházka",
      "b": "Navajo Stirling",
      "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Aljamain Sterling",
-     "b": "Kevin Vallejos",
-     "wc": "Featherweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Dan Hooker",
-     "b": "Brian Ortega",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Kyoji Horiguchi",
-     "b": "Asu Almabayev",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Jared Cannonier",
-     "b": "Ikram Aliskerov",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Aleksandre Topuria",
-     "b": "Santiago Luna",
-     "wc": "Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Shamil Gaziev",
-     "b": "Tallison Teixeira",
-     "wc": "Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Amir Albazi",
-     "b": "Alessandro Costa",
-     "wc": "Flyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
+     "title": true,
+     "rounds": 5,
+     "card": "main",
+     "announced": true
     },
     {
      "a": "Jake Matthews",
-     "b": "Tahir Abdullayev",
-     "wc": "Catchweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Nikolas Motta",
-     "b": "Dom Mar Fan",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Diyar Nurgozhay",
-     "b": "Alik Lorenz",
-     "wc": "Light Heavyweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
-    },
-    {
-     "a": "Shoaib Yousaf",
-     "b": "John Mitchell",
-     "wc": "Lightweight",
-     "title": false,
-     "rounds": 3,
-     "card": "prelim"
+     "b": "Akbar Abdullaev",
+     "wc": "Welterweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main",
+     "announced": true
     }
    ],
-   "src": "wikipedia"
+   "src": "wikipedia-prose"
   },
   {
    "name": "UFC Fight Night: Adesanya vs. Magomedov",
