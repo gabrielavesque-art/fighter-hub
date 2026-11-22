@@ -1,33 +1,7 @@
 {
- "built": "2026-11-21T22:11:28.471Z",
+ "built": "2026-11-22T13:25:54.279Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
-  {
-   "name": "UFC Fight Night: Procházka vs. Stirling",
-   "date": "2026-11-21",
-   "location": "Ali Bin Hamad al-Attiyah Arena, Al Rayyan, Qatar",
-   "bouts": [
-    {
-     "a": "Jiří Procházka",
-     "b": "Navajo Stirling",
-     "wc": "Light Heavyweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main",
-     "announced": true
-    },
-    {
-     "a": "Jake Matthews",
-     "b": "Akbar Abdullaev",
-     "wc": "Welterweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main",
-     "announced": true
-    }
-   ],
-   "src": "wikipedia-prose"
-  },
   {
    "name": "UFC Fight Night: Adesanya vs. Magomedov",
    "date": "2026-12-05",
@@ -342,6 +316,14 @@
      "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Marc-André Barriault",
+     "b": "Tresean Gore",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
