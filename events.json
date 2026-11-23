@@ -1,5 +1,5 @@
 {
- "built": "2026-11-22T22:29:08.358Z",
+ "built": "2026-11-23T16:07:24.805Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -316,14 +316,6 @@
      "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Marc-André Barriault",
-     "b": "Tresean Gore",
-     "wc": "Middleweight",
-     "title": false,
-     "rounds": 3,
      "card": "main"
     }
    ],
