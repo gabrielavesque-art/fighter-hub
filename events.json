@@ -1,5 +1,5 @@
 {
- "built": "2026-11-24T03:20:23.391Z",
+ "built": "2026-11-24T15:58:00.003Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -24,17 +24,17 @@
      "card": "main"
     },
     {
-     "a": "Serghei Spivac",
-     "b": "Mário Pinto",
-     "wc": "Heavyweight",
+     "a": "Levan Chokheli",
+     "b": "Islam Dulatov",
+     "wc": "Welterweight",
      "title": false,
      "rounds": 3,
      "card": "main"
     },
     {
-     "a": "Levan Chokheli",
-     "b": "Islam Dulatov",
-     "wc": "Welterweight",
+     "a": "Serghei Spivac",
+     "b": "Mário Pinto",
+     "wc": "Heavyweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -54,6 +54,14 @@
      "title": false,
      "rounds": 3,
      "card": "main"
+    },
+    {
+     "a": "Luke Riley",
+     "b": "Gabriel Santos",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "prelim"
     },
     {
      "a": "Bruno Gustavo da Silva",
@@ -107,17 +115,9 @@
      "a": "Mateusz Rębecki",
      "b": "Elves Brener",
      "wc": "Lightweight",
-     "title": true,
-     "rounds": 5,
-     "card": "main"
-    },
-    {
-     "a": "Luke Riley",
-     "b": "Gabriel Santos",
-     "wc": "Featherweight",
      "title": false,
      "rounds": 3,
-     "card": "main"
+     "card": "prelim"
     }
    ],
    "src": "wikipedia",
@@ -412,6 +412,14 @@
      "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Tai Tuivasa",
+     "b": "Jhonata Diniz",
+     "wc": "Heavyweight",
+     "title": true,
+     "rounds": 5,
      "card": "main"
     }
    ],
