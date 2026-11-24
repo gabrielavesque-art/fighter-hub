@@ -1,5 +1,5 @@
 {
- "built": "2026-11-23T16:07:24.805Z",
+ "built": "2026-11-24T03:20:23.391Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -316,6 +316,22 @@
      "wc": "Heavyweight",
      "title": true,
      "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Tanner Boser",
+     "b": "José Montanha",
+     "wc": "Heavyweight",
+     "title": true,
+     "rounds": 5,
+     "card": "main"
+    },
+    {
+     "a": "Julien Leblanc",
+     "b": "Vlasto Čepo",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
      "card": "main"
     }
    ],
