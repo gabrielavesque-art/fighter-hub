@@ -1,5 +1,5 @@
 {
- "built": "2026-11-25T15:44:21.459Z",
+ "built": "2026-11-26T01:00:04.522Z",
  "source": "en.wikipedia.org — List of UFC events",
  "events": [
   {
@@ -271,8 +271,32 @@
      "card": "main"
     },
     {
-     "a": "Nick Klein",
-     "b": "Trent Miller",
+     "a": "Neil Magny",
+     "b": "Daniil Donchenko",
+     "wc": "Welterweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Azamat Bekoev",
+     "b": "Eric McConico",
+     "wc": "Middleweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Yadier del Valle",
+     "b": "Ezra Elliott",
+     "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Trent Miller",
+     "b": "Nick Klein",
      "wc": "Middleweight",
      "title": false,
      "rounds": 3,
@@ -288,8 +312,16 @@
     },
     {
      "a": "Jamall Emmers",
-     "b": "Ramiro Jimenez",
+     "b": "Ramiro Jiménez",
      "wc": "Featherweight",
+     "title": false,
+     "rounds": 3,
+     "card": "main"
+    },
+    {
+     "a": "Anna Melisano",
+     "b": "Marina Spasić",
+     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
@@ -303,17 +335,9 @@
      "card": "main"
     },
     {
-     "a": "Melissa Mullins",
-     "b": "Smilla Sundell",
+     "a": "Smilla Sundell",
+     "b": "Melissa Mullins",
      "wc": "Women's Bantamweight",
-     "title": false,
-     "rounds": 3,
-     "card": "main"
-    },
-    {
-     "a": "Marina Spasić",
-     "b": "Anna Melisano",
-     "wc": "Women's Strawweight",
      "title": false,
      "rounds": 3,
      "card": "main"
